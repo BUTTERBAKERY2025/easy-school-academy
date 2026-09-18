@@ -1,0 +1,336 @@
+{
+  "version": 1,
+  "users": [
+    {
+      "id": "usr_demo_student",
+      "name": "سلمى أحمد",
+      "email": "student@school-on.test",
+      "role": "student",
+      "curriculumId": "saudi",
+      "gradeId": "saudi-g4",
+      "parentId": "usr_demo_parent",
+      "xp": 513,
+      "streakDays": 5,
+      "lastActiveOn": "2026-09-18",
+      "passwordHash": "scrypt$6ace66d7663d77a65d7a5101595fe3f5$7a4213f0a718e041d3b9709eb277a4566762e87fc00148fe23276f14c895757e2ccc1ea1c3855ff58a10c8302dd0d4bd8bb7e1cfb5c57f5fa15cdac79763d493",
+      "createdAt": "2026-08-09T21:49:14.695Z"
+    },
+    {
+      "id": "usr_demo_student2",
+      "name": "Omar Ahmed",
+      "email": "student2@school-on.test",
+      "role": "student",
+      "curriculumId": "american",
+      "gradeId": "american-g4",
+      "parentId": "usr_demo_parent",
+      "xp": 180,
+      "streakDays": 2,
+      "lastActiveOn": "2026-09-17",
+      "passwordHash": "scrypt$6ace66d7663d77a65d7a5101595fe3f5$7a4213f0a718e041d3b9709eb277a4566762e87fc00148fe23276f14c895757e2ccc1ea1c3855ff58a10c8302dd0d4bd8bb7e1cfb5c57f5fa15cdac79763d493",
+      "createdAt": "2026-08-09T21:49:14.695Z"
+    },
+    {
+      "id": "usr_demo_parent",
+      "name": "أحمد المطيري",
+      "email": "parent@school-on.test",
+      "role": "parent",
+      "xp": 0,
+      "streakDays": 0,
+      "passwordHash": "scrypt$6ace66d7663d77a65d7a5101595fe3f5$7a4213f0a718e041d3b9709eb277a4566762e87fc00148fe23276f14c895757e2ccc1ea1c3855ff58a10c8302dd0d4bd8bb7e1cfb5c57f5fa15cdac79763d493",
+      "createdAt": "2026-08-08T21:49:14.695Z"
+    },
+    {
+      "id": "usr_demo_teacher",
+      "name": "الأستاذة هدى",
+      "email": "teacher@school-on.test",
+      "role": "teacher",
+      "teachingGradeIds": [
+        "saudi-g4",
+        "american-g4"
+      ],
+      "xp": 0,
+      "streakDays": 0,
+      "passwordHash": "scrypt$6ace66d7663d77a65d7a5101595fe3f5$7a4213f0a718e041d3b9709eb277a4566762e87fc00148fe23276f14c895757e2ccc1ea1c3855ff58a10c8302dd0d4bd8bb7e1cfb5c57f5fa15cdac79763d493",
+      "createdAt": "2026-07-20T21:49:14.695Z"
+    },
+    {
+      "id": "usr_demo_admin",
+      "name": "School On Admin",
+      "email": "admin@school-on.test",
+      "role": "admin",
+      "xp": 0,
+      "streakDays": 0,
+      "passwordHash": "scrypt$6ace66d7663d77a65d7a5101595fe3f5$7a4213f0a718e041d3b9709eb277a4566762e87fc00148fe23276f14c895757e2ccc1ea1c3855ff58a10c8302dd0d4bd8bb7e1cfb5c57f5fa15cdac79763d493",
+      "createdAt": "2026-06-20T21:49:14.695Z"
+    },
+    {
+      "id": "usr_b7205bd4df8441d7",
+      "name": "طالب تجريبي",
+      "email": "new1789768266572@school-on.test",
+      "passwordHash": "scrypt$6d6bbcac3a16316eeeb18923e35a040f$f9adc581aea0f6422a3a698f594a70bd94ca9a9b3d9e1845dff4cddf8bfa35d0f3b944c58cc069c37377f4c8e6eee79d5cb3577149f957c2b779d59f5c37d3d2",
+      "role": "student",
+      "curriculumId": "american",
+      "gradeId": "american-g0",
+      "xp": 0,
+      "streakDays": 0,
+      "createdAt": "2026-09-18T21:51:06.721Z"
+    }
+  ],
+  "progress": [
+    {
+      "id": "prg_seed_0",
+      "userId": "usr_demo_student",
+      "lessonId": "saudi-g4-math-fractions-1",
+      "unitId": "saudi-g4-math-fractions",
+      "subjectId": "saudi-g4-math",
+      "gradeId": "saudi-g4",
+      "curriculumId": "saudi",
+      "status": "completed",
+      "stepIndex": 8,
+      "score": 88,
+      "secondsSpent": 1329,
+      "startedAt": "2026-09-17T21:49:14.695Z",
+      "updatedAt": "2026-09-18T21:50:47.425Z",
+      "completedAt": "2026-09-17T21:49:14.695Z"
+    },
+    {
+      "id": "prg_seed_1",
+      "userId": "usr_demo_student",
+      "lessonId": "saudi-g4-arabic-qiraa-1",
+      "unitId": "saudi-g4-arabic-qiraa",
+      "subjectId": "saudi-g4-arabic",
+      "gradeId": "saudi-g4",
+      "curriculumId": "saudi",
+      "status": "completed",
+      "stepIndex": 7,
+      "score": 100,
+      "secondsSpent": 1080,
+      "startedAt": "2026-09-16T21:49:14.695Z",
+      "updatedAt": "2026-09-16T21:49:14.695Z",
+      "completedAt": "2026-09-16T21:49:14.695Z"
+    },
+    {
+      "id": "prg_seed_2",
+      "userId": "usr_demo_student",
+      "lessonId": "saudi-g4-social-watan-2",
+      "unitId": "saudi-g4-social-watan",
+      "subjectId": "saudi-g4-social",
+      "gradeId": "saudi-g4",
+      "curriculumId": "saudi",
+      "status": "in_progress",
+      "stepIndex": 3,
+      "score": 60,
+      "secondsSpent": 420,
+      "startedAt": "2026-09-18T21:49:14.695Z",
+      "updatedAt": "2026-09-18T21:49:14.695Z"
+    },
+    {
+      "id": "prg_seed_3",
+      "userId": "usr_demo_student",
+      "lessonId": "saudi-g4-math-number-1",
+      "unitId": "saudi-g4-math-number",
+      "subjectId": "saudi-g4-math",
+      "gradeId": "saudi-g4",
+      "curriculumId": "saudi",
+      "status": "completed",
+      "stepIndex": 5,
+      "score": 75,
+      "secondsSpent": 900,
+      "startedAt": "2026-09-14T21:49:14.695Z",
+      "updatedAt": "2026-09-14T21:49:14.695Z",
+      "completedAt": "2026-09-14T21:49:14.695Z"
+    },
+    {
+      "id": "prg_seed_4",
+      "userId": "usr_demo_student2",
+      "lessonId": "american-g4-math-fractions-1",
+      "unitId": "american-g4-math-fractions",
+      "subjectId": "american-g4-math",
+      "gradeId": "american-g4",
+      "curriculumId": "american",
+      "status": "completed",
+      "stepIndex": 10,
+      "score": 92,
+      "secondsSpent": 1500,
+      "startedAt": "2026-09-17T21:49:14.695Z",
+      "updatedAt": "2026-09-17T21:49:14.695Z",
+      "completedAt": "2026-09-17T21:49:14.695Z"
+    },
+    {
+      "id": "prg_seed_5",
+      "userId": "usr_demo_student2",
+      "lessonId": "american-g4-math-number-1",
+      "unitId": "american-g4-math-number",
+      "subjectId": "american-g4-math",
+      "gradeId": "american-g4",
+      "curriculumId": "american",
+      "status": "in_progress",
+      "stepIndex": 2,
+      "score": 40,
+      "secondsSpent": 300,
+      "startedAt": "2026-09-17T21:49:14.695Z",
+      "updatedAt": "2026-09-17T21:49:14.695Z"
+    },
+    {
+      "id": "prg_32b98b10b0c14e0f",
+      "userId": "usr_demo_student",
+      "lessonId": "american-g5-science-life-2",
+      "unitId": "american-g5-science-life",
+      "subjectId": "american-g5-science",
+      "gradeId": "american-g5",
+      "curriculumId": "american",
+      "status": "completed",
+      "stepIndex": 7,
+      "score": 38,
+      "secondsSpent": 12,
+      "startedAt": "2026-09-18T21:49:22.302Z",
+      "updatedAt": "2026-09-18T21:50:52.345Z",
+      "completedAt": "2026-09-18T21:49:24.458Z"
+    },
+    {
+      "id": "prg_d1411108d895405e",
+      "userId": "usr_demo_student",
+      "lessonId": "british-g1-english-reading-1",
+      "unitId": "british-g1-english-reading",
+      "subjectId": "british-g1-english",
+      "gradeId": "british-g1",
+      "curriculumId": "british",
+      "status": "completed",
+      "stepIndex": 6,
+      "score": 67,
+      "secondsSpent": 9,
+      "startedAt": "2026-09-18T21:49:28.029Z",
+      "updatedAt": "2026-09-18T21:50:55.972Z",
+      "completedAt": "2026-09-18T21:49:28.029Z"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "sub_seed_family",
+      "userId": "usr_demo_parent",
+      "planId": "family",
+      "interval": "yearly",
+      "status": "active",
+      "seats": 4,
+      "startedAt": "2026-08-14T21:49:14.695Z",
+      "currentPeriodEnd": "2027-08-14T21:49:14.695Z"
+    },
+    {
+      "id": "sub_9ff7e918158f4425",
+      "userId": "usr_demo_student",
+      "planId": "basic",
+      "interval": "yearly",
+      "status": "cancelled",
+      "seats": 1,
+      "startedAt": "2026-09-18T21:49:30.499Z",
+      "currentPeriodEnd": "2027-09-18T21:49:30.499Z",
+      "cancelledAt": "2026-09-18T21:50:00.715Z"
+    },
+    {
+      "id": "sub_f3277aa658034527",
+      "userId": "usr_demo_student",
+      "planId": "premium",
+      "interval": "yearly",
+      "status": "cancelled",
+      "seats": 1,
+      "startedAt": "2026-09-18T21:50:00.715Z",
+      "currentPeriodEnd": "2027-09-18T21:50:00.715Z",
+      "cancelledAt": "2026-09-18T21:50:58.330Z"
+    },
+    {
+      "id": "sub_ba83ec71b37d4180",
+      "userId": "usr_demo_student",
+      "planId": "basic",
+      "interval": "yearly",
+      "status": "active",
+      "seats": 1,
+      "startedAt": "2026-09-18T21:50:58.330Z",
+      "currentPeriodEnd": "2027-09-18T21:50:58.330Z"
+    }
+  ],
+  "activity": [
+    {
+      "id": "act_seed_0",
+      "userId": "usr_demo_student",
+      "kind": "lesson_completed",
+      "lessonId": "saudi-g4-math-fractions-1",
+      "xp": 64,
+      "createdAt": "2026-09-17T21:49:14.695Z"
+    },
+    {
+      "id": "act_seed_1",
+      "userId": "usr_demo_student",
+      "kind": "lesson_completed",
+      "lessonId": "saudi-g4-arabic-qiraa-1",
+      "xp": 70,
+      "createdAt": "2026-09-16T21:49:14.695Z"
+    },
+    {
+      "id": "act_seed_2",
+      "userId": "usr_demo_student",
+      "kind": "lesson_completed",
+      "lessonId": "saudi-g4-math-number-1",
+      "xp": 58,
+      "createdAt": "2026-09-14T21:49:14.695Z"
+    },
+    {
+      "id": "act_seed_3",
+      "userId": "usr_demo_student2",
+      "kind": "lesson_completed",
+      "lessonId": "american-g4-math-fractions-1",
+      "xp": 66,
+      "createdAt": "2026-09-17T21:49:14.695Z"
+    },
+    {
+      "id": "act_8da56ee174424ad2",
+      "userId": "usr_demo_student",
+      "kind": "lesson_completed",
+      "lessonId": "american-g5-science-life-2",
+      "xp": 39,
+      "createdAt": "2026-09-18T21:49:24.458Z"
+    },
+    {
+      "id": "act_c75e6b409d2b4257",
+      "userId": "usr_demo_student",
+      "kind": "lesson_completed",
+      "lessonId": "british-g1-english-reading-1",
+      "xp": 54,
+      "createdAt": "2026-09-18T21:49:28.029Z"
+    },
+    {
+      "id": "act_40e80c8528b24373",
+      "userId": "usr_demo_student",
+      "kind": "subscribed",
+      "xp": 0,
+      "createdAt": "2026-09-18T21:49:30.499Z"
+    },
+    {
+      "id": "act_9d960e5d204c4130",
+      "userId": "usr_demo_student",
+      "kind": "subscribed",
+      "xp": 0,
+      "createdAt": "2026-09-18T21:50:00.715Z"
+    },
+    {
+      "id": "act_c96f662e812a4b92",
+      "userId": "usr_demo_student",
+      "kind": "subscribed",
+      "xp": 0,
+      "createdAt": "2026-09-18T21:50:58.330Z"
+    }
+  ],
+  "assignments": [
+    {
+      "id": "asg_seed_1",
+      "teacherId": "usr_demo_teacher",
+      "gradeId": "saudi-g4",
+      "subjectId": "saudi-g4-math",
+      "lessonIds": [
+        "saudi-g4-math-fractions-1",
+        "saudi-g4-math-fractions-2"
+      ],
+      "dueOn": "2026-09-25",
+      "createdAt": "2026-09-15T21:49:14.695Z"
+    }
+  ]
+}

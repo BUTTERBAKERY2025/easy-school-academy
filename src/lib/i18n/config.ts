@@ -21,3 +21,16 @@ export type Localized = { ar: string; en: string };
 export function t(value: Localized, locale: Locale): string {
   return value[locale] ?? value.ar;
 }
+
+const ARABIC_INDIC = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+
+/**
+ * Formats a number the way the lesson text writes it: Arabic-Indic digits in Arabic,
+ * Western digits in English. Done by hand rather than through `toLocaleString`, whose
+ * numbering system depends on the ICU data a given Node build happens to ship.
+ */
+export function num(value: number, locale: Locale): string {
+  const grouped = new Intl.NumberFormat("en-US").format(value);
+  if (locale !== "ar") return grouped;
+  return grouped.replace(/\d/g, (digit) => ARABIC_INDIC[Number(digit)] ?? digit).replace(/,/g, "٬");
+}

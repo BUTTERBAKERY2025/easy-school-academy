@@ -1,13 +1,25 @@
 import type { Localized } from "@/lib/i18n/config";
 
+const ARABIC_SCRIPT = /[\u0600-\u06FF]/;
+
 /**
  * Topic banks hold hundreds of short bilingual phrases, so they are written in a
- * compact `"English|عربي"` form and expanded here.
+ * compact `"one side|the other"` form and expanded here.
+ *
+ * Either order is accepted — Arabic-first reads better in the Saudi banks and
+ * English-first in the others — because the Arabic side is identified by its
+ * script rather than by its position.
  */
 export function bi(pair: string): Localized {
   const separator = pair.indexOf("|");
   if (separator === -1) return { en: pair, ar: pair };
-  return { en: pair.slice(0, separator).trim(), ar: pair.slice(separator + 1).trim() };
+
+  const first = pair.slice(0, separator).trim();
+  const second = pair.slice(separator + 1).trim();
+
+  return ARABIC_SCRIPT.test(first) && !ARABIC_SCRIPT.test(second)
+    ? { ar: first, en: second }
+    : { en: first, ar: second };
 }
 
 export const biList = (pairs: string[]): Localized[] => pairs.map(bi);
