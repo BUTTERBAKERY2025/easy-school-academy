@@ -1,0 +1,162 @@
+import type { Localized } from "@/lib/i18n/config";
+
+/* ------------------------------------------------------------------ visuals */
+
+/**
+ * Teaching visuals are described as data and drawn with SVG at render time, so a
+ * lesson never depends on an external image and both locales share one figure.
+ */
+export type Visual =
+  | { type: "figure"; glyph: string; caption?: Localized }
+  | { type: "array"; rows: number; cols: number; glyph: string; caption?: Localized }
+  | { type: "fraction"; numerator: number; denominator: number; caption?: Localized }
+  | { type: "numberline"; from: number; to: number; step: number; marks: number[]; caption?: Localized }
+  | { type: "bars"; items: { label: Localized; value: number }[]; caption?: Localized }
+  | { type: "table"; headers: Localized[]; rows: Localized[][]; caption?: Localized }
+  | { type: "steps"; items: Localized[]; caption?: Localized };
+
+/* ------------------------------------------------------------------- blocks */
+
+export type Choice = { id: string; label: Localized };
+
+/** A `{{1}}`-style placeholder inside the text marks a blank to fill. */
+export type Blank = { id: string; answers: string[] };
+
+export type Block =
+  | { kind: "concept"; id: string; title: Localized; body: Localized; visual?: Visual }
+  | { kind: "example"; id: string; title: Localized; steps: Localized[]; visual?: Visual }
+  | { kind: "callout"; id: string; tone: "tip" | "warning" | "fact"; title: Localized; body: Localized }
+  | { kind: "vocab"; id: string; title: Localized; terms: { term: Localized; meaning: Localized }[] }
+  | { kind: "flashcards"; id: string; title: Localized; cards: { id: string; front: Localized; back: Localized }[] }
+  | {
+      kind: "mcq";
+      id: string;
+      prompt: Localized;
+      choices: Choice[];
+      correctId: string;
+      explanation: Localized;
+      hint?: Localized;
+      visual?: Visual;
+    }
+  | {
+      kind: "multi";
+      id: string;
+      prompt: Localized;
+      choices: Choice[];
+      correctIds: string[];
+      explanation: Localized;
+    }
+  | { kind: "truefalse"; id: string; statement: Localized; answer: boolean; explanation: Localized }
+  | { kind: "fill"; id: string; prompt: Localized; text: Localized; blanks: Blank[]; explanation: Localized }
+  | {
+      kind: "match";
+      id: string;
+      prompt: Localized;
+      pairs: { id: string; left: Localized; right: Localized }[];
+      explanation: Localized;
+    }
+  | {
+      kind: "order";
+      id: string;
+      prompt: Localized;
+      /** Stored in the correct order; the player shuffles them for the student. */
+      items: { id: string; label: Localized }[];
+      explanation: Localized;
+    }
+  | {
+      kind: "sort";
+      id: string;
+      prompt: Localized;
+      buckets: { id: string; label: Localized }[];
+      items: { id: string; label: Localized; bucketId: string }[];
+      explanation: Localized;
+    }
+  | { kind: "summary"; id: string; title: Localized; points: Localized[] };
+
+export type QuestionBlock = Extract<
+  Block,
+  { kind: "mcq" | "multi" | "truefalse" | "fill" | "match" | "order" | "sort" }
+>;
+
+const QUESTION_KINDS = new Set(["mcq", "multi", "truefalse", "fill", "match", "order", "sort"]);
+
+export function isQuestion(block: Block): block is QuestionBlock {
+  return QUESTION_KINDS.has(block.kind);
+}
+
+/* ---------------------------------------------------------------- structure */
+
+export type Lesson = {
+  id: string;
+  unitId: string;
+  subjectId: string;
+  gradeId: string;
+  curriculumId: string;
+  index: number;
+  title: Localized;
+  summary: Localized;
+  objectives: Localized[];
+  durationMinutes: number;
+  /** The first lesson of every subject is playable without a subscription. */
+  free: boolean;
+  /** True when a teacher has written the full interactive body for this lesson. */
+  authored: boolean;
+  blocks: Block[];
+};
+
+export type Unit = {
+  id: string;
+  subjectId: string;
+  gradeId: string;
+  curriculumId: string;
+  index: number;
+  title: Localized;
+  summary: Localized;
+  lessons: Lesson[];
+};
+
+export type SubjectTheme = "brand" | "sun" | "mint" | "berry" | "ink";
+
+export type Subject = {
+  id: string;
+  gradeId: string;
+  curriculumId: string;
+  title: Localized;
+  description: Localized;
+  glyph: string;
+  theme: SubjectTheme;
+  units: Unit[];
+};
+
+export type Grade = {
+  id: string;
+  curriculumId: string;
+  stageId: string;
+  /** 0 = kindergarten / reception / الروضة, then 1..9. */
+  ordinal: number;
+  title: Localized;
+  shortTitle: Localized;
+  ages: string;
+  subjects: Subject[];
+};
+
+export type Stage = {
+  id: string;
+  curriculumId: string;
+  title: Localized;
+  description: Localized;
+  grades: Grade[];
+};
+
+export type Curriculum = {
+  id: string;
+  title: Localized;
+  origin: Localized;
+  flag: string;
+  theme: SubjectTheme;
+  description: Localized;
+  highlights: Localized[];
+  stages: Stage[];
+};
+
+export type { Localized };

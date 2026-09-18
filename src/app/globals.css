@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink-50: #f5f6fb;
+  --color-ink-100: #e8eaf5;
+  --color-ink-200: #cdd2e8;
+  --color-ink-300: #a3abd1;
+  --color-ink-400: #737eb3;
+  --color-ink-500: #525d96;
+  --color-ink-600: #3f487a;
+  --color-ink-700: #333a62;
+  --color-ink-800: #252a47;
+  --color-ink-900: #171a2e;
+  --color-ink-950: #0d0f1c;
+
+  --color-brand-50: #eef2ff;
+  --color-brand-100: #dfe6ff;
+  --color-brand-200: #c4d0ff;
+  --color-brand-300: #9db0ff;
+  --color-brand-400: #7285ff;
+  --color-brand-500: #4f5cf5;
+  --color-brand-600: #3b3ce0;
+  --color-brand-700: #302fb8;
+  --color-brand-800: #292a93;
+  --color-brand-900: #272a75;
+
+  --color-sun-50: #fff8eb;
+  --color-sun-100: #ffecc6;
+  --color-sun-200: #ffd788;
+  --color-sun-300: #ffbd4a;
+  --color-sun-400: #ffa520;
+  --color-sun-500: #f98307;
+  --color-sun-600: #dd5e02;
+  --color-sun-700: #b73f06;
+  --color-sun-800: #94310c;
+  --color-sun-900: #7a290d;
+
+  --color-mint-50: #eefbf4;
+  --color-mint-100: #d6f5e3;
+  --color-mint-200: #b0e9cc;
+  --color-mint-300: #7bd7ae;
+  --color-mint-400: #45bd8c;
+  --color-mint-500: #22a371;
+  --color-mint-600: #15835b;
+  --color-mint-700: #12694b;
+  --color-mint-800: #12533d;
+  --color-mint-900: #104534;
+
+  --color-berry-400: #f472b6;
+  --color-berry-500: #ec4899;
+  --color-berry-600: #db2777;
+
+  --font-sans: var(--font-app-sans), "Segoe UI", system-ui, sans-serif;
+
+  --radius-4xl: 2rem;
+}
+
+:root {
+  --surface: #ffffff;
+  --surface-muted: #f6f7fc;
+  --surface-raised: #ffffff;
+  --text: #171a2e;
+  --text-muted: #525d96;
+  --border: #e4e7f4;
+  --shadow-card: 0 1px 2px rgb(23 26 46 / 0.04), 0 12px 32px -18px rgb(23 26 46 / 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #0d0f1c;
+    --surface-muted: #141730;
+    --surface-raised: #191d38;
+    --text: #eef0fa;
+    --text-muted: #a3abd1;
+    --border: #2a2f52;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -20px rgb(0 0 0 / 0.8);
+  }
+}
+
+:root[data-theme="dark"] {
+  --surface: #0d0f1c;
+  --surface-muted: #141730;
+  --surface-raised: #191d38;
+  --text: #eef0fa;
+  --text-muted: #a3abd1;
+  --border: #2a2f52;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -20px rgb(0 0 0 / 0.8);
+}
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-surface-raised: var(--surface-raised);
+  --color-body: var(--text);
+  --color-muted: var(--text-muted);
+  --color-line: var(--border);
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--surface);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Arabic copy reads better with a little extra line height. */
+[dir="rtl"] body {
+  line-height: 1.85;
+}
+
+@layer components {
+  .card {
+    background-color: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--shadow-card);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    padding: 0.7rem 1.4rem;
+    transition: transform 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
+    cursor: pointer;
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-brand-600);
+    color: #fff;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--color-brand-700);
+  }
+
+  .btn-sun {
+    background-color: var(--color-sun-400);
+    color: var(--color-ink-950);
+  }
+
+  .btn-sun:hover:not(:disabled) {
+    background-color: var(--color-sun-300);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-ghost:hover:not(:disabled) {
+    background-color: var(--surface-muted);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 9999px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .field {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    background-color: var(--surface);
+    color: var(--text);
+    padding: 0.7rem 0.95rem;
+    outline: none;
+  }
+
+  .field:focus {
+    border-color: var(--color-brand-400);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-brand-400) 22%, transparent);
+  }
+}
+
+/* Logical-direction helper: flips the chevron with the writing direction. */
+.dir-flip {
+  transform: scaleX(1);
+}
+
+[dir="rtl"] .dir-flip {
+  transform: scaleX(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
