@@ -1,12 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getI18n } from "@/lib/i18n/server";
-import { num, t } from "@/lib/i18n/config";
+import { num, percent, t } from "@/lib/i18n/config";
 import { getGrade, getLesson } from "@/lib/content";
 import { requireRole } from "@/lib/auth/current";
 import { assignmentsByTeacher, findUserById, studentsInGrades } from "@/lib/db/repo";
 import { summariseLearner } from "@/lib/learning/summary";
-import { SectionHeading, Stat } from "@/components/ui";
+import { Percent, SectionHeading, Stat } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Teacher dashboard" };
 
@@ -38,7 +38,7 @@ export default async function TeacherPage() {
         <Stat glyph="🏫" label={d.teacher.classes} value={num(gradeIds.length, locale)} />
         <Stat glyph="🎒" label={d.teacher.students} value={num(students.length, locale)} />
         <Stat glyph="📋" label={d.teacher.assignments} value={num(assignments.length, locale)} />
-        <Stat glyph="🎯" label={d.teacher.averageMastery} value={`${num(averageMastery, locale)}%`} />
+        <Stat glyph="🎯" label={d.teacher.averageMastery} value={percent(averageMastery, locale)} />
       </div>
 
       <section className="mt-12">
@@ -85,7 +85,9 @@ export default async function TeacherPage() {
                       <td className="p-3 font-semibold">{student.name}</td>
                       <td className="p-3">{grade ? t(grade.title, locale) : "—"}</td>
                       <td className="p-3">{num(summary?.completedCount ?? 0, locale)}</td>
-                      <td className="p-3" dir="ltr">{num(summary?.averageScore ?? 0, locale)}%</td>
+                      <td className="p-3">
+                        <Percent value={summary?.averageScore ?? 0} locale={locale} />
+                      </td>
                       <td className="p-3">
                         {num(summary?.minutesSpent ?? 0, locale)} {d.common.minutes}
                       </td>

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { isQuestion, type Lesson } from "@/lib/content/types";
-import { num, t, type Locale } from "@/lib/i18n/config";
+import { num, percent, t, type Locale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/client";
 import { saveLessonProgressAction } from "@/lib/learning/actions";
 import { TeachingBlock } from "./blocks";
@@ -151,7 +151,7 @@ export function LessonPlayer({
         <dl className="mx-auto mt-6 grid max-w-sm grid-cols-2 gap-3">
           <div className="rounded-3xl bg-surface-muted p-4">
             <dt className="text-xs text-muted">{d.lesson.score}</dt>
-            <dd className="text-2xl font-bold" dir="ltr">{num(score, locale)}%</dd>
+            <dd className="text-2xl font-bold" dir="ltr">{percent(score, locale)}</dd>
           </div>
           <div className="rounded-3xl bg-surface-muted p-4">
             <dt className="text-xs text-muted">{d.lesson.xpEarned}</dt>

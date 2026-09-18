@@ -7,7 +7,7 @@ import { getViewer } from "@/lib/auth/current";
 import { recentActivity } from "@/lib/db/repo";
 import { lessonBreadcrumb, summariseLearner } from "@/lib/learning/summary";
 import { redirect } from "next/navigation";
-import { Chevron, ProgressBar, Ratio, Stat, themeClasses } from "@/components/ui";
+import { Chevron, Percent, ProgressBar, Ratio, Stat, themeClasses } from "@/components/ui";
 import { EnrolmentPicker } from "@/components/enrolment";
 
 export const metadata: Metadata = { title: "Dashboard" };
@@ -121,7 +121,12 @@ export default async function LearnPage() {
                     </span>
                     <span className="mt-1 block text-xs text-muted">
                       <Ratio done={entry.completed} total={entry.total} locale={locale} /> {d.curricula.lessons}
-                      {entry.mastery ? ` · ${d.dashboard.mastery} ${entry.mastery}%` : ""}
+                      {entry.mastery ? (
+                        <>
+                          {" · "}
+                          {d.dashboard.mastery} <Percent value={entry.mastery} locale={locale} />
+                        </>
+                      ) : null}
                     </span>
                   </span>
                   <Chevron className="shrink-0 text-muted" />
@@ -143,7 +148,9 @@ export default async function LearnPage() {
                   <span className="min-w-0 flex-1 truncate">
                     {activityLabel(event.lessonId, locale) ?? d.pricing.subscribed}
                   </span>
-                  {event.xp ? <span className="chip bg-sun-100 text-sun-800 dark:bg-sun-900/50 dark:text-sun-100">+{event.xp}</span> : null}
+                  {event.xp ? <span dir="ltr" className="chip bg-sun-100 text-sun-800 dark:bg-sun-900/50 dark:text-sun-100">
+                      +{num(event.xp, locale)}
+                    </span> : null}
                 </li>
               ))
             )}

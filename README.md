@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# سكول أون · School On Academy
 
-## Getting Started
+منصة تعليمية تفاعلية تدرّس **المنهج الأمريكي والبريطاني والسعودي** من الروضة حتى الصف الثالث المتوسط،
+بواجهة عربية (RTL) وإنجليزية، ودروس مبنية على نطاق المنهج وتسلسله، مع اشتراكات ومتابعة لولي الأمر والمعلم.
 
-First, run the development server:
+An interactive academy that teaches the **American, British and Saudi** curricula from kindergarten to
+Grade 9, fully bilingual (Arabic RTL / English), with lessons built on each curriculum's scope and
+sequence, subscriptions, and parent/teacher dashboards.
+
+---
+
+## التشغيل · Running it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev          # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Script | ماذا يفعل |
+| --- | --- |
+| `npm run dev` | تشغيل بيئة التطوير |
+| `npm run build` / `npm start` | بناء الإنتاج وتشغيله |
+| `npm run check` | فحص الأنواع + eslint + التحقق من المحتوى |
+| `npm run check:content` | يتحقق من ترجمة كل نص، وصحة كل سؤال تفاعلي، وعدم تكرار المعرّفات |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### حسابات تجريبية · Demo accounts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+تُنشأ تلقائيًا عند أول تشغيل. كلمة المرور للجميع: `demo1234`
 
-## Learn More
+| البريد | الدور |
+| --- | --- |
+| `student@school-on.test` | طالبة — المنهج السعودي، الصف الرابع |
+| `student2@school-on.test` | طالب — المنهج الأمريكي، Grade 4 |
+| `parent@school-on.test` | ولي أمر (اشتراك عائلي فعّال) |
+| `teacher@school-on.test` | معلمة |
+| `admin@school-on.test` | إدارة |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ما هو مبنيّ فعلًا · What is actually built
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **٣ مناهج، ٢٩ صفًا، ١٧٥ مادة، ٦٥٦ وحدة، ١٣٣١ درسًا** — البنية كاملة وقابلة للتصفح.
+- **١٤ درسًا مكتوبًا بالكامل** بمحتواه التفاعلي (شرح، أمثلة، أنشطة، أسئلة مصحَّحة). بقية الدروس تعرض
+  عنوانها وأهدافها وتُوسم «قيد الإعداد» — الفرق ظاهر في الواجهة وفي لوحة الإدارة، بلا تمويه.
+- تسجيل ودخول وأدوار (طالب / ولي أمر / معلم / إدارة)، اشتراكات وبوابة وصول، حفظ التقدّم والنقاط والسلسلة.
 
-## Deploy on Vercel
+الدروس المكتوبة بالكامل:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| المنهج | الدرس |
+| --- | --- |
+| أمريكي | Counting objects to 10 (KG) · Adding and subtracting like fractions (G4) · Ecosystems and energy flow (G5) · Linear equations and slope (G7) · Characters, setting and events (G2) |
+| بريطاني | Blending sounds into words (Y1) · Equivalent fractions (Y3) · Tudors and the Elizabethan age (Y6) |
+| سعودي | الوضوء وصفته (أول ابتدائي) · جمع وطرح الكسور المتشابهة (رابع) · أنواع النصوص (رابع) · توحيد المملكة (رابع) · الخلية وعضياتها (أول متوسط) · Countable and uncountable nouns (خامس) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## البنية · Architecture
+
+```
+src/
+  app/                     صفحات Next.js (App Router)
+    api/locale/            تبديل اللغة عبر route handler (كوكي + تحويل)
+    curricula/ grade/ subject/    تصفح المنهج ← الصف ← المادة
+    learn/  learn/lesson/[id]/    لوحة الطالب ومشغّل الدرس
+    parent/ teacher/ admin/       لوحات الأدوار
+  components/
+    lesson-player.tsx      مشغّل الدرس خطوة بخطوة
+    questions/             أنواع الأسئلة التفاعلية السبعة
+    blocks.tsx  visual.tsx عناصر الشرح والرسوم التوضيحية
+  lib/
+    content/               نموذج المحتوى وبناء الكتالوج
+      banks/               بنوك الموضوعات (النطاق والتسلسل)
+      lessons/             الدروس المكتوبة بالكامل
+    db/                    طبقة البيانات (مستودع + تخزين JSON)
+    auth/                  كلمات المرور والجلسات وإجراءات الخادم
+    billing/               خطط الاشتراك
+    i18n/                  اللغات والقاموس وتنسيق الأرقام
+```
+
+### كيف يُبنى المحتوى · How the catalogue is built
+
+المحتوى ليس مكتوبًا درسًا درسًا لكل الصفوف — وهذا متعمّد:
+
+1. **بنوك الموضوعات** (`lib/content/banks/`) تحفظ لكل مادة مساراتها (strands) وموضوعاتها لكل نطاق عمري
+   (`early` / `lower` / `middle` / `upper`)، بنصّ ثنائي اللغة مضغوط `"English|عربي"` (الترتيب حر: الجانب
+   العربي يُعرف بحروفه).
+2. **تعريف المناهج** (`lib/content/curricula.ts`) يحدد المراحل والصفوف والمواد لكل منهج، وأي نطاق ينتمي
+   إليه كل صف.
+3. **الباني** (`lib/content/build.ts`) يوزّع موضوعات كل نطاق على صفوفه، فلا يتكرر درس بين صفين، ويولّد
+   الوحدات والدروس بمعرّفات ثابتة مثل `saudi-g4-math-fractions-1`.
+4. **الدروس المكتوبة** (`lib/content/lessons/`) تُطابق المعرّف نفسه فتحلّ محل المولّد وتضيف محتواها
+   التفاعلي. الحقل `authored` يفرّق بين الاثنين.
+
+لإضافة درس كامل: اعرف معرّفه (`npm run check:content` يطبع الإحصاءات، وبنية المعرّف موصوفة أعلاه)، ثم
+أضف مدخلة في `lessons/american.ts` أو `british.ts` أو `saudi.ts` — أي حقل تتركه يعود للقيمة المولّدة.
+
+### أنواع الأسئلة التفاعلية
+
+`mcq` اختيار من متعدد · `multi` اختيار متعدد الإجابات · `truefalse` صح وخطأ · `fill` ملء الفراغات
+(يقبل الأرقام العربية والهندية) · `match` توصيل · `order` ترتيب · `sort` تصنيف في مجموعات.
+ويضاف إليها عناصر الشرح: `concept` · `example` · `callout` · `vocab` · `flashcards` · `summary`.
+
+الطالب لا ينتقل من سؤال حتى يجيب إجابة صحيحة، وبعد محاولتين خاطئتين يظهر **«أظهر الحل»** ليكمل الدرس
+دون أن يعلق. النتيجة: الإجابة من أول محاولة بدرجة كاملة، ومن محاولة لاحقة بنصف درجة، والحل المكشوف بلا درجة.
+
+### الرسوم التوضيحية
+
+الرسوم موصوفة كبيانات وتُرسم وقت العرض (`components/visual.tsx`): `figure` · `array` · `fraction`
+(شريط كسر مظلّل) · `numberline` · `bars` · `table` · `steps`. لا يعتمد أي درس على صورة خارجية.
+
+---
+
+## التخزين · Storage
+
+طبقة البيانات مقسومة قسمين: **مستودع** (`lib/db/repo.ts`) تتحدث معه بقية المنصة، و**مخزن**
+(`lib/db/store.ts`) ينفّذ القراءة والكتابة. المخزن الحالي ملف JSON واحد في `data/school-on.json` يُكتب
+كتابة ذرّية — كافٍ للتطوير والعرض، **وليس للإنتاج**. استبداله بـ Postgres أو غيره يعني تغيير `store.ts`
+وحده؛ لا شيء خارج هذين الملفين يعرف كيف تُحفظ البيانات.
+
+- كلمات المرور: `scrypt` بملح عشوائي ومقارنة ثابتة الزمن.
+- الجلسات: JWT موقّع (`jose`) في كوكي `httpOnly`. **يجب ضبط `AUTH_SECRET` في الإنتاج** وإلا فشل الإقلاع.
+- الاشتراكات: تُفعَّل مباشرة بلا بوابة دفع — الربط ببوابة حقيقية هو الخطوة التالية قبل الإطلاق.
+
+| متغيّر البيئة | الغرض |
+| --- | --- |
+| `AUTH_SECRET` | مفتاح توقيع الجلسات (إلزامي في الإنتاج) |
+| `SCHOOL_ON_DATA_DIR` | مجلد ملف البيانات (افتراضيًا `./data`) |
+
+---
+
+## اللغة والاتجاه · Language and direction
+
+اللغة تُحفظ في كوكي وتُقرأ في التخطيط الجذري فيضبط `dir` و`lang`. كل نصوص الواجهة في قاموس واحد
+(`lib/i18n/dictionary.ts`) بالعربية والإنجليزية معًا، فلا تُكتب جملة في JSX. الأرقام تُنسَّق بـ `num()`
+و`percent()` — أرقام هندية وعلامة `٪` في العربية — والقيم المختلطة مثل «٣ / ١٠» تُعزل باتجاه LTR حتى لا
+ينقلب ترتيبها داخل نص عربي.
+
+---
+
+## الخطوات التالية · What would come next
+
+1. بوابة دفع حقيقية (Stripe / مدى) بدل التفعيل المباشر.
+2. قاعدة بيانات إنتاجية مكان ملف JSON.
+3. توسيع الدروس المكتوبة — البنية والمعرّفات جاهزة لاستقبالها.
+4. صوت وسرد للمراحل المبكرة، وشهادات إتمام الوحدات.

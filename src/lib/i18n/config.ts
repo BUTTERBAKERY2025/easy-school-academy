@@ -34,3 +34,8 @@ export function num(value: number, locale: Locale): string {
   if (locale !== "ar") return grouped;
   return grouped.replace(/\d/g, (digit) => ARABIC_INDIC[Number(digit)] ?? digit).replace(/,/g, "٬");
 }
+
+/** Arabic uses its own percent sign, and it sits after the number in both locales. */
+export function percent(value: number, locale: Locale): string {
+  return `${num(value, locale)}${locale === "ar" ? "٪" : "%"}`;
+}

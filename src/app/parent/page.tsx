@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getI18n } from "@/lib/i18n/server";
-import { num, t } from "@/lib/i18n/config";
+import { num, percent, t } from "@/lib/i18n/config";
 import { getCurriculum, getGrade } from "@/lib/content";
 import { requireRole } from "@/lib/auth/current";
 import { findUserById, listChildren, subscriptionOf } from "@/lib/db/repo";
@@ -77,7 +77,7 @@ export default async function ParentPage() {
                   <Stat glyph="⭐" label={d.dashboard.totalXp} value={num(child.xp, locale)} />
                   <Stat glyph="✅" label={d.dashboard.lessonsDone} value={num(summary?.completedCount ?? 0, locale)} />
                   <Stat glyph="⏱️" label={d.dashboard.timeSpent} value={`${num(summary?.minutesSpent ?? 0, locale)} ${d.common.minutes}`} />
-                  <Stat glyph="🎯" label={d.dashboard.mastery} value={`${num(summary?.averageScore ?? 0, locale)}%`} />
+                  <Stat glyph="🎯" label={d.dashboard.mastery} value={percent(summary?.averageScore ?? 0, locale)} />
                 </div>
 
                 <h4 className="mt-6 text-sm font-bold text-muted">{d.parent.weeklyReport}</h4>

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getI18n } from "@/lib/i18n/server";
-import { num, t } from "@/lib/i18n/config";
+import { num, percent, t } from "@/lib/i18n/config";
 import { getCurriculum, getGrade, getSubject, lessonsOfSubject } from "@/lib/content";
 import { getViewer } from "@/lib/auth/current";
 import { progressOf } from "@/lib/db/repo";
@@ -97,7 +97,7 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
                           </span>
                           {lesson.free ? <span className="chip bg-mint-100 text-mint-800 dark:bg-mint-900/50 dark:text-mint-100">{d.lesson.freePreview}</span> : null}
                           {lesson.authored ? null : <span className="chip bg-surface-muted text-muted">{d.common.comingSoon}</span>}
-                          {row?.status === "completed" ? <span dir="ltr">{num(row.score, locale)}%</span> : null}
+                          {row?.status === "completed" ? <span dir="ltr">{percent(row.score, locale)}</span> : null}
                         </span>
                       </span>
                     </Link>

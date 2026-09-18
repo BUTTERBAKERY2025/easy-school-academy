@@ -1,5 +1,5 @@
 import type { SubjectTheme } from "@/lib/content/types";
-import { num, type Locale } from "@/lib/i18n/config";
+import { num, percent, type Locale } from "@/lib/i18n/config";
 
 export const themeClasses: Record<SubjectTheme, { chip: string; ring: string; bar: string; soft: string }> = {
   brand: {
@@ -61,7 +61,9 @@ export function Stat({ label, value, glyph }: { label: string; value: string; gl
   return (
     <div className="card p-4 text-center">
       {glyph ? <div className="text-2xl">{glyph}</div> : null}
-      <div className="mt-1 text-2xl font-bold">{value}</div>
+      <div className="mt-1 text-2xl font-bold" dir="auto">
+        {value}
+      </div>
       <div className="text-xs text-muted">{label}</div>
     </div>
   );
@@ -90,6 +92,15 @@ export function Ratio({ done, total, locale }: { done: number; total: number; lo
   return (
     <span dir="ltr" className="inline-block tabular-nums">
       {num(done, locale)} / {num(total, locale)}
+    </span>
+  );
+}
+
+/** Percentages and signed values also need an isolate to stay readable in RTL. */
+export function Percent({ value, locale }: { value: number; locale: Locale }) {
+  return (
+    <span dir="ltr" className="inline-block tabular-nums">
+      {percent(value, locale)}
     </span>
   );
 }
