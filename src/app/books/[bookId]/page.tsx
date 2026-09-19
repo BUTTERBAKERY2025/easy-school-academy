@@ -76,6 +76,11 @@ export default async function BookPage({ params }: { params: Promise<{ bookId: s
             <h1 className="mt-5 text-xl font-extrabold leading-snug">{t(book.title, locale)}</h1>
             <p className="mt-1 text-xs text-muted">{t(book.board, locale)}</p>
             <p className="mt-0.5 text-xs font-semibold text-muted">{t(book.level, locale)}</p>
+            {book.follows ? (
+              <p className="mt-3 rounded-2xl bg-surface-muted px-3 py-2 text-[0.7rem] leading-relaxed text-muted">
+                {d.books.follows} <span className="font-semibold text-body">{t(book.follows, locale)}</span>
+              </p>
+            ) : null}
 
             <dl className="mt-5 grid w-full grid-cols-2 gap-3 text-xs">
               <div className="rounded-2xl bg-surface-muted p-3">

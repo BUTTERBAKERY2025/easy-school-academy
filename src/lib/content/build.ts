@@ -4,6 +4,7 @@ import { curriculumDefs, type CurriculumDef, type GradeDef, type SubjectDef } fr
 import { authoredLessons, type AuthoredLesson } from "./lessons";
 import type { Curriculum, Grade, Lesson, Stage, Subject, Unit } from "./types";
 import { buildBook } from "./books";
+import { syllabusFor, type Syllabus } from "./syllabus";
 
 const slug = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
@@ -65,6 +66,50 @@ function buildLesson(args: {
   };
 }
 
+
+/**
+ * Builds the units of a subject whose scope has been pinned, rather than sliced
+ * out of a band. Lesson ids come out identically shaped either way
+ * (`{subject}-{unit}-{n}`), so nothing downstream can tell the difference.
+ */
+function unitsFromSyllabus(
+  pinned: Syllabus,
+  context: {
+    curriculumId: string;
+    gradeId: string;
+    subjectId: string;
+    subjectTitle: Localized;
+    band: Band;
+  },
+): Unit[] {
+  return pinned.units.map((unit, unitIndex) => {
+    const unitId = `${context.subjectId}-${unit.id}`;
+    return {
+      id: unitId,
+      subjectId: context.subjectId,
+      gradeId: context.gradeId,
+      curriculumId: context.curriculumId,
+      index: unitIndex,
+      title: unit.title,
+      summary: unit.summary,
+      lessons: unit.lessons.map((topic, index) =>
+        buildLesson({
+          curriculumId: context.curriculumId,
+          gradeId: context.gradeId,
+          subjectId: context.subjectId,
+          subjectTitle: context.subjectTitle,
+          unitId,
+          strandTitle: unit.title,
+          topic,
+          index,
+          band: context.band,
+          isFirstOfSubject: unitIndex === 0 && index === 0,
+        }),
+      ),
+    };
+  });
+}
+
 function buildSubject(
   def: SubjectDef,
   curriculum: CurriculumDef,
@@ -78,44 +123,54 @@ function buildSubject(
   const subjectId = `${gradeId}-${slug(def.key)}`;
   const subjectTitle = bi(def.title);
 
-  const units: Unit[] = [];
-  let unitIndex = 0;
+  function unitsFromBank(): Unit[] {
+    const built: Unit[] = [];
+    let unitIndex = 0;
 
-  for (const strand of def.bank.strands) {
-    const bandTopics = strand.topics[grade.band];
-    if (!bandTopics || bandTopics.length === 0) continue;
+    for (const strand of def.bank.strands) {
+      const bandTopics = strand.topics[grade.band];
+      if (!bandTopics || bandTopics.length === 0) continue;
 
-    const topics = topicsForGrade(bandTopics, bandPosition, bandSize);
-    if (topics.length === 0) continue;
+      const topics = topicsForGrade(bandTopics, bandPosition, bandSize);
+      if (topics.length === 0) continue;
 
-    const unitId = `${subjectId}-${strand.id}`;
-    const isFirstUnit = unitIndex === 0;
+      const unitId = `${subjectId}-${strand.id}`;
+      const isFirstUnit = unitIndex === 0;
 
-    units.push({
-      id: unitId,
-      subjectId,
-      gradeId,
-      curriculumId: curriculum.id,
-      index: unitIndex,
-      title: strand.title,
-      summary: strand.summary,
-      lessons: topics.map((topic, index) =>
-        buildLesson({
-          curriculumId: curriculum.id,
-          gradeId,
-          subjectId,
-          subjectTitle,
-          unitId,
-          strandTitle: strand.title,
-          topic,
-          index,
-          band: grade.band,
-          isFirstOfSubject: isFirstUnit && index === 0,
-        }),
-      ),
-    });
-    unitIndex += 1;
+      built.push({
+        id: unitId,
+        subjectId,
+        gradeId,
+        curriculumId: curriculum.id,
+        index: unitIndex,
+        title: strand.title,
+        summary: strand.summary,
+        lessons: topics.map((topic, index) =>
+          buildLesson({
+            curriculumId: curriculum.id,
+            gradeId,
+            subjectId,
+            subjectTitle,
+            unitId,
+            strandTitle: strand.title,
+            topic,
+            index,
+            band: grade.band,
+            isFirstOfSubject: isFirstUnit && index === 0,
+          }),
+        ),
+      });
+      unitIndex += 1;
+    }
+    return built;
   }
+
+  // Where the real course has been written down, it replaces the slice the bank
+  // would have generated; everywhere else the bank still fills the catalogue.
+  const pinned = syllabusFor(curriculum.id, grade.ordinal, def.key);
+  const units: Unit[] = pinned
+    ? unitsFromSyllabus(pinned, { curriculumId: curriculum.id, gradeId, subjectId, subjectTitle, band: grade.band })
+    : unitsFromBank();
 
   if (units.length === 0) return null;
 

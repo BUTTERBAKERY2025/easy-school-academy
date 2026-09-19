@@ -5,9 +5,10 @@ kindergarten to Grade 9, in Arabic (RTL) and English.
 
 ## Where the project stands
 
-- **Structure is complete**: 3 curricula, 29 grades, 175 subjects, 656 units,
-  1331 lessons — all browsable, generated from the topic banks.
-- **14 lessons are fully authored** with interactive bodies. Every other lesson
+- **Structure is complete**: 3 curricula, 29 grades, 175 subjects, 657 units,
+  1347 lessons — all browsable, generated from the topic banks except where a
+  syllabus pins the real course (British Year 5 Science, so far).
+- **15 lessons are fully authored** with interactive bodies. Every other lesson
   shows its title, objectives and place in the unit, marked "in preparation".
   `npm run check:content` prints the current counts.
 - **Working end to end**: sign-up and sign-in, four roles, subscriptions with
@@ -94,6 +95,14 @@ options.
   route handler — the switcher is a plain `<a>` for that reason.
 - **Lesson gating:** the first lesson of every subject is free; everything else needs an active
   subscription, which a student can inherit from their parent account.
+- **A syllabus pins the real course where one has been aligned.** The topic banks generate a
+  plausible catalogue for every year, which is what makes all 1347 lessons browsable. A file under
+  `lib/content/syllabus/` instead states a year's actual units and lessons, and `buildSubject` uses it
+  in place of the band slice (`british-science-5.ts` is the first: Cambridge Primary Science Stage 5,
+  6 units, 24 lessons). Unit ids become part of every lesson id beneath them, so they are chosen once
+  and never renamed. A scope and sequence is a fact about a course — **the syllabus names the course
+  it follows and reproduces nothing from any book**; every explanation, example and question under
+  those headings is written here.
 - **A unit opens and closes like a chapter.** `/books/[bookId]/[unitId]` derives its objectives, its
   glossary and its end-of-unit review from the lessons themselves (`lib/learning/unit-review.ts`), so
   a unit gains all three the moment its lessons are written. The review draws at most two questions

@@ -538,6 +538,7 @@ export const strings = {
       en: "Covers and content are the academy's own, written to the framework named on each book; no publisher's book is reproduced.",
     },
     shelfFor: { ar: "كتب", en: "Books for" },
+    follows: { ar: "مطابق لمنهج", en: "Aligned to" },
   },
   unit: {
     label: { ar: "الوحدة", en: "Unit" },

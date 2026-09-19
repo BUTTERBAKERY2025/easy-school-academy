@@ -1,5 +1,6 @@
 import type { Localized } from "@/lib/i18n/config";
 import type { Subject, SubjectTheme } from "./types";
+import { syllabusFor } from "./syllabus";
 
 /** A subject before its book exists — what the builder has to hand. */
 type SubjectDraft = Omit<Subject, "book">;
@@ -39,6 +40,8 @@ export type Book = {
   levelShort: Localized;
   theme: SubjectTheme;
   glyph: string;
+  /** Present once this year's scope has been aligned to a published course. */
+  follows?: Localized;
   /** Chapters. */
   unitCount: number;
   lessonCount: number;
@@ -126,6 +129,7 @@ export function buildBook(
     boardShort: board.short,
     level: gradeTitle,
     levelShort: gradeShortTitle,
+    follows: syllabusFor(subject.curriculumId, ordinal, key)?.follows,
     theme: subject.theme,
     glyph: subject.glyph,
     unitCount: subject.units.length,
