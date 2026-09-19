@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getI18n } from "@/lib/i18n/server";
 import { num, t, type Locale } from "@/lib/i18n/config";
 import { catalog, catalogStats, gradesOf } from "@/lib/content";
@@ -321,12 +322,12 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
 
 function WhyUs({ d }: { d: Dict }) {
   const features = [
-    { glyph: "📖", title: d.features.textbookTitle, body: d.features.textbookBody },
-    { glyph: "🕹️", title: d.features.interactiveTitle, body: d.features.interactiveBody },
-    { glyph: "🌍", title: d.features.bilingualTitle, body: d.features.bilingualBody },
-    { glyph: "🎯", title: d.features.masteryTitle, body: d.features.masteryBody },
-    { glyph: "👨‍👩‍👧", title: d.features.parentTitle, body: d.features.parentBody },
-    { glyph: "🗓️", title: d.features.pacingTitle, body: d.features.pacingBody },
+    { icon: "folder", title: d.features.textbookTitle, body: d.features.textbookBody },
+    { icon: "gamepad", title: d.features.interactiveTitle, body: d.features.interactiveBody },
+    { icon: "globe", title: d.features.bilingualTitle, body: d.features.bilingualBody },
+    { icon: "check", title: d.features.masteryTitle, body: d.features.masteryBody },
+    { icon: "badge", title: d.features.parentTitle, body: d.features.parentBody },
+    { icon: "certificate", title: d.features.pacingTitle, body: d.features.pacingBody },
   ];
 
   return (
@@ -336,9 +337,13 @@ function WhyUs({ d }: { d: Dict }) {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
           <article key={feature.title} className="rounded-4xl border border-line bg-surface p-6">
-            <span aria-hidden className="text-3xl">
-              {feature.glyph}
-            </span>
+            <Image
+              src={`/images/icons/${feature.icon}.png`}
+              alt=""
+              width={160}
+              height={160}
+              className="size-14 rounded-2xl"
+            />
             <h3 className="mt-3 text-lg">{feature.title}</h3>
             <p className="mt-2 text-sm text-muted">{feature.body}</p>
           </article>
@@ -351,16 +356,14 @@ function WhyUs({ d }: { d: Dict }) {
 /* ---------------------------------------------------------------- teachers */
 
 function Teachers({ locale, d }: { locale: Locale; d: Dict }) {
-  const team: { face: CastMember; subject: string; curriculum: string }[] =
+  const subjects: { face: CastMember; subject: string; curriculum: string }[] =
     locale === "ar"
       ? [
           { face: "ustadha", subject: "الرياضيات والعلوم", curriculum: "المنهج السعودي" },
-          { face: "missEmma", subject: "English Language Arts", curriculum: "المنهج الأمريكي" },
           { face: "ustath", subject: "لغتي والدراسات الإسلامية", curriculum: "المنهج السعودي" },
         ]
       : [
           { face: "ustadha", subject: "Maths and Science", curriculum: "Saudi curriculum" },
-          { face: "missEmma", subject: "English Language Arts", curriculum: "American curriculum" },
           { face: "ustath", subject: "Arabic and Islamic Studies", curriculum: "Saudi curriculum" },
         ];
 
@@ -369,15 +372,33 @@ function Teachers({ locale, d }: { locale: Locale; d: Dict }) {
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead title={d.home.teachersTitle} body={d.home.teachersBody} />
 
-        <ul className="mt-10 grid gap-5 sm:grid-cols-3">
-          {team.map((member) => (
-            <li key={member.subject} className="card flex flex-col items-center p-7 text-center">
+        <div className="mt-10 grid items-stretch gap-5 md:grid-cols-3">
+          <article className="card overflow-hidden md:col-span-1">
+            <Image
+              src="/images/teacher.jpg"
+              alt=""
+              width={640}
+              height={953}
+              className="h-64 w-full object-cover object-top"
+            />
+            <div className="p-6">
+              <p className="font-display text-lg font-bold">
+                {locale === "ar" ? "English Language Arts" : "English Language Arts"}
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                {locale === "ar" ? "المنهج الأمريكي والبريطاني" : "American and British curricula"}
+              </p>
+            </div>
+          </article>
+
+          {subjects.map((member) => (
+            <article key={member.subject} className="card flex flex-col items-center justify-center p-7 text-center">
               <Avatar person={member.face} className="size-28" />
               <p className="mt-4 font-display text-lg font-bold">{member.subject}</p>
               <p className="mt-1 text-sm text-muted">{member.curriculum}</p>
-            </li>
+            </article>
           ))}
-        </ul>
+        </div>
 
         <p className="mt-6 text-center text-sm text-muted">{d.home.teachersNote}</p>
       </div>
