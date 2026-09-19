@@ -236,6 +236,75 @@ export const strings = {
     badges: { ar: "الشارات", en: "Badges" },
     changeGrade: { ar: "تغيير الصف أو المنهج", en: "Change grade or curriculum" },
     recentActivity: { ar: "آخر النشاط", en: "Recent activity" },
+
+    /* the plan */
+    planTitle: { ar: "خطة اليوم", en: "Today's plan" },
+    planBody: {
+      ar: "ثلاث خطوات مختارة لك: مراجعة ما بدأ ينساه عقلك، ثم شيء جديد.",
+      en: "Three steps chosen for you: revisit what is starting to fade, then something new.",
+    },
+    planEmpty: {
+      ar: "لا شيء مستحق اليوم. اختر مادة وابدأ متى شئت.",
+      en: "Nothing is due today. Pick a subject and start whenever you like.",
+    },
+    planDone: { ar: "أنهيت خطة اليوم. أحسنت.", en: "Today's plan is done. Well done." },
+    reasonReview: { ar: "مراجعة", en: "Review" },
+    reasonResume: { ar: "أكمل", en: "Resume" },
+    reasonFresh: { ar: "درس جديد", en: "New lesson" },
+    whyReview: {
+      ar: "بدأت تنساه — المراجعة الآن تثبّته أطول.",
+      en: "This is starting to fade — reviewing now makes it last longer.",
+    },
+    whyResume: { ar: "توقفت في منتصفه.", en: "You stopped partway through." },
+    whyFresh: { ar: "الخطوة التالية في المادة.", en: "The next step in this subject." },
+    aboutMinutes: { ar: "حوالي", en: "about" },
+
+    /* the goal ring */
+    goalTitle: { ar: "هدف اليوم", en: "Today's goal" },
+    goalDone: { ar: "أنجزت هدف اليوم", en: "Goal reached" },
+    goalOf: { ar: "من", en: "of" },
+    goalChange: { ar: "غيّر الهدف", en: "Change goal" },
+    goalMinutes: { ar: "دقيقة يوميًا", en: "minutes a day" },
+    goalToGo: { ar: "واصل — أنت في الطريق", en: "Keep going — you are on your way" },
+    goalHint: {
+      ar: "أنت من يختار. عشر دقائق كل يوم تفيد أكثر من ساعة مرة في الأسبوع.",
+      en: "This is your choice. Ten minutes every day does more than an hour once a week.",
+    },
+
+    /* the learner model */
+    strengthTitle: { ar: "ما الذي تتقنه؟", en: "What do you know?" },
+    strengthBody: {
+      ar: "هذا تقدير لما تتذكره اليوم، لا مجرد عدد الدروس المنتهية. يضعف مع الوقت ويقوى بالمراجعة.",
+      en: "An estimate of what you can recall today, not a count of lessons finished. It fades with time and firms up with review.",
+    },
+    levelNew: { ar: "لم يبدأ", en: "Not started" },
+    levelAttempted: { ar: "بدأته", en: "Started" },
+    levelFamiliar: { ar: "مررت عليه", en: "Familiar" },
+    levelProficient: { ar: "متمكّن", en: "Proficient" },
+    levelMastered: { ar: "متقن", en: "Mastered" },
+    dueNow: { ar: "حان وقت مراجعته", en: "Due for review" },
+    dueIn: { ar: "مراجعته بعد", en: "Review in" },
+    days: { ar: "يوم", en: "days" },
+    recallNow: { ar: "تتذكره الآن", en: "Recall now" },
+    lastSeen: { ar: "آخر مرة", en: "Last seen" },
+    today: { ar: "اليوم", en: "today" },
+    daysAgo: { ar: "منذ", en: "ago" },
+
+    /* the map */
+    mapTitle: { ar: "مسار المادة", en: "Your path" },
+    mapBody: { ar: "كل دائرة درس. لونها يقول كم تتقنه.", en: "Each circle is a lesson. Its colour says how well you hold it." },
+    unitLabel: { ar: "الوحدة", en: "Unit" },
+
+    /* the week */
+    weekTitle: { ar: "أسبوعك", en: "Your week" },
+    weekBody: { ar: "الأيام التي درست فيها.", en: "The days you studied." },
+    noStudy: { ar: "لم تدرس", en: "No study" },
+
+    /* badges */
+    badgesTitle: { ar: "شاراتك", en: "Your badges" },
+    badgesBody: { ar: "تُمنح على طريقة المذاكرة، لا على الوقت الذي تقضيه.", en: "Earned for how you study, not for how long you stay." },
+    badgeLocked: { ar: "لم تُفتح بعد", en: "Not yet earned" },
+    badgesEarned: { ar: "شارة", en: "badges" },
   },
   parent: {
     title: { ar: "متابعة ولي الأمر", en: "Parent dashboard" },

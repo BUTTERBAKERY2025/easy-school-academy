@@ -1,18 +1,33 @@
 import Link from "next/link";
-import { SubjectIcon } from "@/components/art/icons";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { getI18n } from "@/lib/i18n/server";
 import { num, t, type Locale } from "@/lib/i18n/config";
 import { getCurriculum, getGrade, getLesson } from "@/lib/content";
 import { getViewer } from "@/lib/auth/current";
-import { recentActivity } from "@/lib/db/repo";
-import { lessonBreadcrumb, summariseLearner } from "@/lib/learning/summary";
-import { redirect } from "next/navigation";
-import { Chevron, Percent, ProgressBar, Ratio, Stat, themeClasses } from "@/components/ui";
+import { progressOf, recentActivity } from "@/lib/db/repo";
+import { activityDays, minutesOn, studyPlan, subjectState } from "@/lib/learning/model";
+import { badgesFor } from "@/lib/learning/badges";
+import { Chevron, Stat } from "@/components/ui";
 import { EnrolmentPicker } from "@/components/enrolment";
+import { TodaysPlan } from "@/components/learn/plan";
+import { StrengthPanel, SubjectPath } from "@/components/learn/mastery";
+import { GoalRing } from "@/components/learn/goal-ring";
+import { WeekStrip } from "@/components/learn/week";
+import { BadgeWall } from "@/components/learn/badges";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
+/**
+ * The student's dashboard.
+ *
+ * Everything on the page is derived from the progress rows by
+ * `lib/learning/model`, so the page itself only arranges: the plan first,
+ * because a child arriving here needs one obvious thing to do; the learner
+ * model next, because knowing what you hold and what has faded is what lets a
+ * student eventually plan for themselves; and the goal, week and badges last,
+ * as the record rather than the instruction.
+ */
 export default async function LearnPage() {
   const viewer = await getViewer();
   if (!viewer) redirect("/login");
@@ -20,15 +35,15 @@ export default async function LearnPage() {
   if (viewer.user.role === "teacher") redirect("/teacher");
 
   const { locale, d } = await getI18n();
-  const summary = await summariseLearner(viewer.user);
-  const activity = await recentActivity(viewer.user.id);
   const grade = viewer.user.gradeId ? getGrade(viewer.user.gradeId) : undefined;
   const curriculum = viewer.user.curriculumId ? getCurriculum(viewer.user.curriculumId) : undefined;
 
   if (!grade) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-16">
-        <h1 className="text-2xl font-bold">{d.dashboard.greeting} {viewer.user.name} 👋</h1>
+        <h1 className="text-2xl font-bold">
+          {d.dashboard.greeting} {viewer.user.name} 👋
+        </h1>
         <p className="mt-2 text-muted">{d.auth.registerSubtitle}</p>
         <div className="card mt-6 p-6">
           <EnrolmentPicker />
@@ -37,8 +52,28 @@ export default async function LearnPage() {
     );
   }
 
+  const now = new Date();
+  const progress = await progressOf(viewer.user.id);
+  const activity = await recentActivity(viewer.user.id);
+  const rows = new Map(progress.map((row) => [row.lessonId, row]));
+
+  const subjects = grade.subjects.map((subject) => subjectState(subject, rows, now));
+  const plan = studyPlan(grade.subjects, rows, now, { hasAccess: viewer.hasAccess });
+  const badges = badgesFor(viewer.user, progress, subjects);
+
+  // What to draw the path for: whatever today's plan opens with, so the map
+  // below the plan is the map of the work above it.
+  const focus =
+    subjects.find((entry) => entry.subject.id === plan[0]?.subject.id) ??
+    subjects.find((entry) => entry.completed > 0) ??
+    subjects[0];
+
+  const completed = progress.filter((row) => row.status === "completed").length;
+  const minutesSpent = Math.round(progress.reduce((total, row) => total + row.secondsSpent, 0) / 60);
+  const minutesToday = minutesOn(progress, now.toISOString().slice(0, 10));
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
+    <div className="mx-auto max-w-6xl px-4 py-10">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-extrabold">
@@ -57,21 +92,6 @@ export default async function LearnPage() {
         </details>
       </header>
 
-      <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <Stat glyph="🔥" label={d.dashboard.streak} value={num(viewer.user.streakDays, locale)} />
-        <Stat glyph="⭐" label={d.dashboard.totalXp} value={num(viewer.user.xp, locale)} />
-        <Stat glyph="✅" label={d.dashboard.lessonsDone} value={num(summary.completedCount, locale)} />
-        <Stat glyph="⏱️" label={d.dashboard.timeSpent} value={`${num(summary.minutesSpent, locale)} ${d.common.minutes}`} />
-      </div>
-
-      <Link
-        href="/certificates"
-        className="card mt-6 flex items-center justify-between gap-4 p-5 transition-colors hover:bg-surface-muted"
-      >
-        <span className="font-bold">{d.certificates.navTitle}</span>
-        <Chevron />
-      </Link>
-
       {!viewer.hasAccess ? (
         <div className="card mt-6 flex flex-wrap items-center justify-between gap-4 border-sun-300 bg-sun-50 p-5 dark:border-sun-700 dark:bg-sun-900/30">
           <p className="font-semibold">{d.lesson.lockedBody}</p>
@@ -81,91 +101,75 @@ export default async function LearnPage() {
         </div>
       ) : null}
 
-      <section className="mt-10">
-        <h2 className="text-xl font-bold">{d.dashboard.continueLearning}</h2>
-        {summary.continueWith.length === 0 ? (
-          <p className="mt-3 text-muted">{d.dashboard.noProgress}</p>
-        ) : (
-          <ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {summary.continueWith.map((lesson) => {
-              const crumb = lessonBreadcrumb(lesson);
-              const theme = themeClasses[crumb.theme ?? "brand"];
-              const row = summary.progress.find((entry) => entry.lessonId === lesson.id);
-              return (
-                <li key={lesson.id}>
-                  <Link href={`/learn/lesson/${lesson.id}`} className="card group flex h-full flex-col p-5 transition-transform hover:-translate-y-1">
-                    <span className={`grid size-11 place-items-center rounded-2xl text-xl ${theme.soft}`} aria-hidden>
-                      {crumb.glyph}
-                    </span>
-                    <span className="mt-3 block text-xs text-muted">
-                      {crumb.subjectTitle ? t(crumb.subjectTitle, locale) : ""}
-                    </span>
-                    <span className="mt-1 block font-bold">{t(lesson.title, locale)}</span>
-                    <span className="mt-auto pt-4 text-sm font-semibold text-brand-600 dark:text-brand-300">
-                      {row?.status === "in_progress" ? d.lesson.resume : d.lesson.start}
-                      <Chevron className="inline transition-transform group-hover:translate-x-1" />
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
+      <div className="mt-8">
+        <TodaysPlan items={plan} />
+      </div>
 
-      <section className="mt-12 grid gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <h2 className="text-xl font-bold">{d.dashboard.mySubjects}</h2>
-          <ul className="mt-5 space-y-3">
-            {summary.subjects.map((entry) => (
-              <li key={entry.subject.id}>
-                <Link href={`/subject/${entry.subject.id}`} className="card flex items-center gap-4 p-4 transition-colors hover:bg-surface-muted">
-                  <span className={`grid size-11 shrink-0 place-items-center rounded-2xl ${themeClasses[entry.subject.theme].soft}`} aria-hidden>
-                    <SubjectIcon glyph={entry.subject.glyph} theme={entry.subject.theme} className="size-6" />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block font-bold">{t(entry.subject.title, locale)}</span>
-                    <span className="mt-1 block">
-                      <ProgressBar value={entry.total ? (entry.completed / entry.total) * 100 : 0} theme={entry.subject.theme} />
+      <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="space-y-6">
+          <StrengthPanel subjects={subjects} />
+          {focus ? <SubjectPath subject={focus} /> : null}
+
+          <section className="card p-6">
+            <h2 className="text-lg font-bold">{d.dashboard.recentActivity}</h2>
+            <ul className="mt-4 divide-y divide-line">
+              {activity.length === 0 ? (
+                <li className="py-3 text-sm text-muted">{d.dashboard.noProgress}</li>
+              ) : (
+                activity.map((event) => (
+                  <li key={event.id} className="flex items-center gap-3 py-3 text-sm">
+                    <span aria-hidden>
+                      {event.kind === "lesson_completed" ? "✅" : event.kind === "subscribed" ? "💳" : "🏅"}
                     </span>
-                    <span className="mt-1 block text-xs text-muted">
-                      <Ratio done={entry.completed} total={entry.total} locale={locale} /> {d.curricula.lessons}
-                      {entry.mastery ? (
-                        <>
-                          {" · "}
-                          {d.dashboard.mastery} <Percent value={entry.mastery} locale={locale} />
-                        </>
-                      ) : null}
+                    <span className="min-w-0 flex-1 truncate">
+                      {activityLabel(event.lessonId, locale) ?? d.pricing.subscribed}
                     </span>
-                  </span>
-                  <Chevron className="shrink-0 text-muted" />
-                </Link>
-              </li>
-            ))}
-          </ul>
+                    {event.xp ? (
+                      <span dir="ltr" className="chip bg-sun-100 text-sun-800 dark:bg-sun-900/50 dark:text-sun-100">
+                        +{num(event.xp, locale)}
+                      </span>
+                    ) : null}
+                  </li>
+                ))
+              )}
+            </ul>
+          </section>
         </div>
 
-        <div>
-          <h2 className="text-xl font-bold">{d.dashboard.recentActivity}</h2>
-          <ul className="card mt-5 divide-y divide-line">
-            {activity.length === 0 ? (
-              <li className="p-4 text-sm text-muted">{d.dashboard.noProgress}</li>
-            ) : (
-              activity.map((event) => (
-                <li key={event.id} className="flex items-center gap-3 p-4 text-sm">
-                  <span aria-hidden>{event.kind === "lesson_completed" ? "✅" : event.kind === "subscribed" ? "💳" : "🏅"}</span>
-                  <span className="min-w-0 flex-1 truncate">
-                    {activityLabel(event.lessonId, locale) ?? d.pricing.subscribed}
-                  </span>
-                  {event.xp ? <span dir="ltr" className="chip bg-sun-100 text-sun-800 dark:bg-sun-900/50 dark:text-sun-100">
-                      +{num(event.xp, locale)}
-                    </span> : null}
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
-      </section>
+        <aside className="space-y-6">
+          <GoalRing
+            minutesToday={minutesToday}
+            locale={locale}
+            labels={{
+              title: d.dashboard.goalTitle,
+              done: d.dashboard.goalDone,
+              toGo: d.dashboard.goalToGo,
+              of: d.dashboard.goalOf,
+              change: d.dashboard.goalChange,
+              minutes: d.dashboard.goalMinutes,
+              hint: d.dashboard.goalHint,
+            }}
+          />
+
+          <WeekStrip days={activityDays(progress, now, 7)} streakDays={viewer.user.streakDays} />
+
+          <div className="grid grid-cols-3 gap-3">
+            <Stat glyph="⭐" label={d.dashboard.totalXp} value={num(viewer.user.xp, locale)} />
+            <Stat glyph="✅" label={d.dashboard.lessonsDone} value={num(completed, locale)} />
+            <Stat glyph="⏱️" label={d.dashboard.timeSpent} value={num(minutesSpent, locale)} />
+          </div>
+
+          <BadgeWall badges={badges} />
+
+          <Link
+            href="/certificates"
+            className="card flex items-center justify-between gap-4 p-5 transition-colors hover:bg-surface-muted"
+          >
+            <span className="font-bold">{d.certificates.navTitle}</span>
+            <Chevron />
+          </Link>
+        </aside>
+      </div>
     </div>
   );
 }

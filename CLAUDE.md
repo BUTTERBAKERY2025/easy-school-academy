@@ -64,6 +64,7 @@ options.
 - `npm run dev` — development server on :3000
 - `npm run check` — typecheck + eslint + content validation; run this before committing
 - `npm run check:content` — validates the catalogue (translations, question integrity, duplicate ids)
+- `npm run check:model` — asserts the learner model's rules against fixed dates
 
 ## Things worth knowing before changing code
 
@@ -93,6 +94,14 @@ options.
   route handler — the switcher is a plain `<a>` for that reason.
 - **Lesson gating:** the first lesson of every subject is free; everything else needs an active
   subscription, which a student can inherit from their parent account.
+- **The learner model is derived, never stored.** `lib/learning/model.ts` turns progress rows into a
+  mastery level per lesson and today's plan. Two rules drive it: recall decays as `2^(-t/S)`, where
+  stability `S` comes from the score, so a lesson aced two months ago is no longer counted as
+  mastered; and the plan reviews what is fading before adding anything new, never more than two
+  reviews at once, interleaved across subjects. Nothing is written to the database, so a change to
+  the rules applies to work already done and needs no migration. `npm run check:model` asserts all of
+  it against fixed dates. Badges (`lib/learning/badges.ts`) are derived the same way — the
+  `activity.badge_id` column is still unused.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
