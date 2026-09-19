@@ -67,14 +67,14 @@ export const strings = {
     agesTitle: { ar: "كم عمر ابنك؟", en: "How old is your child?" },
     agesBody: { ar: "اختر العمر لتصل مباشرة إلى صفه ومواده.", en: "Pick an age to jump straight to the right grade and subjects." },
     whyTitle: { ar: "لماذا يختارنا أولياء الأمور", en: "Why parents choose us" },
-    teachersTitle: { ar: "مين اللي بيشرح لابنك؟", en: "Who teaches your child?" },
+    teachersTitle: { ar: "مدرس منهجي لكل مادة", en: "A curriculum teacher for every subject" },
     teachersBody: {
-      ar: "كل درس يكتبه معلم متخصص في مادته ومنهجه، ويُراجع قبل نشره. الطالب يذاكر بمفرده، لكن ما يقرؤه كتبه إنسان يعرف الصف والمنهج.",
-      en: "Every lesson is written by a teacher who specialises in that subject and curriculum, and reviewed before it goes live. A student works alone, but what they read was written by someone who knows the grade and the syllabus.",
+      ar: "لكل منهج ترتيبه ومصطلحاته وتسلسل مهاراته. لذلك لا يوجد شرح واحد يصلح للثلاثة: كل مادة في كل صف لها شرحها المبني من مقرّرها هي، خطوة بخطوة كما يشرحها معلم في الفصل.",
+      en: "Each curriculum has its own order, its own terms and its own sequence of skills, so no single explanation fits all three. Every subject in every grade is explained from its own syllabus, step by step, the way a teacher would take it in class.",
     },
     teachersNote: {
-      ar: "أسماء الفريق التعليمي تُعرض هنا عند اكتمال التعاقدات.",
-      en: "The teaching team is listed here once hiring is complete.",
+      ar: "«المدرس المنهجي» هو الشرح نفسه: مكتوب لمقرّر بعينه، يتدرّج مع الطالب ويصحّح إجابته فورًا مع تفسيرها. أسماء الفريق التعليمي البشري تُعرض هنا عند اكتمال التعاقدات.",
+      en: "The curriculum teacher is the explanation itself: written for one syllabus, paced with the student, and marking every answer on the spot with the reasoning behind it. The human teaching team is listed here once hiring is complete.",
     },
     voicesTitle: { ar: "كيف تبدو التجربة", en: "What the experience looks like" },
     voicesBody: {
@@ -320,11 +320,21 @@ export const strings = {
     sort: { ar: "تصنيف", en: "Sorting" },
   },
   teachers: {
-    mathsScience: { ar: "الرياضيات والعلوم", en: "Maths and Science" },
-    arabicIslamic: { ar: "لغتي والدراسات الإسلامية", en: "Arabic and Islamic Studies" },
-    ela: { ar: "English Language Arts", en: "English Language Arts" },
-    saudiCurriculum: { ar: "المنهج السعودي", en: "Saudi curriculum" },
-    angloCurriculum: { ar: "المنهج الأمريكي والبريطاني", en: "American and British curricula" },
+    saudiName: { ar: "المدرس المنهجي السعودي", en: "The Saudi curriculum teacher" },
+    saudiBody: {
+      ar: "يشرح بترتيب مقرر وزارة التعليم، بمسميات المواد والوحدات كما هي في الكتاب المدرسي.",
+      en: "Follows the Ministry of Education's own order, using the subject and unit names printed in the textbook.",
+    },
+    britishName: { ar: "المدرس المنهجي البريطاني", en: "The British curriculum teacher" },
+    britishBody: {
+      ar: "يتبع الـ Key Stages سنة بعد سنة، بمصطلحات المنهج الوطني الإنجليزي كما تُدرَّس.",
+      en: "Works through the Key Stages year by year, in the National Curriculum's own terms.",
+    },
+    americanName: { ar: "المدرس المنهجي الأمريكي", en: "The American curriculum teacher" },
+    americanBody: {
+      ar: "يتدرّج Grade بعد Grade على نطاق المنهج وتسلسله المعتمد في المدارس الأمريكية.",
+      en: "Moves Grade by Grade along the scope and sequence American schools teach to.",
+    },
   },
   /** Illustrative placeholders until real parent feedback replaces them. */
   voices: {

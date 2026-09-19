@@ -410,10 +410,12 @@ function WhyUs({ d }: { d: Dict }) {
 /* ---------------------------------------------------------------- teachers */
 
 function Teachers({ d }: { d: Dict }) {
-  const subjects: { face?: CastMember; photo?: string; subject: string; curriculum: string }[] = [
-    { face: "ustadha", subject: d.teachers.mathsScience, curriculum: d.teachers.saudiCurriculum },
-    { face: "ustath", subject: d.teachers.arabicIslamic, curriculum: d.teachers.saudiCurriculum },
-    { photo: "/images/teacher.jpg", subject: d.teachers.ela, curriculum: d.teachers.angloCurriculum },
+  /* One card per curriculum, because the curriculum is what makes the teaching
+     differ — not the person delivering it. */
+  const subjects: { face?: CastMember; photo?: string; flag: string; subject: string; curriculum: string }[] = [
+    { face: "ustath", flag: "🇸🇦", subject: d.teachers.saudiName, curriculum: d.teachers.saudiBody },
+    { photo: "/images/teacher.jpg", flag: "🇬🇧", subject: d.teachers.britishName, curriculum: d.teachers.britishBody },
+    { face: "ustadha", flag: "🇺🇸", subject: d.teachers.americanName, curriculum: d.teachers.americanBody },
   ];
 
   return (
@@ -423,7 +425,7 @@ function Teachers({ d }: { d: Dict }) {
 
         <div className="mt-10 grid items-stretch gap-5 md:grid-cols-3">
           {subjects.map((member) => (
-            <article key={member.subject} className="card flex flex-col items-center justify-center p-7 text-center">
+            <article key={member.subject} className="card flex flex-col items-center p-7 text-center">
               {member.photo ? (
                 <Image
                   src={member.photo}
@@ -436,8 +438,11 @@ function Teachers({ d }: { d: Dict }) {
               ) : (
                 <Avatar person={member.face!} className="size-28" />
               )}
-              <p className="mt-4 font-display text-lg font-bold">{member.subject}</p>
-              <p className="mt-1 text-sm text-muted">{member.curriculum}</p>
+              <p className="mt-4 flex items-center gap-2 font-display text-lg font-bold">
+                <span aria-hidden>{member.flag}</span>
+                {member.subject}
+              </p>
+              <p className="mt-2 text-sm text-muted">{member.curriculum}</p>
             </article>
           ))}
         </div>
