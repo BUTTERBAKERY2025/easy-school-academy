@@ -590,6 +590,23 @@ export const strings = {
       en: "There are no questions in this unit yet; its lessons are still in preparation.",
     },
   },
+  reader: {
+    title: { ar: "افتح كتابك", en: "Open your book" },
+    privacy: {
+      ar: "اختر نسختك من الكتاب (PDF). تُفتح داخل متصفحك على جهازك فقط — لا تُرفع إلى أي خادم ولا نحتفظ بها.",
+      en: "Choose your own copy of the book (PDF). It opens inside your browser on this device only — nothing is uploaded and we keep no copy.",
+    },
+    choose: { ar: "اختر ملف الكتاب", en: "Choose the book file" },
+    failed: { ar: "تعذّر فتح هذا الملف. تأكد أنه PDF سليم.", en: "That file could not be opened. Check that it is a valid PDF." },
+    page: { ar: "صفحة", en: "Page" },
+    lessonPage: { ar: "اذهب إلى صفحة الدرس", en: "Go to the lesson's page" },
+    calibrate: { ar: "اضبط ترقيم الصفحات", en: "Set the page numbering" },
+    calibrateAsk: { ar: "الرقم المطبوع على هذه الصفحة:", en: "The number printed on this page:" },
+    forget: { ar: "أزل الملف", en: "Remove the file" },
+    sideBySide: { ar: "الكتاب بجانب الدرس", en: "The book beside the lesson" },
+    hideBook: { ar: "أخفِ الكتاب", en: "Hide the book" },
+    showBook: { ar: "افتح الكتاب بجانب الدرس", en: "Open the book beside the lesson" },
+  },
   common: {
     loading: { ar: "جارٍ التحميل…", en: "Loading…" },
     comingSoon: { ar: "قيد الإعداد", en: "In preparation" },

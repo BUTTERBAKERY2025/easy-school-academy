@@ -27,10 +27,10 @@ export const britishScience5 = syllabus({
       summary:
         "How a flowering plant makes seeds, how those seeds travel, and how a new plant begins.|كيف يصنع النبات الزهري بذوره، وكيف تنتقل تلك البذور، وكيف تبدأ نبتة جديدة.",
       lessons: [
-        "Flowering and non-flowering plants|النباتات الزهرية وغير الزهرية",
-        "Pollination, fruits and seeds|التلقيح والثمار والبذور",
-        "How seeds are spread|كيف تنتشر البذور",
-        "Seed germination|إنبات البذرة",
+        { t: "Flowering and non-flowering plants|النباتات الزهرية وغير الزهرية", page: 2 },
+        { t: "Pollination, fruits and seeds|التلقيح والثمار والبذور", page: 9 },
+        { t: "How seeds are spread|كيف تنتشر البذور", page: 15 },
+        { t: "Seed germination|إنبات البذرة", page: 22 },
       ],
     },
     {
@@ -39,10 +39,10 @@ export const britishScience5 = syllabus({
       summary:
         "Where sound comes from, how it reaches your ear, and what makes one sound louder or higher than another.|من أين يأتي الصوت، وكيف يصل إلى أذنك، وما الذي يجعل صوتًا أعلى أو أحدّ من آخر.",
       lessons: [
-        "How are sounds made?|كيف تتكوّن الأصوات؟",
-        "Volume and pitch|شدة الصوت ودرجته",
-        "Changing the volume of sound|تغيير شدة الصوت",
-        "Changing the pitch of sound|تغيير درجة الصوت",
+        { t: "How are sounds made?|كيف تتكوّن الأصوات؟", page: 31 },
+        { t: "Volume and pitch|شدة الصوت ودرجته", page: 38 },
+        { t: "Changing the volume of sound|تغيير شدة الصوت", page: 42 },
+        { t: "Changing the pitch of sound|تغيير درجة الصوت", page: 48 },
       ],
     },
     {
@@ -51,10 +51,10 @@ export const britishScience5 = syllabus({
       summary:
         "Gases you cannot see, the odd behaviour of water, and where the sugar goes when it dissolves.|غازات لا تراها، وسلوك الماء الغريب، وأين يذهب السكر حين يذوب.",
       lessons: [
-        "Gases|الغازات",
-        "Properties of water|خواص الماء",
-        "Evaporation and condensation|التبخر والتكاثف",
-        "Solutions|المحاليل",
+        { t: "Gases|الغازات", page: 58 },
+        { t: "Properties of water|خواص الماء", page: 66 },
+        { t: "Evaporation and condensation|التبخر والتكاثف", page: 73 },
+        { t: "Solutions|المحاليل", page: 82 },
       ],
     },
     {
@@ -63,8 +63,8 @@ export const britishScience5 = syllabus({
       summary:
         "The journey food makes through the body, and what a balanced diet actually balances.|رحلة الطعام داخل الجسم، وما الذي يوازنه الغذاء المتوازن فعلًا.",
       lessons: [
-        "Parts and functions of the digestive system|أجزاء الجهاز الهضمي ووظائفها",
-        "Balanced diets|الغذاء المتوازن",
+        { t: "Parts and functions of the digestive system|أجزاء الجهاز الهضمي ووظائفها", page: 94 },
+        { t: "Balanced diets|الغذاء المتوازن", page: 101 },
       ],
     },
     {
@@ -73,12 +73,12 @@ export const britishScience5 = syllabus({
       summary:
         "Pushes and pulls you can draw, why a satellite keeps falling without landing, and what a magnet reaches through.|دفعٌ وسحبٌ يمكنك رسمهما، ولماذا يظل القمر الصناعي يسقط دون أن يصل، وما الذي ينفذ خلاله المغناطيس.",
       lessons: [
-        "Gravity, normal forces and applied forces|الجاذبية وقوة الاتزان والقوى المؤثرة",
-        "Gravity and satellites|الجاذبية والأقمار الصناعية",
-        "Friction, air resistance, water resistance and upthrust|الاحتكاك ومقاومة الهواء والماء وقوة الطفو",
-        "Multiple forces|القوى المتعددة",
-        "Magnets and magnetic materials|المغناطيس والمواد المغناطيسية",
-        "Magnetic force|القوة المغناطيسية",
+        { t: "Gravity, normal forces and applied forces|الجاذبية وقوة الاتزان والقوى المؤثرة", page: 110 },
+        { t: "Gravity and satellites|الجاذبية والأقمار الصناعية", page: 114 },
+        { t: "Friction, air resistance, water resistance and upthrust|الاحتكاك ومقاومة الهواء والماء وقوة الطفو", page: 119 },
+        { t: "Multiple forces|القوى المتعددة", page: 124 },
+        { t: "Magnets and magnetic materials|المغناطيس والمواد المغناطيسية", page: 128 },
+        { t: "Magnetic force|القوة المغناطيسية", page: 134 },
       ],
     },
     {
@@ -87,10 +87,10 @@ export const britishScience5 = syllabus({
       summary:
         "Why a year has seasons, and how living things are built for the place they live in.|لماذا للسنة فصول، وكيف تُبنى الكائنات لتناسب المكان الذي تعيش فيه.",
       lessons: [
-        "The Earth moves around the sun|دوران الأرض حول الشمس",
-        "Seasonal changes|التغيّرات الفصلية",
-        "Plants and animals are adapted to different environments|تكيّف النباتات والحيوانات مع بيئاتها",
-        "Adaptations of predators and prey|تكيّفات المفترس والفريسة",
+        { t: "The Earth moves around the sun|دوران الأرض حول الشمس", page: 142 },
+        { t: "Seasonal changes|التغيّرات الفصلية", page: 148 },
+        { t: "Plants and animals are adapted to different environments|تكيّف النباتات والحيوانات مع بيئاتها", page: 155 },
+        { t: "Adaptations of predators and prey|تكيّفات المفترس والفريسة", page: 161 },
       ],
     },
   ],

@@ -8,6 +8,7 @@ import { supportLocale, teachingLocale } from "@/lib/content/teaching";
 import { getViewer } from "@/lib/auth/current";
 import { progressForLesson } from "@/lib/db/repo";
 import { LessonPlayer } from "@/components/lesson-player";
+import { BookBeside } from "@/components/book/beside";
 import { themeClasses } from "@/components/ui";
 
 export async function generateMetadata({ params }: { params: Promise<{ lessonId: string }> }): Promise<Metadata> {
@@ -38,8 +39,8 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
   const subjectHref = `/subject/${lesson.subjectId}`;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-10">
-      <nav className="flex flex-wrap items-center gap-2 text-sm text-muted">
+    <div className="mx-auto max-w-3xl px-4 py-10 xl:max-w-6xl">
+      <nav className="flex max-w-3xl flex-wrap items-center gap-2 text-sm text-muted">
         {grade ? (
           <Link href={`/grade/${grade.id}`} className="hover:text-body">
             {t(grade.title, locale)}
@@ -55,7 +56,7 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
         ) : null}
       </nav>
 
-      <header className="mt-4">
+      <header className="mt-4 max-w-3xl">
         {unit ? (
           <span className={`chip ${theme.chip}`}>
             {d.curricula.unit} {num(unit.index + 1, locale)}: {t(unit.title, locale)}
@@ -73,7 +74,7 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
         </p>
       </header>
 
-      <section className="card mt-6 p-5">
+      <section className="card mt-6 max-w-3xl p-5">
         <h2 className="text-sm font-bold text-muted">{d.lesson.objectives}</h2>
         <ul className="mt-3 space-y-1.5" lang={taught} dir={localeMeta[taught].dir}>
           {lesson.objectives.map((objective, index) => (
@@ -103,15 +104,17 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
             </div>
           </div>
         ) : (
-          <LessonPlayer
-            lesson={lesson}
-            locale={taught}
-            supportLocale={support}
-            startIndex={saved?.status === "in_progress" ? saved.stepIndex : 0}
-            canSave={Boolean(viewer)}
-            nextHref={following ? `/learn/lesson/${following.id}` : undefined}
-            subjectHref={subjectHref}
-          />
+          <BookBeside bookId={lesson.subjectId} startPage={lesson.bookPage} locale={locale}>
+            <LessonPlayer
+              lesson={lesson}
+              locale={taught}
+              supportLocale={support}
+              startIndex={saved?.status === "in_progress" ? saved.stepIndex : 0}
+              canSave={Boolean(viewer)}
+              nextHref={following ? `/learn/lesson/${following.id}` : undefined}
+              subjectHref={subjectHref}
+            />
+          </BookBeside>
         )}
       </div>
     </div>

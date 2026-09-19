@@ -45,6 +45,7 @@ function buildLesson(args: {
   index: number;
   band: Band;
   isFirstOfSubject: boolean;
+  bookPage?: number;
 }): Lesson {
   const id = `${args.unitId}-${args.index + 1}`;
   const authored: AuthoredLesson | undefined = authoredLessons[id];
@@ -62,6 +63,7 @@ function buildLesson(args: {
     durationMinutes: authored?.durationMinutes ?? durationForBand[args.band],
     free: authored?.free ?? args.isFirstOfSubject,
     authored: Boolean(authored),
+    bookPage: args.bookPage,
     blocks: authored?.blocks ?? [],
   };
 }
@@ -92,7 +94,7 @@ function unitsFromSyllabus(
       index: unitIndex,
       title: unit.title,
       summary: unit.summary,
-      lessons: unit.lessons.map((topic, index) =>
+      lessons: unit.lessons.map((lesson, index) =>
         buildLesson({
           curriculumId: context.curriculumId,
           gradeId: context.gradeId,
@@ -100,10 +102,11 @@ function unitsFromSyllabus(
           subjectTitle: context.subjectTitle,
           unitId,
           strandTitle: unit.title,
-          topic,
+          topic: lesson.title,
           index,
           band: context.band,
           isFirstOfSubject: unitIndex === 0 && index === 0,
+          bookPage: lesson.page,
         }),
       ),
     };

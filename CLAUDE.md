@@ -100,6 +100,14 @@ options.
   title, objectives and body render in it (with that language's `dir`, or English comes out
   right-to-left) while the navigation and buttons stay in the reader's own. A reader whose language
   differs gets a support toggle inside the player, off by default and remembered per device.
+- **The book on screen is the family's own copy.** `components/book/reader.tsx` renders a PDF the
+  family chooses from their device with pdf.js; it is stored in IndexedDB on that device
+  (`lib/book-file.ts`), never uploaded, and no part of any book is in this repository. Printed page
+  numbers do not match a scan's sheet numbers, so the reader is calibrated once per device — say what
+  number is printed on the page you are looking at — and a lesson's `bookPage` then means the printed
+  page. `BookBeside` puts the reader next to the player, closed by default. **pdf.js is pinned to the
+  4.x line**: 6.x calls `Map.prototype.getOrInsertComputed`, which stable Chrome does not have, and
+  the canvas comes out blank.
 - **Figures are drawn and answer questions.** A `diagram` block names one of the drawings in
   `components/art/diagrams.tsx` (`flower`, `life-cycle`) and labels its parts. Each part carries its
   name and a leader line on the drawing itself, as a printed figure does; choosing a part — on the

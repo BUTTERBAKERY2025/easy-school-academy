@@ -19,11 +19,13 @@ import { britishScience5 } from "./british-science-5";
  * (`british-g5-science-plants-1`), so they are chosen once and never renamed.
  */
 
+export type SyllabusLesson = { title: Localized; page?: number };
+
 export type SyllabusUnit = {
   id: string;
   title: Localized;
   summary: Localized;
-  lessons: Localized[];
+  lessons: SyllabusLesson[];
 };
 
 export type Syllabus = {
@@ -39,7 +41,10 @@ export type Syllabus = {
   units: SyllabusUnit[];
 };
 
-type RawUnit = { id: string; title: string; summary: string; lessons: string[] };
+/** A lesson is its title, or its title and the page it is taught on. */
+type RawLesson = string | { t: string; page: number };
+
+type RawUnit = { id: string; title: string; summary: string; lessons: RawLesson[] };
 
 export type RawSyllabus = {
   curriculumId: string;
@@ -59,7 +64,9 @@ export function syllabus(raw: RawSyllabus): Syllabus {
       id: unit.id,
       title: bi(unit.title),
       summary: bi(unit.summary),
-      lessons: unit.lessons.map(bi),
+      lessons: unit.lessons.map((lesson) =>
+        typeof lesson === "string" ? { title: bi(lesson) } : { title: bi(lesson.t), page: lesson.page },
+      ),
     })),
   };
 }

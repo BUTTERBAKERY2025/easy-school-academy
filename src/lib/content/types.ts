@@ -138,6 +138,8 @@ export type Lesson = {
   free: boolean;
   /** True when a teacher has written the full interactive body for this lesson. */
   authored: boolean;
+  /** The page this lesson is taught on in the course book, where one is aligned. */
+  bookPage?: number;
   blocks: Block[];
 };
 
