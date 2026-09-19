@@ -6,7 +6,7 @@ import { catalog, catalogStats, gradesOf } from "@/lib/content";
 import { plans, currency } from "@/lib/billing/plans";
 import { Chevron } from "@/components/ui";
 import { Avatar, type CastMember } from "@/components/art/avatar";
-import { HeroScene, StepScene, WaveDivider, type StepTint } from "@/components/art/scenes";
+import { StepScene, WaveDivider, type StepTint } from "@/components/art/scenes";
 import { Icon, type IconTint } from "@/components/art/icons";
 import { GradeFinder, type FinderCurriculum } from "@/components/home/grade-finder";
 
@@ -122,8 +122,16 @@ function Hero({
         {/* The picker carries the hero's call to action; the scene keeps it company. */}
         <div className="mt-8 grid items-center gap-8 lg:grid-cols-[1fr_1.05fr] lg:gap-12">
           <div className="relative order-2 mx-auto w-full max-w-md lg:order-1 lg:max-w-none">
-            <HeroScene />
-            <div className="card absolute -bottom-2 start-0 flex items-center gap-2.5 px-4 py-2.5 sm:start-4">
+            <Image
+              src="/images/brand/hero-watch.jpg"
+              alt=""
+              width={1168}
+              height={784}
+              priority
+              sizes="(min-width: 1024px) 40vw, 90vw"
+              className="w-full rounded-4xl object-cover shadow-[var(--shadow-card)]"
+            />
+            <div className="card absolute -bottom-4 start-3 flex items-center gap-2.5 px-4 py-2.5 sm:start-5">
               <Icon name="streak" tint="coral" tile={false} className="size-7 shrink-0" />
               <span className="text-sm leading-tight">
                 <span className="block font-extrabold">{num(stats.lessons, locale)}</span>
@@ -412,10 +420,10 @@ function WhyUs({ d }: { d: Dict }) {
 function Teachers({ d }: { d: Dict }) {
   /* One card per curriculum, because the curriculum is what makes the teaching
      differ — not the person delivering it. */
-  const subjects: { face?: CastMember; photo?: string; flag: string; subject: string; curriculum: string }[] = [
-    { face: "ustath", flag: "🇸🇦", subject: d.teachers.saudiName, curriculum: d.teachers.saudiBody },
-    { photo: "/images/teacher.jpg", flag: "🇬🇧", subject: d.teachers.britishName, curriculum: d.teachers.britishBody },
-    { face: "ustadha", flag: "🇺🇸", subject: d.teachers.americanName, curriculum: d.teachers.americanBody },
+  const subjects: { photo: string; flag: string; subject: string; curriculum: string }[] = [
+    { photo: "/images/brand/teacher-hijab-heart.jpg", flag: "🇸🇦", subject: d.teachers.saudiName, curriculum: d.teachers.saudiBody },
+    { photo: "/images/brand/teacher-methodologist.jpg", flag: "🇬🇧", subject: d.teachers.britishName, curriculum: d.teachers.britishBody },
+    { photo: "/images/brand/teacher-woman-point.jpg", flag: "🇺🇸", subject: d.teachers.americanName, curriculum: d.teachers.americanBody },
   ];
 
   return (
@@ -426,18 +434,14 @@ function Teachers({ d }: { d: Dict }) {
         <div className="mt-10 grid items-stretch gap-5 md:grid-cols-3">
           {subjects.map((member) => (
             <article key={member.subject} className="card flex flex-col items-center p-7 text-center">
-              {member.photo ? (
-                <Image
-                  src={member.photo}
-                  alt=""
-                  width={640}
-                  height={953}
-                  sizes="112px"
-                  className="size-28 rounded-full object-cover object-top"
-                />
-              ) : (
-                <Avatar person={member.face!} className="size-28" />
-              )}
+              <Image
+                src={member.photo}
+                alt=""
+                width={784}
+                height={1168}
+                sizes="112px"
+                className="size-28 rounded-full object-cover object-top"
+              />
               <p className="mt-4 flex items-center gap-2 font-display text-lg font-bold">
                 <span aria-hidden>{member.flag}</span>
                 {member.subject}

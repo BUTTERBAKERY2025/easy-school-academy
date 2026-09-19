@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { LogoMark } from "@/components/art/logo";
 import { getI18n } from "@/lib/i18n/server";
 
 export async function SiteFooter() {
@@ -10,9 +11,7 @@ export async function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-2 font-extrabold">
-            <span className="grid size-8 place-items-center rounded-xl bg-brand-600 text-white" aria-hidden>
-              🎓
-            </span>
+            <LogoMark className="size-8 text-brand-600" />
             {d.brand.short}
           </div>
           <p className="mt-3 text-sm text-muted">{d.brand.tagline}</p>

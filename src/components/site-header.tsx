@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/auth/current";
 import { logoutAction } from "@/lib/auth/actions";
+import { LogoMark } from "@/components/art/logo";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNav } from "./mobile-nav";
 
@@ -22,9 +23,7 @@ export async function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-line bg-surface/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4">
         <Link href="/" className="flex items-center gap-2 font-extrabold">
-          <span className="grid size-9 place-items-center rounded-2xl bg-brand-600 text-lg text-white" aria-hidden>
-            🎓
-          </span>
+          <LogoMark className="size-9 text-brand-600" />
           <span className="hidden sm:inline">{d.brand.short}</span>
         </Link>
 
