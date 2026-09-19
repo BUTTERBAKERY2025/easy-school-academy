@@ -28,6 +28,25 @@ export type Block =
   | { kind: "example"; id: string; title: Localized; steps: Localized[]; visual?: Visual }
   | { kind: "callout"; id: string; tone: "tip" | "warning" | "fact"; title: Localized; body: Localized }
   | { kind: "vocab"; id: string; title: Localized; terms: { term: Localized; meaning: Localized }[] }
+  /**
+   * Practical work, done away from the screen: collect flowers, count petals,
+   * plan an investigation. Science that is only read about is not science, and a
+   * lesson that never asks the child to touch anything teaches them that it is.
+   */
+  | {
+      kind: "activity";
+      id: string;
+      title: Localized;
+      /** What the activity is for, in a sentence. */
+      intro: Localized;
+      /** Equipment, kept to what a home actually has. */
+      needs?: Localized[];
+      /** Shown in its own band — handling, sharp edges, washing hands. */
+      safety?: Localized;
+      steps: Localized[];
+    }
+  /** The closing self-check: what the child should now be able to do. */
+  | { kind: "checklist"; id: string; title: Localized; items: Localized[] }
   | { kind: "flashcards"; id: string; title: Localized; cards: { id: string; front: Localized; back: Localized }[] }
   | {
       kind: "mcq";

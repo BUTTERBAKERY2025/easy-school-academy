@@ -78,6 +78,12 @@ export function TeachingBlock({ block, locale }: { block: Block; locale: Locale 
     case "flashcards":
       return <Flashcards block={block} locale={locale} />;
 
+    case "activity":
+      return <Activity block={block} locale={locale} />;
+
+    case "checklist":
+      return <Checklist block={block} locale={locale} />;
+
     case "summary":
       return (
         <section className="rounded-3xl border border-mint-300 bg-mint-50 p-5 dark:border-mint-700 dark:bg-mint-900/30">
@@ -130,6 +136,109 @@ function Flashcards({ block, locale }: { block: Extract<Block, { kind: "flashcar
           );
         })}
       </div>
+    </section>
+  );
+}
+
+/**
+ * Practical work, away from the screen.
+ *
+ * Shown as a card the child can work from rather than a paragraph to read past:
+ * what it is for, what they need, the safety line if there is one, and numbered
+ * steps. Nothing here is marked — the point is that they do it.
+ */
+function Activity({ block, locale }: { block: Extract<Block, { kind: "activity" }>; locale: Locale }) {
+  const { d } = useI18n();
+
+  return (
+    <section className="rounded-3xl border border-sky-300 bg-sky-50 p-5 dark:border-sky-700 dark:bg-sky-900/25">
+      <p className="text-xs font-bold uppercase tracking-wide text-sky-700 dark:text-sky-200">{d.lesson.activity}</p>
+      <h2 className="mt-1 flex items-center gap-2 text-xl font-bold">
+        <span aria-hidden>🔬</span>
+        {t(block.title, locale)}
+      </h2>
+      <p className="mt-2 text-lg leading-relaxed">{t(block.intro, locale)}</p>
+
+      {block.needs?.length ? (
+        <div className="mt-4 rounded-2xl bg-surface p-4">
+          <h3 className="text-sm font-bold text-muted">{d.lesson.youWillNeed}</h3>
+          <ul className="mt-2 flex flex-wrap gap-2">
+            {block.needs.map((item, index) => (
+              <li key={index} className="chip bg-surface-muted">
+                {t(item, locale)}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {block.safety ? (
+        <p className="mt-3 flex gap-2 rounded-2xl bg-sun-100 p-3 text-sm dark:bg-sun-900/40">
+          <span aria-hidden>🧼</span>
+          <span>{t(block.safety, locale)}</span>
+        </p>
+      ) : null}
+
+      <ol className="mt-4 space-y-2">
+        {block.steps.map((step, index) => (
+          <li key={index} className="flex gap-3 rounded-2xl bg-surface p-3">
+            <span className="grid size-7 shrink-0 place-items-center rounded-full bg-sky-600 text-sm font-bold text-white">
+              {index + 1}
+            </span>
+            <span className="text-lg">{t(step, locale)}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+/**
+ * The closing self-check.
+ *
+ * Ticking a box proves nothing to anybody but the child, which is the point:
+ * naming what you can now do is what turns a lesson into something you know you
+ * know. Nothing is saved or scored.
+ */
+function Checklist({ block, locale }: { block: Extract<Block, { kind: "checklist" }>; locale: Locale }) {
+  const [ticked, setTicked] = useState<number[]>([]);
+  const { d } = useI18n();
+
+  return (
+    <section className="rounded-3xl border border-brand-300 bg-brand-50 p-5 dark:border-brand-700 dark:bg-brand-900/30">
+      <h2 className="text-xl font-bold">✅ {t(block.title, locale)}</h2>
+      <p className="mt-1 text-sm text-muted">{d.lesson.checklistPrompt}</p>
+      <ul className="mt-4 space-y-2">
+        {block.items.map((item, index) => {
+          const on = ticked.includes(index);
+          return (
+            <li key={index}>
+              <button
+                type="button"
+                aria-pressed={on}
+                onClick={() =>
+                  setTicked((current) =>
+                    current.includes(index) ? current.filter((at) => at !== index) : [...current, index],
+                  )
+                }
+                className={`flex w-full items-start gap-3 rounded-2xl border p-3 text-start transition-colors ${
+                  on ? "border-mint-400 bg-mint-50 dark:bg-mint-900/30" : "border-line bg-surface hover:bg-surface-muted"
+                }`}
+              >
+                <span
+                  aria-hidden
+                  className={`mt-0.5 grid size-6 shrink-0 place-items-center rounded-lg border-2 text-sm ${
+                    on ? "border-mint-500 bg-mint-500 text-white" : "border-ink-300"
+                  }`}
+                >
+                  {on ? "✓" : ""}
+                </span>
+                <span className="text-lg">{t(item, locale)}</span>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }

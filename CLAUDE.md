@@ -34,7 +34,7 @@ so authoring never requires touching the catalogue builder.
    duration) falls back to the generated value, so only write what differs.
 3. Build the body from the block types in `src/lib/content/types.ts`:
    teaching blocks (`concept`, `example`, `callout`, `vocab`, `flashcards`,
-   `summary`) and the seven question types (`mcq`, `multi`, `truefalse`, `fill`,
+   `activity`, `checklist`, `summary`) and the seven question types (`mcq`, `multi`, `truefalse`, `fill`,
    `match`, `order`, `sort`). Every question needs an `explanation` — the player
    shows it whether the answer was right or wrong.
 4. Visuals are data, not images: `figure`, `array`, `fraction`, `numberline`,
@@ -95,6 +95,16 @@ options.
   route handler — the switcher is a plain `<a>` for that reason.
 - **Lesson gating:** the first lesson of every subject is free; everything else needs an active
   subscription, which a student can inherit from their parent account.
+- **A lesson is read in the language its course is taught in.** `lib/content/teaching.ts` maps each
+  curriculum to its language — British and American to English, Saudi to Arabic — and the lesson
+  title, objectives and body render in it (with that language's `dir`, or English comes out
+  right-to-left) while the navigation and buttons stay in the reader's own. A reader whose language
+  differs gets a support toggle inside the player, off by default and remembered per device.
+- **A lesson covers its whole page, not a corner of it.** Where a course is aligned, the lesson is
+  written against everything that page teaches, and carries the shape a primary science lesson has:
+  a `callout` to settle in, `vocab`, the reading, an `activity` for practical work away from the
+  screen, questions, and a `checklist` to close. `activity` and `checklist` are teaching blocks —
+  neither is marked, and the checklist saves nothing.
 - **A syllabus pins the real course where one has been aligned.** The topic banks generate a
   plausible catalogue for every year, which is what makes all 1347 lessons browsable. A file under
   `lib/content/syllabus/` instead states a year's actual units and lessons, and `buildSubject` uses it

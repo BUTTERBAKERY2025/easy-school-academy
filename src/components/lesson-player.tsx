@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { isQuestion, type Lesson } from "@/lib/content/types";
-import { num, percent, t, type Locale } from "@/lib/i18n/config";
+import { localeMeta, num, percent, t, type Locale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/client";
 import { saveLessonProgressAction } from "@/lib/learning/actions";
 import { TeachingBlock } from "./blocks";
@@ -13,16 +13,57 @@ import { ProgressBar, Chevron, Ratio } from "./ui";
 
 type Result = { attempts: number; correct: boolean; revealed: boolean };
 
+/**
+ * Whether the reader wants their own language shown alongside the course's.
+ *
+ * A per-viewer convenience, so it lives in `localStorage` and is read as an
+ * external store rather than copied into state — the server cannot know it, and
+ * this is the shape React provides for exactly that. Off by default: the course
+ * is taught in its own language, and support is something you reach for.
+ */
+const SUPPORT_KEY = "easy-school:support-language";
+const supportListeners = new Set<() => void>();
+let supportCache: boolean | undefined;
+
+function readSupport(): boolean {
+  if (supportCache !== undefined) return supportCache;
+  try {
+    supportCache = window.localStorage.getItem(SUPPORT_KEY) === "on";
+  } catch {
+    supportCache = false;
+  }
+  return supportCache;
+}
+
+function subscribeSupport(notify: () => void): () => void {
+  supportListeners.add(notify);
+  return () => supportListeners.delete(notify);
+}
+
+function writeSupport(on: boolean): void {
+  supportCache = on;
+  try {
+    window.localStorage.setItem(SUPPORT_KEY, on ? "on" : "off");
+  } catch {
+    /* blocked storage: the choice still holds for this visit */
+  }
+  for (const notify of supportListeners) notify();
+}
+
 export function LessonPlayer({
   lesson,
   locale,
+  supportLocale,
   startIndex,
   canSave,
   nextHref,
   subjectHref,
 }: {
   lesson: Lesson;
+  /** The language the course is taught in. */
   locale: Locale;
+  /** The reader's own language, when it differs and can be offered as support. */
+  supportLocale?: Locale;
   startIndex: number;
   canSave: boolean;
   nextHref?: string;
@@ -30,6 +71,8 @@ export function LessonPlayer({
 }) {
   const { d } = useI18n();
   const steps = lesson.blocks;
+  const supportOn = useSyncExternalStore(subscribeSupport, readSupport, () => false);
+  const reading: Locale = supportOn && supportLocale ? supportLocale : locale;
   const questionCount = useMemo(() => steps.filter(isQuestion).length, [steps]);
 
   const [index, setIndex] = useState(() => Math.min(startIndex, Math.max(steps.length - 1, 0)));
@@ -205,11 +248,27 @@ export function LessonPlayer({
         <ProgressBar value={((index + 1) / steps.length) * 100} />
       </div>
 
-      <article className="card p-5 sm:p-8">
+      {supportLocale ? (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-surface-muted px-4 py-2.5 text-sm">
+          <span className="text-muted">{d.lesson.supportNote}</span>
+          <button
+            type="button"
+            aria-pressed={supportOn}
+            onClick={() => writeSupport(!supportOn)}
+            className="shrink-0 font-semibold text-brand-600 underline dark:text-brand-300"
+          >
+            {supportOn ? d.lesson.hideSupport : d.lesson.showSupport}
+          </button>
+        </div>
+      ) : null}
+
+      {/* The lesson is read in its own language, so it is laid out in that
+          language's direction too — English set right-to-left is unreadable. */}
+      <article className="card p-5 sm:p-8" lang={reading} dir={localeMeta[reading].dir}>
         {current && isQuestion(current) ? (
           <Question
             block={current}
-            locale={locale}
+            locale={reading}
             verdict={currentVerdict}
             onAnswer={(correct) => answer(current.id, correct)}
             onRetry={() => retry(current.id)}
@@ -217,7 +276,7 @@ export function LessonPlayer({
             canReveal={(results[current.id]?.attempts ?? 0) >= 2}
           />
         ) : current ? (
-          <TeachingBlock block={current} locale={locale} />
+          <TeachingBlock block={current} locale={reading} />
         ) : null}
       </article>
 

@@ -2,245 +2,269 @@ import type { LessonLibrary } from "./index";
 
 export const britishLessons: LessonLibrary = {
 
-  /* ------------------------ Year 5 · Cambridge Primary Science, Stage 5, Unit 1.1
+  /* --------------------- Year 5 · Cambridge Primary Science, Stage 5 · Unit 1.1
    * Flowering and non-flowering plants.
    *
-   * The unit's first lesson, and the one that has to do the most work: a child
-   * arrives certain that "plant with a flower" means "plant with petals", and
-   * leaves able to sort a fern, a pine and a blade of grass correctly. The
-   * misconception is met head-on rather than avoided, because grasses and oaks
-   * are exactly the plants a wrong rule gets wrong.
+   * Covers the whole of the course's first lesson rather than a corner of it:
+   * the two groups of plants, the life cycle that gives the unit its name, and
+   * every part of a flower with its function — plus the practical work, because
+   * science that is only read about teaches a child that science is reading.
    *
-   * Written for this academy. Scientific terms are kept in English on both sides
-   * — a child on the British curriculum learns the stamen as the stamen — with
-   * the Arabic beside it to understand it by, not to replace it.
+   * The shape follows how a primary science lesson is built — settle in, meet
+   * the words, read, do, answer, check yourself — and every word of it is
+   * written here. Taught in English, the language of the course; the Arabic is
+   * support a reader can turn on, not a translation of the subject's own terms.
    */
   "british-g5-science-plants-1": {
-    durationMinutes: 25,
+    durationMinutes: 40,
     summary: {
-      ar: "كل النباتات تصنع غذاءها، لكنها لا تتكاثر بالطريقة نفسها. في هذا الدرس نفرّق بين النبات الزهري وغير الزهري، ونتعلّم أجزاء الزهرة ووظيفة كل جزء.",
-      en: "Every plant makes its own food, but they do not all reproduce the same way. Here you separate flowering from non-flowering plants, and learn the parts of a flower and what each one is for.",
+      ar: "بعض النباتات لها أزهار وبعضها لا. في هذا الدرس نتعرّف على المجموعتين، وعلى دورة حياة النبات الزهري، وعلى كل جزء في الزهرة ووظيفته — مع نشاطين عمليين تقوم بهما بنفسك.",
+      en: "Some plants have flowers and some do not. Here you meet both groups, follow the life cycle of a flowering plant, and learn every part of a flower and what it is for — with two practical activities you carry out yourself.",
     },
     objectives: [
       {
-        ar: "أن يذكر الطالب أجزاء الزهرة (petals, sepals, stamen, carpel) ووظيفة كل جزء.",
-        en: "Name the parts of a flower — petals, sepals, stamen and carpel — and say what each one does.",
+        ar: "أن يعرف الطالب أن بعض النباتات لها أزهار وبعضها ليس له أزهار.",
+        en: "Know that some plants have flowers and other plants do not.",
       },
       {
-        ar: "أن يميّز بين النبات الزهري وغير الزهري اعتمادًا على طريقة تكاثره لا على شكله.",
-        en: "Tell a flowering plant from a non-flowering one by how it reproduces, not by how it looks.",
+        ar: "أن يذكر مراحل دورة حياة النبات الزهري بالترتيب.",
+        en: "Say what the stages are in the life cycle of a flowering plant.",
       },
+      { ar: "أن يصنّف النباتات والأزهار في مجموعات.", en: "Sort and group flowers and plants." },
       {
-        ar: "أن يصنّف نباتات مألوفة كالسرخس والصنوبر والعشب تصنيفًا صحيحًا.",
-        en: "Classify familiar plants such as ferns, conifers and grasses correctly.",
+        ar: "أن يحدّد أجزاء الزهرة ويصف وظيفة كل جزء.",
+        en: "Identify the parts of a flower and describe their function.",
       },
+      { ar: "أن يلاحظ زهرة حقيقية ويرسمها ويكتب أسماء أجزائها.", en: "Observe a real flower, draw it and label its parts." },
+      { ar: "أن يصف نمطًا يلاحظه في نتائجه.", en: "Describe a pattern in what you observe." },
     ],
     blocks: [
       {
-        kind: "concept",
-        id: "c1",
-        title: { ar: "ما الذي تشترك فيه كل النباتات؟", en: "What every plant has in common" },
+        kind: "callout",
+        id: "g1",
+        tone: "tip",
+        title: { ar: "قبل أن نبدأ", en: "Getting started" },
         body: {
-          ar: "كل النباتات تصنع غذاءها بنفسها من ضوء الشمس والماء وثاني أكسيد الكربون. هذا ما يجعلها نباتًا. لكنها تختلف في شيء واحد مهم: كيف تصنع جيلًا جديدًا. بعضها يفعل ذلك بزهرة (flower)، وبعضها لا يملك زهرة أصلًا — وهذا هو الفرق الذي نبني عليه هذا الدرس.",
-          en: "Every plant makes its own food from sunlight, water and carbon dioxide. That is what makes it a plant. But plants differ in one important way: how they make the next generation. Some do it with a flower; some have no flower at all — and that is the difference this lesson is built on.",
-        },
-        visual: {
-          type: "table",
-          headers: [
-            { ar: "السؤال", en: "Question" },
-            { ar: "كل النباتات", en: "All plants" },
-          ],
-          rows: [
-            [
-              { ar: "هل تصنع غذاءها بنفسها؟", en: "Does it make its own food?" },
-              { ar: "نعم", en: "Yes" },
-            ],
-            [
-              { ar: "هل لها جذور وساق وأوراق؟", en: "Does it have roots, a stem and leaves?" },
-              { ar: "في الغالب نعم", en: "Usually yes" },
-            ],
-            [
-              { ar: "هل تتكاثر بزهرة؟", en: "Does it reproduce with a flower?" },
-              { ar: "ليست كلها — وهنا الفرق", en: "Not all of them — this is the difference" },
-            ],
-          ],
-          caption: {
-            ar: "أول سؤالين إجابتهما واحدة، والثالث هو الذي يقسم النباتات إلى مجموعتين.",
-            en: "The first two answers are the same for every plant. The third one splits them into two groups.",
-          },
+          ar: "ارسم نبتة وأنت جالس. لوّنها، واكتب اسم كل جزء تعرفه فيها. ثم فكّر: لماذا يحتاج النبات كل جزء رسمته؟ وهل في نبتتك زهرة؟ وهل تظن أن كل النباتات لها أزهار؟ احتفظ بجوابك — سنعود إليه.",
+          en: "Before you read on, draw a plant. Colour it in, and label every part you already know. Then think: why does the plant need each part you drew? Does your plant have a flower? And do you think every plant has one? Keep your answer — we will come back to it.",
         },
       },
       {
         kind: "vocab",
         id: "v1",
-        title: { ar: "كلمات هذا الدرس", en: "Words for this lesson" },
+        title: { ar: "كلمات هذه الوحدة", en: "Words for this unit" },
         terms: [
           {
-            term: { ar: "flowering plant — نبات زهري", en: "flowering plant" },
+            term: { ar: "life cycle — دورة الحياة", en: "life cycle" },
             meaning: {
-              ar: "نبات يتكاثر بالأزهار، وتنمو بذوره داخل ثمرة.",
-              en: "A plant that reproduces using flowers, and whose seeds grow inside a fruit.",
+              ar: "كل التغيّرات التي يمرّ بها النبات من البذرة إلى بذرة جديدة، وتتكرر مرة بعد مرة.",
+              en: "All the changes a plant goes through from seed to new seed, happening over and over again.",
             },
           },
           {
-            term: { ar: "non-flowering plant — نبات غير زهري", en: "non-flowering plant" },
+            term: { ar: "reproduce — يتكاثر", en: "reproduce" },
             meaning: {
-              ar: "نبات لا يصنع أزهارًا؛ يتكاثر بالأبواغ (spores) أو بالمخاريط (cones).",
-              en: "A plant that makes no flowers; it reproduces with spores or with cones.",
+              ar: "أن يصنع الكائن الحي كائنًا جديدًا من نوعه.",
+              en: "To make a new living thing of the same kind.",
+            },
+          },
+          {
+            term: { ar: "function — الوظيفة", en: "function" },
+            meaning: { ar: "العمل الذي يقوم به جزء ما؛ ما فائدته.", en: "The job a part does; what it is for." },
+          },
+          {
+            term: { ar: "petals — البتلات", en: "petals" },
+            meaning: {
+              ar: "الأوراق الملوّنة في الزهرة، وكثيرًا ما تكون زاهية لتجذب الحشرات.",
+              en: "The coloured leaves of a flower, often bright to attract insects.",
+            },
+          },
+          {
+            term: { ar: "sepals — السبلات", en: "sepals" },
+            meaning: {
+              ar: "أوراق صغيرة خضراء تحمي برعم الزهرة قبل أن يتفتّح.",
+              en: "Little green leaves that protect the flower bud before it opens.",
             },
           },
           {
             term: { ar: "stamen — السداة", en: "stamen" },
-            meaning: {
-              ar: "الجزء المذكّر في الزهرة، وهو الذي يصنع حبوب اللقاح (pollen).",
-              en: "The male part of a flower. It is the part that makes pollen.",
-            },
+            meaning: { ar: "الجزء المذكّر في الزهرة، ويتكوّن من anther وfilament.", en: "The male part of a flower, made of an anther and a filament." },
+          },
+          {
+            term: { ar: "anther — المتك", en: "anther" },
+            meaning: { ar: "الجزء الذي يصنع مسحوق حبوب اللقاح.", en: "The part that makes the powder called pollen." },
+          },
+          {
+            term: { ar: "filament — الخيط", en: "filament" },
+            meaning: { ar: "الساق الرفيعة التي تحمل الـ anther.", en: "The stalk that holds the anther up." },
+          },
+          {
+            term: { ar: "pollen — حبوب اللقاح", en: "pollen" },
+            meaning: { ar: "مسحوق دقيق تصنعه الـ anther، ومنه تبدأ البذرة.", en: "A fine powder made by the anther; a seed begins from it." },
           },
           {
             term: { ar: "carpel — الكربلة", en: "carpel" },
-            meaning: {
-              ar: "الجزء المؤنّث في الزهرة، ويحتوي المبيض (ovary) الذي تنمو فيه البذور.",
-              en: "The female part of a flower. It holds the ovary, where the seeds grow.",
-            },
+            meaning: { ar: "الجزء المؤنّث في الزهرة، ويشمل الـ stigma والـ ovary.", en: "The female part of a flower, including the stigma and the ovary." },
           },
           {
-            term: { ar: "spore — بوغ", en: "spore" },
-            meaning: {
-              ar: "حبيبة دقيقة جدًّا تنتشر بالهواء وتنمو منها نبتة جديدة، وليست بذرة.",
-              en: "A tiny grain carried on the air that grows into a new plant. It is not a seed.",
-            },
+            term: { ar: "stigma — الميسم", en: "stigma" },
+            meaning: { ar: "قمة الكربلة، ولزجة لتلتقط حبوب اللقاح.", en: "The top of the carpel, sticky so it catches pollen." },
           },
           {
-            term: { ar: "cone — مخروط", en: "cone" },
+            term: { ar: "ovary — المبيض", en: "ovary" },
+            meaning: { ar: "الجزء المنتفخ أسفل الكربلة، وفيه بويضات صغيرة تصير بذورًا.", en: "The swollen part at the base of the carpel, holding tiny eggs that become seeds." },
+          },
+          {
+            term: { ar: "fruit — الثمرة", en: "fruit" },
+            meaning: { ar: "ما يتحول إليه المبيض بعد ذبول الزهرة، وبداخله البذور.", en: "What the ovary becomes after the flower dies, with the seeds inside it." },
+          },
+          {
+            term: { ar: "scent — الرائحة", en: "scent" },
+            meaning: { ar: "الرائحة التي تنشرها بعض الأزهار لتجذب الحيوانات.", en: "The smell some flowers give off to attract animals." },
+          },
+          {
+            term: { ar: "spores — الأبواغ", en: "spores" },
             meaning: {
-              ar: "تركيب خشبي الملمس تحمل حراشفه البذور مكشوفة، كما في الصنوبر.",
-              en: "A woody structure whose scales carry seeds out in the open, as in a pine.",
+              ar: "حبيبات دقيقة جدًّا تصنعها نباتات كالسرخس والطحلب، وتنمو منها نبتة جديدة. وليست بذورًا.",
+              en: "Tiny grains made by plants such as ferns and mosses, which grow into new plants. They are not seeds.",
             },
+          },
+        ],
+      },
+      {
+        kind: "concept",
+        id: "c1",
+        title: { ar: "نباتات لها أزهار", en: "Plants with flowers" },
+        body: {
+          ar: "كثير من النباتات لها أزهار، ونسمّيها النباتات الزهرية (flowering plants). والأزهار ليست نوعًا واحدًا: منها الكبير ومنها الصغير جدًّا، ومنها الزاهي الألوان ومنها الباهت الذي لا يكاد يُرى، ومنها ما له رائحة (scent) ومنها ما لا رائحة له إطلاقًا. هذا الاختلاف كله لا يغيّر شيئًا واحدًا: كل هذه الأزهار تؤدي الوظيفة نفسها.",
+          en: "Many plants have flowers, and we call them flowering plants. Flowers are not all one thing: some are large and some are tiny, some are brightly coloured and some are so plain you hardly notice them, some have a scent and some have none at all. None of that changes the one thing they share: every one of these flowers does the same job.",
+        },
+        visual: {
+          type: "table",
+          headers: [
+            { ar: "تختلف الأزهار في", en: "Flowers differ in" },
+            { ar: "من أقصى", en: "From" },
+            { ar: "إلى أقصى", en: "To" },
+          ],
+          rows: [
+            [
+              { ar: "الحجم", en: "Size" },
+              { ar: "زهرة أصغر من ظفرك", en: "Smaller than your fingernail" },
+              { ar: "زهرة بعرض ذراعك", en: "As wide as your arm" },
+            ],
+            [
+              { ar: "اللون", en: "Colour" },
+              { ar: "أخضر باهت لا يُلحظ", en: "Plain green, easy to miss" },
+              { ar: "أحمر أو أزرق زاهٍ", en: "Bright red or blue" },
+            ],
+            [
+              { ar: "الرائحة", en: "Scent" },
+              { ar: "بلا رائحة", en: "No scent at all" },
+              { ar: "رائحة تملأ الحديقة", en: "A scent that fills a garden" },
+            ],
+          ],
+          caption: {
+            ar: "كل هذه أزهار، ووظيفتها واحدة رغم اختلاف شكلها.",
+            en: "All of these are flowers, and they all have the same job despite looking so different.",
+          },
+        },
+      },
+      {
+        kind: "activity",
+        id: "a1",
+        title: { ar: "أزهارك المفضّلة", en: "Your favourite flowers" },
+        intro: {
+          ar: "قبل أن نتعلّم كيف تعمل الزهرة، انظر إليها بعينك. العالِم يلاحظ أولًا ثم يفسّر.",
+          en: "Before you learn how a flower works, look at some. A scientist observes first and explains afterwards.",
+        },
+        needs: [
+          { ar: "أزهار من حديقتك أو من صور", en: "Flowers from a garden, or pictures of flowers" },
+          { ar: "ورق وألوان", en: "Paper and colouring pencils" },
+        ],
+        steps: [
+          {
+            ar: "اجمع صور خمس أزهار مختلفة، أو انظر إلى أزهار حقيقية حولك.",
+            en: "Gather pictures of five different flowers, or look at real ones around you.",
+          },
+          {
+            ar: "رتّبها في مجموعات كما تراه مناسبًا: بالحجم، أو باللون، أو بالرائحة. كم مجموعة استطعت أن تصنع؟",
+            en: "Put them into groups however you think best: by size, by colour, or by scent. How many groups can you make?",
+          },
+          {
+            ar: "ارسم زهرتك المفضّلة منها، واكتب بجانبها لماذا اخترتها.",
+            en: "Draw your favourite one, and write beside it why you chose it.",
+          },
+          {
+            ar: "اعرض مجموعاتك على شخص آخر واشرح له قاعدة التصنيف التي اتبعتها. هل كان سيصنّفها بالطريقة نفسها؟",
+            en: "Show your groups to somebody else and explain the rule you sorted by. Would they have sorted them the same way?",
           },
         ],
       },
       {
         kind: "concept",
         id: "c2",
-        title: { ar: "أجزاء الزهرة ووظائفها", en: "The parts of a flower, and their jobs" },
+        title: { ar: "دورة حياة النبات الزهري", en: "The life cycle of a flowering plant" },
         body: {
-          ar: "الزهرة ليست زينة — هي مصنع البذور. لكل جزء فيها وظيفة واحدة واضحة: البتلات (petals) تجذب الملقّحات، والسبلات (sepals) كانت تحمي البرعم قبل أن يتفتّح، والسداة (stamen) تصنع حبوب اللقاح، والكربلة (carpel) تستقبلها ثم تنمو البذور داخل مبيضها.",
-          en: "A flower is not decoration — it is a seed factory. Each part has one clear job: the petals attract pollinators, the sepals protected the bud before it opened, the stamen makes the pollen, and the carpel receives it and grows the seeds inside its ovary.",
+          ar: "كل الأزهار تؤدي العمل المهم نفسه. هل تستطيع أن تخمّنه؟\n\nحين يُزهر النبات، لا تعيش الزهرة غالبًا إلا أيامًا قليلة، ثم تذبل وتسقط. لكن جزءًا منها يبقى على النبات: المبيض (ovary). هذا الجزء الباقي هو الذي يصير ثمرة (fruit)، وتتكوّن البذور داخلها. ثم تنمو البذور فتصير نباتات جديدة، وتكبر هذه النباتات وتُزهر بدورها فتصنع ثمارًا وبذورًا جديدة.\n\nإذن وظيفة الزهرة هي أن يتكاثر النبات (reproduce). وكل هذه التغيّرات — من الزهرة إلى البذرة إلى نبتة جديدة — نسميها دورة حياة النبات (life cycle). وسميناها دورة لأنها تحدث مرة بعد مرة بلا نهاية.",
+          en: "All flowers do the same important job. Can you think what it is?\n\nWhen a plant produces flowers, each flower usually lasts only a few days. Then it dies and falls off. But one part stays behind on the plant: the ovary. That part becomes the fruit, and the seeds form inside it. The seeds then grow into new plants, and those plants grow up and flower in their turn, making new fruits and new seeds.\n\nSo the job of a flower is to help the plant reproduce. And all those changes — flower to seed to new plant — are called the plant's life cycle. We call it a cycle because it happens over and over again.",
         },
         visual: {
-          type: "table",
-          headers: [
-            { ar: "الجزء", en: "Part" },
-            { ar: "وظيفته", en: "Its job" },
+          type: "steps",
+          items: [
+            { ar: "البذرة تنبت 🌱", en: "The seed germinates 🌱" },
+            { ar: "النبات ينمو 🌿", en: "The plant grows 🌿" },
+            { ar: "النبات يُزهر 🌸", en: "The plant flowers 🌸" },
+            { ar: "الزهرة تُكوّن ثمرة 🍑", en: "The flower produces fruit 🍑" },
+            { ar: "الثمرة تُطلق بذورًا — ثم تبدأ من جديد 🔁", en: "The fruit releases seeds — and it starts again 🔁" },
           ],
-          rows: [
-            [
-              { ar: "petals — البتلات", en: "petals" },
-              { ar: "تجذب الحشرات والطيور بلونها ورائحتها", en: "Attract insects and birds with colour and scent" },
-            ],
-            [
-              { ar: "sepals — السبلات", en: "sepals" },
-              { ar: "تحمي البرعم قبل تفتّحه", en: "Protect the bud before it opens" },
-            ],
-            [
-              { ar: "stamen — السداة", en: "stamen" },
-              { ar: "تصنع حبوب اللقاح (الجزء المذكّر)", en: "Makes the pollen (the male part)" },
-            ],
-            [
-              { ar: "carpel — الكربلة", en: "carpel" },
-              { ar: "تستقبل اللقاح وتنمو فيها البذور (الجزء المؤنّث)", en: "Receives pollen and grows the seeds (the female part)" },
-            ],
-          ],
+          caption: {
+            ar: "آخر خطوة تعود إلى الأولى؛ ولهذا نرسم دورة الحياة دائرة لا خطًّا مستقيمًا.",
+            en: "The last step leads back to the first, which is why a life cycle is drawn as a circle and not as a straight line.",
+          },
+        },
+      },
+      {
+        kind: "order",
+        id: "q1",
+        prompt: {
+          ar: "هذه مراحل دورة حياة نبات الفاصولياء، لكنها مختلطة. رتّبها ابتداءً من البذرة.",
+          en: "These are the stages in the life cycle of a bean plant, but they are mixed up. Put them in order, starting from the seed.",
+        },
+        items: [
+          { id: "o1", label: { ar: "البذرة", en: "Seed" } },
+          { id: "o2", label: { ar: "البادرة", en: "Seedling" } },
+          { id: "o3", label: { ar: "النبات الكامل", en: "Adult plant" } },
+          { id: "o4", label: { ar: "الزهرة", en: "Flower" } },
+          { id: "o5", label: { ar: "قرن الفاصولياء (الثمرة)", en: "Bean pod (the fruit)" } },
+        ],
+        explanation: {
+          ar: "البذرة تنبت فتصير بادرة، تكبر فتصير نباتًا كاملًا، ثم يُزهر، ثم تتحوّل الزهرة إلى قرن فيه بذور جديدة — وتبدأ الدورة من أولها.",
+          en: "The seed germinates into a seedling, which grows into an adult plant, which flowers, and the flower becomes a pod holding new seeds — and the cycle begins again.",
         },
       },
       {
         kind: "mcq",
-        id: "q1",
-        prompt: {
-          ar: "أي جزء من الزهرة هو الذي يصنع حبوب اللقاح؟",
-          en: "Which part of a flower makes the pollen?",
-        },
+        id: "q2",
+        prompt: { ar: "لماذا نرسم دورة الحياة على هيئة دائرة؟", en: "Why do we draw a life cycle as a circle?" },
         choices: [
-          { id: "a", label: { ar: "petals — البتلات", en: "The petals" } },
-          { id: "b", label: { ar: "stamen — السداة", en: "The stamen" } },
-          { id: "c", label: { ar: "sepals — السبلات", en: "The sepals" } },
-          { id: "d", label: { ar: "carpel — الكربلة", en: "The carpel" } },
+          { id: "a", label: { ar: "لأن الدائرة أجمل في الرسم", en: "Because a circle looks nicer on the page" } },
+          { id: "b", label: { ar: "لأن آخر مرحلة تؤدي إلى أول مرحلة فتتكرر بلا نهاية", en: "Because the last stage leads back to the first, so it repeats without end" } },
+          { id: "c", label: { ar: "لأن النبات ينمو في شكل دائري", en: "Because the plant grows in a circular shape" } },
         ],
         correctId: "b",
-        hint: { ar: "ابحث عن الجزء المذكّر.", en: "Look for the male part." },
+        hint: { ar: "ما معنى كلمة «دورة»؟", en: "What does the word “cycle” mean?" },
         explanation: {
-          ar: "السداة (stamen) هي الجزء المذكّر وتصنع حبوب اللقاح. أما الكربلة (carpel) فهي الجزء المؤنّث الذي يستقبلها.",
-          en: "The stamen is the male part and makes the pollen. The carpel is the female part that receives it.",
-        },
-      },
-      {
-        kind: "example",
-        id: "e1",
-        title: { ar: "اختبار من ثلاث خطوات: أزهري أم غير زهري؟", en: "A three-step test: flowering or not?" },
-        steps: [
-          {
-            ar: "١. ابحث عن زهرة — وليس عن بتلات ملوّنة. كثير من الأزهار صغيرة وخضراء بلا بتلات تُرى.",
-            en: "1. Look for a flower — not for colourful petals. Many flowers are small and green with no petals to see.",
-          },
-          {
-            ar: "٢. اسأل: أين تنمو البذور؟ إن نمت داخل ثمرة فالنبات زهري.",
-            en: "2. Ask where the seeds grow. If they grow inside a fruit, the plant is a flowering plant.",
-          },
-          {
-            ar: "٣. إن لم تجد بذورًا أصلًا، فابحث عن أبواغ (spores) تحت الورقة أو عن مخروط (cone): هذه علامات النبات غير الزهري.",
-            en: "3. If there are no seeds at all, look for spores under a leaf or for a cone. Those mark a non-flowering plant.",
-          },
-        ],
-        visual: {
-          type: "steps",
-          items: [
-            { ar: "هل فيه زهرة؟", en: "Is there a flower?" },
-            { ar: "أين تنمو البذرة؟", en: "Where does the seed grow?" },
-            { ar: "أبواغ أم مخروط؟", en: "Spores or a cone?" },
-          ],
-        },
-      },
-      {
-        kind: "callout",
-        id: "w1",
-        tone: "warning",
-        title: { ar: "الخطأ الذي يقع فيه الجميع", en: "The mistake almost everyone makes" },
-        body: {
-          ar: "«العشب والبلوط ليس لهما أزهار» — غير صحيح. لهما أزهار، لكنها صغيرة وخضراء وبلا بتلات لافتة، لأن الرياح هي التي تنقل لقاحها ولا تحتاج إلى جذب حشرة. القاعدة الصحيحة ليست «هل أرى بتلات؟» بل «كيف يصنع هذا النبات بذوره؟».",
-          en: "“Grass and oak trees have no flowers” — not true. They do have flowers, but small green ones with no showy petals, because the wind carries their pollen and there is no insect to attract. The rule is not “can I see petals?” but “how does this plant make its seeds?”",
-        },
-      },
-      {
-        kind: "sort",
-        id: "q2",
-        prompt: {
-          ar: "صنّف كل نبات في مجموعته. تذكّر أن تسأل عن طريقة التكاثر لا عن الشكل.",
-          en: "Sort each plant into its group. Remember to ask how it reproduces, not what it looks like.",
-        },
-        buckets: [
-          { id: "flowering", label: { ar: "نباتات زهرية", en: "Flowering plants" } },
-          { id: "non", label: { ar: "نباتات غير زهرية", en: "Non-flowering plants" } },
-        ],
-        items: [
-          { id: "i1", label: { ar: "الوردة 🌹", en: "Rose 🌹" }, bucketId: "flowering" },
-          { id: "i2", label: { ar: "السرخس 🌿", en: "Fern 🌿" }, bucketId: "non" },
-          { id: "i3", label: { ar: "شجرة التفاح 🍎", en: "Apple tree 🍎" }, bucketId: "flowering" },
-          { id: "i4", label: { ar: "الصنوبر 🌲", en: "Pine tree 🌲" }, bucketId: "non" },
-          { id: "i5", label: { ar: "العشب 🌾", en: "Grass 🌾" }, bucketId: "flowering" },
-          { id: "i6", label: { ar: "الطحلب البرّي (moss)", en: "Moss" }, bucketId: "non" },
-        ],
-        explanation: {
-          ar: "الوردة والتفاح والعشب كلها تصنع أزهارًا وبذورًا داخل ثمرة — وإن كانت زهرة العشب صغيرة خضراء. أما السرخس والطحلب فيتكاثران بالأبواغ، والصنوبر يحمل بذوره مكشوفة على حراشف المخروط لا داخل ثمرة.",
-          en: "Rose, apple and grass all make flowers and seeds inside a fruit — even though a grass flower is small and green. Ferns and mosses reproduce with spores, and a pine carries its seeds out in the open on cone scales rather than inside a fruit.",
+          ar: "الدورة شيء يتكرر مرة بعد مرة. بذور النبات الجديد تنبت فتصنع نباتًا يُزهر ويصنع بذورًا — فلا بداية ولا نهاية للخط، ولهذا نرسمه دائرة.",
+          en: "A cycle is something that happens over and over. The new plant's seeds germinate and make a plant that flowers and makes seeds — there is no end to the line, so we draw it as a circle.",
         },
       },
       {
         kind: "concept",
         id: "c3",
-        title: { ar: "كيف تتكاثر النباتات غير الزهرية؟", en: "How non-flowering plants reproduce" },
+        title: { ar: "نباتات بلا أزهار", en: "Plants without flowers" },
         body: {
-          ar: "ليست كل النباتات غير الزهرية متشابهة. السرخس والطحلب لا يصنعان بذورًا إطلاقًا، بل أبواغًا دقيقة تحملها الرياح. أما الصنوبر وأشباهه (conifers) فتصنع بذورًا حقيقية، لكنها تنمو مكشوفة على حراشف المخروط بدل أن تُغلَّف داخل ثمرة — ولهذا لا نعدّها نباتات زهرية.",
-          en: "Non-flowering plants are not all alike. Ferns and mosses make no seeds at all — they make tiny spores that the wind carries. Conifers such as pines do make real seeds, but the seeds sit out in the open on the scales of a cone instead of being wrapped inside a fruit — which is why they are not counted as flowering plants.",
+          ar: "ليست كل النباتات لها أزهار. النباتات التي بلا أزهار نسميها النباتات غير الزهرية (non-flowering plants)، ومنها الطحالب (mosses) والسرخسيات (ferns) والنباتات التي تحمل مخاريط (cones).\n\nوهي ليست نوعًا واحدًا. فالسرخس والطحلب لا يصنعان بذورًا إطلاقًا؛ يصنعان بدلًا منها أبواغًا (spores) دقيقة جدًّا تنمو منها نباتات جديدة. أما أشجار مثل الصنوبر فتصنع بذورًا حقيقية — لكن بذورها تتكوّن داخل مخروط، لا من زهرة.",
+          en: "Not all plants have flowers. Plants without flowers are called non-flowering plants, and they include mosses, ferns and plants that carry cones.\n\nThey are not all alike. Ferns and mosses form no seeds at all; instead they make tiny spores that can grow into new plants. Trees such as pines do form seeds — but their seeds form in a cone, and not from a flower.",
         },
         visual: {
           type: "table",
@@ -253,76 +277,274 @@ export const britishLessons: LessonLibrary = {
             [
               { ar: "نباتات زهرية", en: "Flowering plants" },
               { ar: "بذور داخل ثمرة", en: "Seeds inside a fruit" },
-              { ar: "التفاح، العشب", en: "Apple, grass" },
+              { ar: "التفاح، العشب، الوردة", en: "Apple, grass, rose" },
             ],
             [
-              { ar: "conifers — المخروطيات", en: "Conifers" },
-              { ar: "بذور مكشوفة على مخروط", en: "Seeds in the open on a cone" },
+              { ar: "نباتات ذات مخاريط", en: "Plants with cones" },
+              { ar: "بذور داخل مخروط", en: "Seeds inside a cone" },
               { ar: "الصنوبر", en: "Pine" },
             ],
             [
               { ar: "السرخسيات والطحالب", en: "Ferns and mosses" },
-              { ar: "أبواغ (spores)", en: "Spores" },
+              { ar: "أبواغ — بلا بذور", en: "Spores — no seeds at all" },
               { ar: "السرخس، الطحلب", en: "Fern, moss" },
             ],
           ],
         },
       },
       {
-        kind: "truefalse",
-        id: "q3",
-        statement: {
-          ar: "كل نبات يصنع بذورًا لا بدّ أن يكون له زهرة.",
-          en: "Every plant that makes seeds must have a flower.",
+        kind: "callout",
+        id: "w1",
+        tone: "warning",
+        title: { ar: "الخطأ الذي يقع فيه الجميع", en: "The mistake almost everyone makes" },
+        body: {
+          ar: "«العشب وأشجار البلوط ليس لها أزهار» — غير صحيح. لها أزهار، لكنها صغيرة خضراء بلا بتلات لافتة، لأن الرياح هي التي تنقل لقاحها فلا تحتاج أن تجذب حشرة. القاعدة الصحيحة ليست «هل أرى بتلات ملوّنة؟» بل «كيف يصنع هذا النبات بذوره؟».",
+          en: "“Grass and oak trees have no flowers” — not true. They do have flowers, but small green ones with no showy petals, because the wind carries their pollen and there is no insect to attract. The rule is not “can I see coloured petals?” but “how does this plant make its seeds?”",
         },
-        answer: false,
+      },
+      {
+        kind: "sort",
+        id: "q3",
+        prompt: {
+          ar: "صنّف كل نبات في مجموعته. اسأل عن طريقة التكاثر، لا عن الشكل.",
+          en: "Sort each plant into its group. Ask how it reproduces, not what it looks like.",
+        },
+        buckets: [
+          { id: "flowering", label: { ar: "نباتات زهرية", en: "Flowering plants" } },
+          { id: "non", label: { ar: "نباتات غير زهرية", en: "Non-flowering plants" } },
+        ],
+        items: [
+          { id: "i1", label: { ar: "الوردة 🌹", en: "Rose 🌹" }, bucketId: "flowering" },
+          { id: "i2", label: { ar: "السرخس 🌿", en: "Fern 🌿" }, bucketId: "non" },
+          { id: "i3", label: { ar: "شجرة التفاح 🍎", en: "Apple tree 🍎" }, bucketId: "flowering" },
+          { id: "i4", label: { ar: "الصنوبر 🌲", en: "Pine tree 🌲" }, bucketId: "non" },
+          { id: "i5", label: { ar: "العشب 🌾", en: "Grass 🌾" }, bucketId: "flowering" },
+          { id: "i6", label: { ar: "الطحلب (moss)", en: "Moss" }, bucketId: "non" },
+        ],
         explanation: {
-          ar: "خطأ. المخروطيات (conifers) كالصنوبر تصنع بذورًا حقيقية بلا زهرة؛ بذورها تنمو مكشوفة على حراشف المخروط.",
-          en: "False. Conifers such as pines make real seeds with no flower at all; their seeds grow out in the open on the scales of a cone.",
+          ar: "الوردة والتفاح والعشب كلها تصنع أزهارًا وبذورًا داخل ثمرة — وإن كانت زهرة العشب صغيرة خضراء. والسرخس والطحلب يتكاثران بالأبواغ، والصنوبر يحمل بذوره في مخروط لا في ثمرة.",
+          en: "Rose, apple and grass all make flowers and seeds inside a fruit — even though a grass flower is small and green. Ferns and mosses reproduce with spores, and a pine carries its seeds in a cone rather than a fruit.",
+        },
+      },
+      {
+        kind: "concept",
+        id: "c4",
+        title: { ar: "أجزاء الزهرة", en: "The parts of a flower" },
+        body: {
+          ar: "للزهرة أربعة أجزاء رئيسية، وهي مرتّبة في حلقات، كل حلقة داخل التي قبلها: السبلات في الخارج، ثم البتلات، ثم الأسدية، والكربلة في القلب.\n\nوجزآن منها لهما تركيب أدق. فالسداة (stamen) — وهي الجزء المذكّر — تتكوّن من المتك (anther) الذي يصنع حبوب اللقاح، والخيط (filament) الذي يحمله. والكربلة (carpel) — وهي الجزء المؤنّث — قمتها الميسم (stigma) اللزج الذي يلتقط اللقاح، وقاعدتها المبيض (ovary) الذي يحوي بويضات صغيرة تصير بذورًا.",
+          en: "A flower has four main parts, arranged in rings, one inside the other: sepals on the outside, then petals, then the stamens, with the carpel at the centre.\n\nTwo of them have more to them. The stamen — the male part — is made of an anther, which makes the pollen, and a filament, the stalk that holds it up. The carpel — the female part — has a sticky stigma at the top to catch pollen, and an ovary at the base holding tiny eggs that become seeds.",
+        },
+        visual: {
+          type: "table",
+          headers: [
+            { ar: "الجزء", en: "Part" },
+            { ar: "وظيفته (function)", en: "Its function" },
+          ],
+          rows: [
+            [
+              { ar: "sepals — السبلات", en: "sepals" },
+              { ar: "أوراق صغيرة خضراء تحمي البرعم قبل تفتّحه", en: "Little green leaves that protect the flower bud" },
+            ],
+            [
+              { ar: "petals — البتلات", en: "petals" },
+              { ar: "كثيرًا ما تكون زاهية لتجذب الحشرات إلى الزهرة", en: "Often brightly coloured to attract insects to the flower" },
+            ],
+            [
+              { ar: "anther — المتك", en: "anther" },
+              { ar: "يصنع المسحوق المسمّى حبوب اللقاح", en: "Makes a powder called pollen" },
+            ],
+            [
+              { ar: "filament — الخيط", en: "filament" },
+              { ar: "ساق الـ anther يحمله مرتفعًا", en: "The stalk of the anther, holding it up" },
+            ],
+            [
+              { ar: "stigma — الميسم", en: "stigma" },
+              { ar: "لزج ليلتقط حبوب اللقاح", en: "Sticky, to catch pollen" },
+            ],
+            [
+              { ar: "ovary — المبيض", en: "ovary" },
+              { ar: "يحوي بويضات صغيرة تصير بذورًا", en: "Contains tiny eggs that become seeds" },
+            ],
+          ],
+          caption: {
+            ar: "المتك والخيط معًا يكوّنان السداة (الجزء المذكّر)؛ والميسم والمبيض معًا يكوّنان الكربلة (الجزء المؤنّث).",
+            en: "The anther and filament together make the stamen, the male part; the stigma and ovary together make the carpel, the female part.",
+          },
+        },
+      },
+      {
+        kind: "multi",
+        id: "q4",
+        prompt: {
+          ar: "أي هذه الأجزاء تُكوّن السداة (stamen)؟ اختر كل الإجابات الصحيحة.",
+          en: "Which of these parts make up the stamen? Choose all the correct answers.",
+        },
+        choices: [
+          { id: "a", label: { ar: "anther — المتك", en: "anther" } },
+          { id: "b", label: { ar: "filament — الخيط", en: "filament" } },
+          { id: "c", label: { ar: "stigma — الميسم", en: "stigma" } },
+          { id: "d", label: { ar: "ovary — المبيض", en: "ovary" } },
+        ],
+        correctIds: ["a", "b"],
+        explanation: {
+          ar: "السداة هي الجزء المذكّر، وتتكوّن من المتك (anther) والخيط (filament). أما الميسم والمبيض فهما جزءان من الكربلة (carpel)، وهي الجزء المؤنّث.",
+          en: "The stamen is the male part, made of the anther and the filament. The stigma and the ovary belong to the carpel, which is the female part.",
         },
       },
       {
         kind: "match",
-        id: "q4",
-        prompt: { ar: "وصّل كل نبات بطريقة تكاثره.", en: "Match each plant to the way it reproduces." },
+        id: "q5",
+        prompt: { ar: "صِل كل جزء بوظيفته.", en: "Match each part to its function." },
         pairs: [
           {
             id: "p1",
-            left: { ar: "السرخس 🌿", en: "Fern 🌿" },
-            right: { ar: "أبواغ تحت الورقة", en: "Spores under the leaf" },
+            left: { ar: "petals — البتلات", en: "petals" },
+            right: { ar: "تجذب الحشرات إلى الزهرة", en: "Attract insects to the flower" },
           },
           {
             id: "p2",
-            left: { ar: "الصنوبر 🌲", en: "Pine 🌲" },
-            right: { ar: "بذور على حراشف مخروط", en: "Seeds on the scales of a cone" },
+            left: { ar: "anther — المتك", en: "anther" },
+            right: { ar: "يصنع حبوب اللقاح", en: "Makes the pollen" },
           },
           {
             id: "p3",
-            left: { ar: "شجرة التفاح 🍎", en: "Apple tree 🍎" },
-            right: { ar: "بذور داخل ثمرة", en: "Seeds inside a fruit" },
+            left: { ar: "stigma — الميسم", en: "stigma" },
+            right: { ar: "لزج ليلتقط حبوب اللقاح", en: "Sticky, to catch pollen" },
+          },
+          {
+            id: "p4",
+            left: { ar: "ovary — المبيض", en: "ovary" },
+            right: { ar: "فيه بويضات تصير بذورًا", en: "Holds the eggs that become seeds" },
           },
         ],
         explanation: {
-          ar: "الثلاثة تصنع جيلًا جديدًا، لكن بثلاث طرق مختلفة: بوغ، وبذرة مكشوفة، وبذرة داخل ثمرة.",
-          en: "All three make a new generation, but in three different ways: a spore, an uncovered seed, and a seed inside a fruit.",
+          ar: "لكل جزء وظيفة واحدة واضحة: البتلات تجذب، والمتك يصنع، والميسم يلتقط، والمبيض يحفظ ما سيصير بذورًا.",
+          en: "Each part has one clear job: the petals attract, the anther makes, the stigma catches, and the ovary holds what will become the seeds.",
         },
       },
       {
+        kind: "truefalse",
+        id: "q6",
+        statement: {
+          ar: "كل زهرة لا بد أن تحتوي على الجزأين المذكّر والمؤنّث معًا.",
+          en: "Every flower must contain both the male and the female parts.",
+        },
+        answer: false,
+        explanation: {
+          ar: "خطأ. معظم النباتات الزهرية لها أزهار تحمل الجزأين معًا، لكن بعض النباتات لها أزهار تحمل الجزء المذكّر وحده أو المؤنّث وحده.",
+          en: "False. Most flowering plants have flowers with both parts, but some plants have flowers with only male parts, or only female parts.",
+        },
+      },
+      {
+        kind: "activity",
+        id: "a2",
+        title: { ar: "فكّر كعالِم: لاحِظ زهرة وارسمها", en: "Think like a scientist: observe and draw a flower" },
+        intro: {
+          ar: "قرأت عن أجزاء الزهرة؛ الآن تحقّق منها بنفسك في زهرة حقيقية. هذا ما يفعله العالِم: لا يصدّق الرسم حتى يرى الشيء.",
+          en: "You have read about the parts of a flower; now check them for yourself on a real one. This is what a scientist does: not trusting the diagram until they have seen the thing.",
+        },
+        needs: [
+          { ar: "زهرة واحدة", en: "One flower" },
+          { ar: "عدسة مكبّرة إن توفّرت", en: "A hand lens, if you have one" },
+          { ar: "ملقط أو أصابع رفيقة", en: "Tweezers, or gentle fingers" },
+        ],
+        safety: {
+          ar: "اغسل يديك بعد لمس الأزهار، ولا تضع أي جزء منها في فمك.",
+            en: "Wash your hands after touching flowers, and never put any part of one in your mouth.",
+        },
+        steps: [
+          { ar: "ارسم الزهرة كما تراها، واكتب اسم كل جزء تعرفه.", en: "Draw the flower as you see it, and label every part you know." },
+          {
+            ar: "عُدّ البتلات والسبلات والأسدية، وسجّل الأعداد في جدول.",
+            en: "Count the petals, the sepals and the stamens, and record the numbers in a table.",
+          },
+          {
+            ar: "انظر إلى جدولك: هل تجد نمطًا؟ مثلًا، هل عدد السبلات يساوي عدد البتلات؟",
+            en: "Look at your table: can you see a pattern? For instance, is the number of sepals the same as the number of petals?",
+          },
+          {
+            ar: "انزع البتلات والسبلات برفق بالملقط حتى ترى ما بداخلها.",
+            en: "Carefully pull off the petals and the sepals with the tweezers so you can see inside.",
+          },
+          {
+            ar: "المس طرف الـ anther برفق. ماذا ترى على إصبعك؟",
+            en: "Touch the tip of an anther gently. What do you notice on your finger?",
+          },
+          {
+            ar: "المس الـ stigma. كيف يبدو ملمسه؟ ولماذا تظنه كذلك؟",
+            en: "Touch the stigma. How does it feel — and why do you think it feels that way?",
+          },
+        ],
+      },
+      {
         kind: "fill",
-        id: "q5",
-        prompt: { ar: "أكمل الجملتين بالكلمة المناسبة.", en: "Complete the two sentences." },
+        id: "q7",
+        prompt: { ar: "أكمل الجملتين.", en: "Complete the two sentences." },
         text: {
-          ar: "الجزء الذي يصنع حبوب اللقاح في الزهرة هو {{1}}، والنبات الذي يتكاثر بالأبواغ بدل البذور هو {{2}}.",
-          en: "The part of a flower that makes pollen is the {{1}}, and a plant that reproduces with spores instead of seeds is a {{2}}.",
+          ar: "الجزء الذي يصنع حبوب اللقاح هو {{1}}، والنبات الذي يتكاثر بالأبواغ بدل البذور مثل السرخس نسميه نباتًا {{2}}.",
+          en: "The part of a flower that makes pollen is the {{1}}, and a plant such as a fern that reproduces with spores instead of seeds is called a {{2}} plant.",
         },
         blanks: [
-          { id: "b1", answers: ["stamen", "السداة", "سداة", "the stamen"] },
-          { id: "b2", answers: ["fern", "moss", "السرخس", "سرخس", "الطحلب", "طحلب"] },
+          { id: "b1", answers: ["anther", "the anther", "المتك", "متك", "stamen", "السداة"] },
+          { id: "b2", answers: ["non-flowering", "non flowering", "nonflowering", "غير زهري", "غير الزهري"] },
         ],
         explanation: {
-          ar: "السداة (stamen) هي مصنع اللقاح، والسرخس والطحلب مثالان على التكاثر بالأبواغ.",
-          en: "The stamen is the pollen factory, and ferns and mosses are both examples of reproducing by spores.",
+          ar: "المتك (anther) هو مصنع اللقاح داخل السداة. والسرخس نبات غير زهري لأنه لا يصنع بذورًا ولا أزهارًا.",
+          en: "The anther is the pollen factory inside the stamen. A fern is a non-flowering plant because it makes neither seeds nor flowers.",
         },
+      },
+      {
+        kind: "mcq",
+        id: "q8",
+        prompt: {
+          ar: "بعض الأزهار لونها بنّي محمر داكن ورائحتها كرائحة اللحم المتعفّن. ما تفسير ذلك في رأيك؟",
+          en: "Some flowers are dark reddish brown with a scent like rotting meat. Why do you think that is?",
+        },
+        choices: [
+          { id: "a", label: { ar: "لأنها نباتات مريضة", en: "Because those plants are diseased" } },
+          {
+            id: "b",
+            label: { ar: "لأن ملقّحاتها هي الذباب، والذباب ينجذب إلى ذلك اللون وتلك الرائحة", en: "Because their pollinators are flies, and flies are drawn to that colour and that smell" },
+          },
+          { id: "c", label: { ar: "لأنها لا تحتاج إلى التلقيح إطلاقًا", en: "Because they do not need pollinating at all" } },
+        ],
+        correctId: "b",
+        hint: { ar: "الزهرة لا تختار لونها لتعجبك أنت.", en: "A flower does not choose its colour to please you." },
+        explanation: {
+          ar: "الزهرة تُعلن عن نفسها لمن ينقل لقاحها. النحلة تنجذب إلى الألوان الزاهية والرائحة الحلوة، والذبابة تنجذب إلى اللحم المتعفّن — فصارت هذه الأزهار تشبهه لونًا ورائحة. كل زهرة تعلن بلغة ملقِّحها.",
+          en: "A flower advertises to whatever carries its pollen. Bees are drawn to bright colours and sweet scents; flies are drawn to rotting meat — so these flowers have come to look and smell like it. Every flower advertises in the language of its own pollinator.",
+        },
+      },
+      {
+        kind: "activity",
+        id: "a3",
+        title: { ar: "خطّط لتجربة: أي لون بتلات هو الأكثر شيوعًا؟", en: "Plan an investigation: which petal colour is most common?" },
+        intro: {
+          ar: "بتلات الأزهار ألوان مختلفة. هل بعضها أكثر شيوعًا من بعض؟ لن نجيب بالتخمين بل بجمع بيانات — وهذا هو الفرق.",
+          en: "Flower petals come in different colours. Is one colour more common than the others? We will not answer by guessing but by collecting data — and that is the whole difference.",
+        },
+        steps: [
+          {
+            ar: "قرّر أين ستنظر: حديقة البيت؟ الشارع؟ الحديقة العامة؟ واكتب المكان.",
+            en: "Decide where you will look: your garden, your street, a park? Write the place down.",
+          },
+          {
+            ar: "قرّر كم زهرة ستعدّ. عشر أزهار قليلة جدًّا لتثق بنتيجتك — لماذا؟",
+            en: "Decide how many flowers you will count. Ten is too few to trust your answer — why?",
+          },
+          {
+            ar: "اصنع جدولًا فيه عمود للون وعمود للعدد، وسجّل فيه وأنت تعدّ.",
+            en: "Make a table with a column for colour and a column for the count, and fill it in as you go.",
+          },
+          {
+            ar: "قرّر كيف ستعرض نتيجتك: هل الرسم البياني بالأعمدة أوضح من الجدول؟ ولماذا؟",
+            en: "Decide how you will present your result: would a bar chart show it more clearly than the table? Why?",
+          },
+          {
+            ar: "وأخيرًا: هل نتيجتك تصلح لكل مكان في العالم، أم لمكانك أنت في هذا الوقت من السنة فقط؟",
+            en: "Finally: does your answer hold everywhere in the world, or only for your place at this time of year?",
+          },
+        ],
       },
       {
         kind: "summary",
@@ -330,25 +552,49 @@ export const britishLessons: LessonLibrary = {
         title: { ar: "خلاصة الدرس", en: "Lesson summary" },
         points: [
           {
-            ar: "كل النباتات تصنع غذاءها، لكنها تختلف في طريقة تكاثرها.",
-            en: "Every plant makes its own food, but plants differ in how they reproduce.",
+            ar: "النباتات نوعان: زهرية لها أزهار، وغير زهرية لا أزهار لها.",
+            en: "Plants fall into two groups: flowering plants, which have flowers, and non-flowering plants, which do not.",
           },
           {
-            ar: "في الزهرة: petals تجذب، sepals تحمي، stamen تصنع اللقاح، carpel تنمو فيها البذور.",
-            en: "In a flower: petals attract, sepals protect, the stamen makes pollen, and seeds grow in the carpel.",
+            ar: "وظيفة الزهرة أن يتكاثر النبات؛ فيتحوّل المبيض إلى ثمرة وتتكوّن البذور داخلها.",
+            en: "A flower's job is to help the plant reproduce: the ovary becomes the fruit, and the seeds form inside it.",
           },
           {
-            ar: "النبات الزهري بذوره داخل ثمرة — حتى لو كانت زهرته صغيرة خضراء كالعشب.",
-            en: "A flowering plant keeps its seeds inside a fruit — even if its flower is small and green, like grass.",
+            ar: "دورة الحياة: بذرة ← نبات ← زهرة ← ثمرة ← بذور جديدة، وتتكرر بلا نهاية.",
+            en: "The life cycle: seed → plant → flower → fruit → new seeds, repeating without end.",
           },
           {
-            ar: "غير الزهري نوعان: أبواغ (سرخس وطحلب) أو بذور مكشوفة على مخروط (صنوبر).",
-            en: "Non-flowering plants come in two kinds: spores (ferns, mosses) or uncovered seeds on a cone (conifers).",
+            ar: "أجزاء الزهرة في حلقات: سبلات تحمي، بتلات تجذب، سداة تصنع اللقاح، كربلة تلتقطه وتنمو فيها البذور.",
+            en: "The parts sit in rings: sepals protect, petals attract, the stamen makes pollen, the carpel catches it and grows the seeds.",
           },
+          {
+            ar: "غير الزهرية نوعان: أبواغ (سرخس وطحلب) أو بذور في مخروط (صنوبر).",
+            en: "Non-flowering plants come in two kinds: spores (ferns, mosses) or seeds in a cone (conifers).",
+          },
+        ],
+      },
+      {
+        kind: "checklist",
+        id: "k1",
+        title: { ar: "انظر ماذا أستطيع الآن!", en: "Look what I can do!" },
+        items: [
+          {
+            ar: "أعرف أن بعض النباتات لها أزهار وبعضها ليس له أزهار.",
+            en: "I know that some plants have flowers and other plants do not.",
+          },
+          { ar: "أستطيع ذكر مراحل دورة حياة النبات الزهري.", en: "I can say what the stages are in the life cycle of a flowering plant." },
+          { ar: "أستطيع تصنيف الأزهار والنباتات في مجموعات.", en: "I can sort and group flowers and plants." },
+          {
+            ar: "أستطيع تسمية أجزاء الزهرة ووصف وظيفة كل جزء.",
+            en: "I can identify the parts of a flower and describe their functions.",
+          },
+          { ar: "أستطيع ملاحظة زهرة ورسمها وكتابة أسماء أجزائها.", en: "I can observe a flower, draw it and label its parts." },
+          { ar: "أستطيع وصف نمط ألاحظه في نتائجي.", en: "I can describe a pattern in what I observe." },
         ],
       },
     ],
   },
+
   /* ---------------------------------------- Year 1 · blending sounds (phonics) */
   "british-g1-english-reading-1": {
     durationMinutes: 15,

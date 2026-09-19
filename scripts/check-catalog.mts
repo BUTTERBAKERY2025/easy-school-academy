@@ -75,6 +75,13 @@ for (const curriculum of catalog) {
               if (blockIds.has(block.id)) fail(lesson.id, `duplicate block id "${block.id}"`);
               blockIds.add(block.id);
 
+              if (block.kind === "activity" && block.steps.length === 0) {
+                fail(`${lesson.id}/${block.id}`, "an activity with no steps");
+              }
+              if (block.kind === "checklist" && block.items.length === 0) {
+                fail(`${lesson.id}/${block.id}`, "a checklist with nothing on it");
+              }
+
               if (!isQuestion(block)) continue;
 
               if (block.kind === "mcq" && !block.choices.some((choice) => choice.id === block.correctId)) {

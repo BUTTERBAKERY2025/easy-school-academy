@@ -2,8 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getI18n } from "@/lib/i18n/server";
-import { num, t } from "@/lib/i18n/config";
+import { localeMeta, num, t } from "@/lib/i18n/config";
 import { getGrade, getLesson, getSubject, getUnit, nextLesson } from "@/lib/content";
+import { supportLocale, teachingLocale } from "@/lib/content/teaching";
 import { getViewer } from "@/lib/auth/current";
 import { progressForLesson } from "@/lib/db/repo";
 import { LessonPlayer } from "@/components/lesson-player";
@@ -29,6 +30,10 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
   const locked = !lesson.free && !viewer?.hasAccess;
   const saved = viewer ? await progressForLesson(viewer.user.id, lesson.id) : undefined;
   const theme = themeClasses[subject?.theme ?? "brand"];
+  // The lesson itself is read in the language its course is taught in; the
+  // breadcrumb, the buttons and the chrome stay in the reader's own.
+  const taught = teachingLocale(lesson.curriculumId, locale);
+  const support = supportLocale(lesson.curriculumId, locale);
   const following = nextLesson(lesson.id);
   const subjectHref = `/subject/${lesson.subjectId}`;
 
@@ -56,8 +61,12 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
             {d.curricula.unit} {num(unit.index + 1, locale)}: {t(unit.title, locale)}
           </span>
         ) : null}
-        <h1 className="mt-3 text-2xl font-extrabold sm:text-3xl">{t(lesson.title, locale)}</h1>
-        <p className="mt-2 text-muted">{t(lesson.summary, locale)}</p>
+        <h1 className="mt-3 text-2xl font-extrabold sm:text-3xl" lang={taught} dir={localeMeta[taught].dir}>
+          {t(lesson.title, taught)}
+        </h1>
+        <p className="mt-2 text-muted" lang={taught} dir={localeMeta[taught].dir}>
+          {t(lesson.summary, taught)}
+        </p>
         <p className="mt-2 text-sm text-muted">
           ⏱️ {num(lesson.durationMinutes, locale)} {d.common.minutes}
           {lesson.free ? ` · ${d.lesson.freePreview}` : ""}
@@ -66,11 +75,11 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
 
       <section className="card mt-6 p-5">
         <h2 className="text-sm font-bold text-muted">{d.lesson.objectives}</h2>
-        <ul className="mt-3 space-y-1.5">
+        <ul className="mt-3 space-y-1.5" lang={taught} dir={localeMeta[taught].dir}>
           {lesson.objectives.map((objective, index) => (
             <li key={index} className="flex gap-2 text-sm">
               <span aria-hidden>🎯</span>
-              <span>{t(objective, locale)}</span>
+              <span>{t(objective, taught)}</span>
             </li>
           ))}
         </ul>
@@ -96,7 +105,8 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
         ) : (
           <LessonPlayer
             lesson={lesson}
-            locale={locale}
+            locale={taught}
+            supportLocale={support}
             startIndex={saved?.status === "in_progress" ? saved.stepIndex : 0}
             canSave={Boolean(viewer)}
             nextHref={following ? `/learn/lesson/${following.id}` : undefined}
