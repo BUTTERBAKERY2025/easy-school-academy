@@ -1,0 +1,30 @@
+# Render Blueprint — deploying this repository creates the service below with no
+# manual configuration. See the deployment section of README.md.
+services:
+  - type: web
+    name: school-on
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      # Signs the session cookie. Render generates a random value on first deploy,
+      # so nothing has to be pasted by hand.
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: NODE_VERSION
+        value: "22"
+      # The free plan has no persistent disk, so the JSON database lives in the
+      # service's own filesystem and resets whenever the instance restarts. Demo
+      # accounts are re-seeded automatically. To keep data across restarts, move
+      # the service to a paid plan and uncomment the disk below together with this
+      # variable.
+      # - key: SCHOOL_ON_DATA_DIR
+      #   value: /var/data
+    # disk:
+    #   name: school-on-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
