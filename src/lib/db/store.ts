@@ -1,6 +1,7 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
 import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import os from "node:os";
 import path from "node:path";
 import { emptyDatabase, type Database } from "./types";
 import { seedDatabase } from "./seed";
@@ -13,8 +14,44 @@ import { seedDatabase } from "./seed";
  * module for Postgres, SQLite or any ORM is a self-contained change.
  */
 
-const DATA_DIR = process.env.SCHOOL_ON_DATA_DIR ?? path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "school-on.json");
+const PREFERRED_DIR = process.env.SCHOOL_ON_DATA_DIR ?? path.join(process.cwd(), "data");
+
+/**
+ * Serverless hosts (Vercel and friends) mount the deployment read-only and give
+ * each instance its own writable temp directory, so fall back to that rather than
+ * failing every write. Data written there lasts as long as the instance does,
+ * which is why a real deployment should point `SCHOOL_ON_DATA_DIR` at a durable
+ * volume — or, better, replace this module with a database.
+ */
+const FALLBACK_DIR = path.join(os.tmpdir(), "school-on-data");
+
+let dataDir: string | null = null;
+
+async function resolveDataDir(): Promise<string> {
+  if (dataDir) return dataDir;
+
+  try {
+    await mkdir(PREFERRED_DIR, { recursive: true });
+    dataDir = PREFERRED_DIR;
+  } catch (error) {
+    // Any reason the preferred directory cannot be used — read-only mount, wrong
+    // permissions, a bad SCHOOL_ON_DATA_DIR — is better handled by degrading to
+    // temporary storage than by failing every request. The reason is logged so a
+    // misconfiguration is still visible.
+    const code = (error as NodeJS.ErrnoException).code ?? "unknown";
+    await mkdir(FALLBACK_DIR, { recursive: true });
+    dataDir = FALLBACK_DIR;
+    console.warn(
+      `[school-on] cannot use ${PREFERRED_DIR} (${code}); storing data in ${FALLBACK_DIR} instead. ` +
+        "That is per-instance and temporary — point SCHOOL_ON_DATA_DIR at a durable volume, " +
+        "or replace src/lib/db/store.ts with a database, before relying on it.",
+    );
+  }
+
+  return dataDir;
+}
+
+const dataFile = async () => path.join(await resolveDataDir(), "school-on.json");
 
 type GlobalCache = {
   db: Database | null;
@@ -34,7 +71,7 @@ const cache: GlobalCache = (globalRef.__schoolOnStore ??= {
 
 async function loadFromDisk(): Promise<Database> {
   try {
-    const raw = await readFile(DATA_FILE, "utf8");
+    const raw = await readFile(await dataFile(), "utf8");
     const parsed = JSON.parse(raw) as Partial<Database>;
     return { ...emptyDatabase(), ...parsed };
   } catch {
@@ -45,11 +82,11 @@ async function loadFromDisk(): Promise<Database> {
 }
 
 async function persist(db: Database): Promise<void> {
-  await mkdir(DATA_DIR, { recursive: true });
+  const file = await dataFile();
   // Write to a temp file first so a crash mid-write cannot truncate the database.
-  const tmp = `${DATA_FILE}.${randomUUID()}.tmp`;
+  const tmp = `${file}.${randomUUID()}.tmp`;
   await writeFile(tmp, JSON.stringify(db, null, 2), "utf8");
-  await rename(tmp, DATA_FILE);
+  await rename(tmp, file);
 }
 
 export async function read(): Promise<Database> {
