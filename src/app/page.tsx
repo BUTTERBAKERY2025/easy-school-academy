@@ -47,6 +47,7 @@ export default async function HomePage() {
       <InsideLesson d={d} />
       <Ages locale={locale} d={d} />
       <WhyUs d={d} />
+      <ParentBand d={d} />
       <Teachers d={d} />
       <Voices d={d} />
       <Plans locale={locale} d={d} />
@@ -320,6 +321,15 @@ function InsideLesson({ d }: { d: Dict }) {
             {d.home.insideCta}
             <Chevron />
           </Link>
+
+          <Image
+            src="/images/brand/hero-say.jpg"
+            alt=""
+            width={1168}
+            height={784}
+            sizes="(min-width: 1024px) 45vw, 90vw"
+            className="mt-8 w-full rounded-4xl object-cover"
+          />
         </div>
 
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
@@ -415,6 +425,35 @@ function WhyUs({ d }: { d: Dict }) {
   );
 }
 
+/* ------------------------------------------------------------- parent band */
+
+/** The dashboard is the parent's half of the product, so it gets its own band. */
+function ParentBand({ d }: { d: Dict }) {
+  return (
+    <section className="bg-surface-muted py-16 lg:py-20">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 lg:grid-cols-2 lg:gap-14">
+        <Image
+          src="/images/brand/parent-progress.jpg"
+          alt=""
+          width={784}
+          height={1168}
+          sizes="(min-width: 1024px) 45vw, 90vw"
+          className="mx-auto w-full max-w-sm rounded-4xl object-cover lg:max-w-none lg:h-[26rem]"
+        />
+
+        <div>
+          <h2 className="text-3xl sm:text-4xl">{d.home.parentTitle}</h2>
+          <p className="mt-4 text-lg text-muted">{d.home.parentBody}</p>
+          <Link href="/register" className="btn btn-primary mt-7 px-6 py-3">
+            {d.home.parentCta}
+            <Chevron />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------------------------------------------------------------- teachers */
 
 function Teachers({ d }: { d: Dict }) {
@@ -473,7 +512,16 @@ function Voices({ d }: { d: Dict }) {
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead title={d.home.voicesTitle} body={d.home.voicesBody} />
 
-        <ul className="mt-10 grid gap-5 md:grid-cols-3">
+        <Image
+          src="/images/brand/community-collage.jpg"
+          alt=""
+          width={1168}
+          height={784}
+          sizes="(min-width: 1024px) 70vw, 92vw"
+          className="mx-auto mt-10 w-full max-w-3xl rounded-4xl object-cover"
+        />
+
+        <ul className="mt-8 grid gap-5 md:grid-cols-3">
           {voices.map((voice) => (
             <li key={voice.who} className="card relative p-6">
               <span className="chip absolute end-5 top-5 bg-surface-muted text-[11px] text-muted">
@@ -573,13 +621,24 @@ function FinalCta({ d }: { d: Dict }) {
         <span aria-hidden className="blob -start-10 -top-10 size-52 bg-brand-400/50" />
         <span aria-hidden className="blob -end-8 -bottom-12 size-56 bg-sun-400/30" />
 
-        <div className="relative">
-          <h2 className="text-3xl sm:text-4xl">{d.home.finalTitle}</h2>
-          <p className="mx-auto mt-4 max-w-xl text-brand-100">{d.home.finalBody}</p>
-          <Link href="/register" className="btn btn-sun mt-8 px-8 py-4 text-base">
-            {d.home.ctaPrimary}
-            <Chevron />
-          </Link>
+        <div className="relative grid items-center gap-8 sm:grid-cols-[1.2fr_1fr] sm:text-start">
+          <div>
+            <h2 className="text-3xl sm:text-4xl">{d.home.finalTitle}</h2>
+            <p className="mt-4 max-w-xl text-brand-100">{d.home.finalBody}</p>
+            <Link href="/register" className="btn btn-sun mt-8 px-8 py-4 text-base">
+              {d.home.ctaPrimary}
+              <Chevron />
+            </Link>
+          </div>
+
+          <Image
+            src="/images/brand/promo-kids-puppy.png"
+            alt=""
+            width={718}
+            height={724}
+            sizes="(min-width: 640px) 32vw, 70vw"
+            className="mx-auto w-52 sm:w-full sm:max-w-xs"
+          />
         </div>
       </div>
     </section>

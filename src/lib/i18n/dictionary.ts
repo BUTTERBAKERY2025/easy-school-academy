@@ -82,6 +82,12 @@ export const strings = {
       en: "These are illustrative placeholders showing the section's shape — real parent feedback replaces them before launch.",
     },
     voicesPlaceholder: { ar: "نموذج توضيحي", en: "Placeholder" },
+    parentTitle: { ar: "تعرف بالضبط أين وصل ابنك", en: "Know exactly where your child has got to" },
+    parentBody: {
+      ar: "لوحة ولي الأمر تعرض الوقت الذي قضاه، والدروس التي أنهاها، ونسبة الإتقان في كل مادة — ولكل طالب في حسابك على حدة. تعرف أين تعثّر قبل أن يخبرك، وأين لا يحتاج مساعدتك أصلًا.",
+      en: "The parent dashboard shows time spent, lessons finished and mastery per subject — for each student on your account separately. You see where they got stuck before they tell you, and where they need no help at all.",
+    },
+    parentCta: { ar: "شاهد لوحة ولي الأمر", en: "See the parent dashboard" },
     plansTitle: { ar: "اشتراك واحد يفتح المنهج كاملًا", en: "One subscription unlocks the whole curriculum" },
     plansBody: { ar: "أول درس في كل مادة مجاني تمامًا. اشترك عندما تقتنع، وألغِ وقتما شئت.", en: "The first lesson of every subject is free. Subscribe when you are convinced, cancel whenever." },
     plansCta: { ar: "شاهد كل الخطط", en: "See all plans" },
