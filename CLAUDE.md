@@ -37,8 +37,12 @@ so authoring never requires touching the catalogue builder.
    `activity`, `checklist`, `summary`) and the seven question types (`mcq`, `multi`, `truefalse`, `fill`,
    `match`, `order`, `sort`). Every question needs an `explanation` — the player
    shows it whether the answer was right or wrong.
-4. Visuals are data, not images: `figure`, `array`, `fraction`, `numberline`,
-   `bars`, `table`, `steps`, drawn by `src/components/visual.tsx`.
+4. Visuals are mostly data, not images: `figure`, `array`, `fraction`, `numberline`,
+   `bars`, `table`, `steps`, drawn by `src/components/visual.tsx`. Where a real
+   photograph or painted illustration is what teaches, `{ type: "image" }` points
+   at a file under `public/images/lessons/<subject>/` — `alt` is required and
+   bilingual, and `npm run check` fails a lesson pointing at a file that is not
+   there. Only artwork this academy owns; nothing from a publisher's book.
 5. Run `npm run check` — the content validator catches a missing translation, a
    `correctId` that matches no choice, blanks that do not match the placeholders
    in the text, a sort item with no bucket, and duplicate ids.

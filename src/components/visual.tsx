@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Visual } from "@/lib/content/types";
 import type { Locale } from "@/lib/i18n/config";
 import { t } from "@/lib/i18n/config";
@@ -18,6 +19,23 @@ function renderBody(visual: Visual, locale: Locale) {
   switch (visual.type) {
     case "figure":
       return <div className="text-6xl leading-none">{visual.glyph}</div>;
+
+    case "image": {
+      const shape = { wide: "aspect-[16/9]", square: "aspect-square", tall: "aspect-[3/4]" }[
+        visual.shape ?? "wide"
+      ];
+      return (
+        <div className={`relative w-full overflow-hidden rounded-2xl bg-surface ${shape}`}>
+          <Image
+            src={visual.src}
+            alt={t(visual.alt, locale)}
+            fill
+            sizes="(max-width: 768px) 100vw, 640px"
+            className="object-cover"
+          />
+        </div>
+      );
+    }
 
     case "array":
       return (

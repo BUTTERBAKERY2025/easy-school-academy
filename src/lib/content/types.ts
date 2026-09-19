@@ -15,7 +15,25 @@ export type Visual =
   | { type: "numberline"; from: number; to: number; step: number; marks: number[]; caption?: Localized }
   | { type: "bars"; items: { label: Localized; value: number }[]; caption?: Localized }
   | { type: "table"; headers: Localized[]; rows: Localized[][]; caption?: Localized }
-  | { type: "steps"; items: Localized[]; caption?: Localized };
+  | { type: "steps"; items: Localized[]; caption?: Localized }
+  /**
+   * A picture, for the one thing drawing from data cannot give: a real plant, a
+   * real flower, a photograph or a painted illustration.
+   *
+   * `src` is a path under `public/`, and the catalogue validator fails a lesson
+   * that points at a file which is not there — a broken image in a lesson is
+   * worse than no image, because a child assumes they are missing something.
+   * `alt` is required and bilingual: a picture that carries teaching has to
+   * carry it for a child using a screen reader too.
+   */
+  | {
+      type: "image";
+      src: string;
+      alt: Localized;
+      /** How tall to draw it. `wide` is the default lesson illustration. */
+      shape?: "wide" | "square" | "tall";
+      caption?: Localized;
+    };
 
 /* ------------------------------------------------------------------- blocks */
 

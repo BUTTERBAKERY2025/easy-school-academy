@@ -6,6 +6,8 @@
 import { catalog, catalogStats } from "../src/lib/content/index.js";
 import { isQuestion } from "../src/lib/content/types.js";
 import { DIAGRAM_PARTS } from "../src/lib/content/diagrams.js";
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { Localized } from "../src/lib/i18n/config.js";
 
 const ARABIC = /[؀-ۿ]/;
@@ -79,6 +81,14 @@ for (const curriculum of catalog) {
               if (block.kind === "activity" && block.steps.length === 0) {
                 fail(`${lesson.id}/${block.id}`, "an activity with no steps");
               }
+              const visual = "visual" in block ? block.visual : undefined;
+              if (visual?.type === "image") {
+                checkText(visual.alt, `${lesson.id}/${block.id}.alt`);
+                if (!existsSync(path.join(process.cwd(), "public", visual.src))) {
+                  fail(`${lesson.id}/${block.id}`, `no such picture: public${visual.src}`);
+                }
+              }
+
               if (block.kind === "diagram") {
                 const known = new Set(DIAGRAM_PARTS[block.art]);
                 for (const part of block.parts) {
