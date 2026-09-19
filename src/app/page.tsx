@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getI18n } from "@/lib/i18n/server";
 import { num, t, type Locale } from "@/lib/i18n/config";
 import { catalog, catalogStats, gradesOf } from "@/lib/content";
@@ -320,13 +321,13 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
 /* --------------------------------------------------------------------- why */
 
 function WhyUs({ d }: { d: Dict }) {
-  const features: { icon: "textbook" | "interactive" | "bilingual" | "mastery" | "parent" | "pacing"; tint: IconTint; title: string; body: string }[] = [
-    { icon: "textbook", tint: "coral", title: d.features.textbookTitle, body: d.features.textbookBody },
-    { icon: "interactive", tint: "brand", title: d.features.interactiveTitle, body: d.features.interactiveBody },
-    { icon: "bilingual", tint: "sky", title: d.features.bilingualTitle, body: d.features.bilingualBody },
-    { icon: "mastery", tint: "mint", title: d.features.masteryTitle, body: d.features.masteryBody },
-    { icon: "parent", tint: "sun", title: d.features.parentTitle, body: d.features.parentBody },
-    { icon: "pacing", tint: "berry", title: d.features.pacingTitle, body: d.features.pacingBody },
+  const features: { icon: string; tile: string; title: string; body: string }[] = [
+    { icon: "folder", tile: "bg-coral-100 dark:bg-coral-400/20", title: d.features.textbookTitle, body: d.features.textbookBody },
+    { icon: "gamepad", tile: "bg-brand-100 dark:bg-brand-400/25", title: d.features.interactiveTitle, body: d.features.interactiveBody },
+    { icon: "globe", tile: "bg-mint-100 dark:bg-mint-400/20", title: d.features.bilingualTitle, body: d.features.bilingualBody },
+    { icon: "check", tile: "bg-mint-100 dark:bg-mint-400/20", title: d.features.masteryTitle, body: d.features.masteryBody },
+    { icon: "badge", tile: "bg-sun-100 dark:bg-sun-400/20", title: d.features.parentTitle, body: d.features.parentBody },
+    { icon: "certificate", tile: "bg-sun-100 dark:bg-sun-400/20", title: d.features.pacingTitle, body: d.features.pacingBody },
   ];
 
   return (
@@ -336,7 +337,18 @@ function WhyUs({ d }: { d: Dict }) {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
           <article key={feature.title} className="rounded-4xl border border-line bg-surface p-6">
-            <Icon name={feature.icon} tint={feature.tint} className="size-14" />
+            <Image
+              src={`/images/icons/${feature.icon}.png`}
+              alt=""
+              width={160}
+              height={160}
+              /* The artwork is 160px wide; asking the optimiser for a width
+                 above that drops its alpha channel and the icon comes back on
+                 an opaque white card. Pinning the display size keeps every
+                 requested width inside the source. */
+              sizes="56px"
+              className={`size-14 rounded-2xl p-2 ${feature.tile}`}
+            />
             <h3 className="mt-3 text-lg">{feature.title}</h3>
             <p className="mt-2 text-sm text-muted">{feature.body}</p>
           </article>
@@ -349,10 +361,10 @@ function WhyUs({ d }: { d: Dict }) {
 /* ---------------------------------------------------------------- teachers */
 
 function Teachers({ d }: { d: Dict }) {
-  const subjects: { face: CastMember; subject: string; curriculum: string }[] = [
+  const subjects: { face?: CastMember; photo?: string; subject: string; curriculum: string }[] = [
     { face: "ustadha", subject: d.teachers.mathsScience, curriculum: d.teachers.saudiCurriculum },
     { face: "ustath", subject: d.teachers.arabicIslamic, curriculum: d.teachers.saudiCurriculum },
-    { face: "missEmma", subject: d.teachers.ela, curriculum: d.teachers.angloCurriculum },
+    { photo: "/images/teacher.jpg", subject: d.teachers.ela, curriculum: d.teachers.angloCurriculum },
   ];
 
   return (
@@ -363,7 +375,18 @@ function Teachers({ d }: { d: Dict }) {
         <div className="mt-10 grid items-stretch gap-5 md:grid-cols-3">
           {subjects.map((member) => (
             <article key={member.subject} className="card flex flex-col items-center justify-center p-7 text-center">
-              <Avatar person={member.face} className="size-28" />
+              {member.photo ? (
+                <Image
+                  src={member.photo}
+                  alt=""
+                  width={640}
+                  height={953}
+                  sizes="112px"
+                  className="size-28 rounded-full object-cover object-top"
+                />
+              ) : (
+                <Avatar person={member.face!} className="size-28" />
+              )}
               <p className="mt-4 font-display text-lg font-bold">{member.subject}</p>
               <p className="mt-1 text-sm text-muted">{member.curriculum}</p>
             </article>
