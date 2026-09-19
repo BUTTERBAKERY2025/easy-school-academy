@@ -1,5 +1,64 @@
 # easy school — notes for future work in this repo
 
+An interactive academy teaching the American, British and Saudi curricula from
+kindergarten to Grade 9, in Arabic (RTL) and English.
+
+## Where the project stands
+
+- **Structure is complete**: 3 curricula, 29 grades, 175 subjects, 656 units,
+  1331 lessons — all browsable, generated from the topic banks.
+- **14 lessons are fully authored** with interactive bodies. Every other lesson
+  shows its title, objectives and place in the unit, marked "in preparation".
+  `npm run check:content` prints the current counts.
+- **Working end to end**: sign-up and sign-in, four roles, subscriptions with
+  free-first-lesson gating, the lesson player, saved progress, and the student,
+  parent, teacher and admin dashboards.
+- **Not production-ready yet**: payments are simulated (no gateway), and the
+  database is a JSON file rather than a real database.
+
+## The agreed way of working
+
+The owner and Claude build the content **one curriculum, subject and grade at a
+time**: pick the target, author its units as complete interactive lessons,
+review, then move to the next. Structure and ids already exist for every lesson,
+so authoring never requires touching the catalogue builder.
+
+### Adding a fully authored lesson
+
+1. Find the lesson id — they are stable and predictable:
+   `{curriculum}-g{grade}-{subject}-{strand}-{n}`, e.g. `saudi-g4-math-fractions-1`.
+   `npx tsx scripts/dump-catalog.mts saudi-g4-math` lists the ids of a subject.
+2. Add an entry under that id in `src/lib/content/lessons/american.ts`,
+   `british.ts` or `saudi.ts`. Anything left out (title, summary, objectives,
+   duration) falls back to the generated value, so only write what differs.
+3. Build the body from the block types in `src/lib/content/types.ts`:
+   teaching blocks (`concept`, `example`, `callout`, `vocab`, `flashcards`,
+   `summary`) and the seven question types (`mcq`, `multi`, `truefalse`, `fill`,
+   `match`, `order`, `sort`). Every question needs an `explanation` — the player
+   shows it whether the answer was right or wrong.
+4. Visuals are data, not images: `figure`, `array`, `fraction`, `numberline`,
+   `bars`, `table`, `steps`, drawn by `src/components/visual.tsx`.
+5. Run `npm run check` — the content validator catches a missing translation, a
+   `correctId` that matches no choice, blanks that do not match the placeholders
+   in the text, a sort item with no bucket, and duplicate ids.
+
+## Design system
+
+- Violet is the brand hue; **coral is reserved for the single most important
+  action on a page** — do not use it for secondary buttons.
+- Headings use a rounded display face (`--font-display`); body text uses Cairo.
+- Tokens live in `src/app/globals.css` and cover light and dark; style through
+  the tokens rather than hard-coded colours.
+
+## Deployment
+
+Hosted on Render from `render.yaml`. `AUTH_SECRET` is required — the server
+refuses to start without it (`src/instrumentation.ts`). **Secrets belong in the
+host's environment variables, never in this repository.** On Render's free plan
+there is no persistent disk, so the database resets on restart and the demo
+accounts are re-seeded; see the README for the persistent-disk and database
+options.
+
 ## Commands
 
 - `npm run dev` — development server on :3000
