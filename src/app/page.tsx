@@ -1,18 +1,21 @@
 import Link from "next/link";
+import Image from "next/image";
 import { getI18n } from "@/lib/i18n/server";
 import { num, t, type Locale } from "@/lib/i18n/config";
 import { catalog, catalogStats, gradesOf } from "@/lib/content";
 import { plans, currency } from "@/lib/billing/plans";
 import { Chevron } from "@/components/ui";
-import { HeroArt } from "@/components/hero-art";
+import { Avatar, type CastMember } from "@/components/art/avatar";
+import { HeroScene, StepScene, WaveDivider, type StepTint } from "@/components/art/scenes";
+import { Icon, type IconTint } from "@/components/art/icons";
 
 /** Age bands map a parent's "how old is my child" to a grade in each curriculum. */
-const AGE_STEPS = [
-  { age: "4-6", ordinal: 0, glyph: "🧸" },
-  { age: "6-8", ordinal: 1, glyph: "🔤" },
-  { age: "8-10", ordinal: 3, glyph: "📗" },
-  { age: "10-12", ordinal: 5, glyph: "🧭" },
-  { age: "12-15", ordinal: 7, glyph: "🧪" },
+const AGE_STEPS: { age: string; ordinal: number; face: CastMember }[] = [
+  { age: "4-6", ordinal: 0, face: "khaled" },
+  { age: "6-8", ordinal: 1, face: "sara" },
+  { age: "8-10", ordinal: 3, face: "layla" },
+  { age: "10-12", ordinal: 5, face: "omar" },
+  { age: "12-15", ordinal: 7, face: "youssef" },
 ];
 
 export default async function HomePage() {
@@ -27,12 +30,13 @@ export default async function HomePage() {
       <TrustStrip d={d} locale={locale} stats={stats} />
       <Curricula locale={locale} d={d} />
       <HowItWorks d={d} />
-      <InsideLesson locale={locale} d={d} />
+      <InsideLesson d={d} />
       <Ages locale={locale} d={d} />
       <WhyUs d={d} />
-      <Voices locale={locale} d={d} />
+      <Teachers d={d} />
+      <Voices d={d} />
       <Plans locale={locale} d={d} />
-      <Faq locale={locale} d={d} />
+      <Faq d={d} />
       <FinalCta d={d} />
       <StickyCta d={d} />
     </>
@@ -65,7 +69,8 @@ function Hero({
       <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-12 lg:grid-cols-[1.05fr_1fr] lg:gap-12 lg:pb-20 lg:pt-16">
         <div className="text-center lg:text-start">
           <span className="chip bg-mint-100 px-4 py-1.5 text-mint-800 dark:bg-mint-900/50 dark:text-mint-100">
-            🎁 {d.home.badge}
+            <Icon name="gift" tint="mint" tile={false} className="size-4" />
+            {d.home.badge}
           </span>
 
           <h1 className="mt-5 text-4xl leading-[1.15] font-extrabold sm:text-5xl lg:text-6xl">
@@ -109,11 +114,9 @@ function Hero({
         </div>
 
         <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-          <HeroArt className="h-auto w-full" />
+          <HeroScene />
           <div className="card absolute -bottom-2 start-0 flex items-center gap-2.5 px-4 py-2.5 sm:start-4">
-            <span aria-hidden className="text-xl">
-              🔥
-            </span>
+            <Icon name="streak" tint="coral" tile={false} className="size-7 shrink-0" />
             <span className="text-sm leading-tight">
               <span className="block font-extrabold">{num(stats.lessons, locale)}</span>
               <span className="block text-xs text-muted">{d.home.statLessons}</span>
@@ -121,6 +124,8 @@ function Hero({
           </div>
         </div>
       </div>
+
+      <WaveDivider className="text-surface" />
     </section>
   );
 }
@@ -128,11 +133,11 @@ function Hero({
 /* -------------------------------------------------------------- trust strip */
 
 function TrustStrip({ d, locale, stats }: { d: Dict; locale: Locale; stats: Stats }) {
-  const items = [
-    { value: stats.curricula, label: d.home.statCurricula, glyph: "🌍" },
-    { value: stats.grades, label: d.home.statGrades, glyph: "🎒" },
-    { value: stats.subjects, label: d.home.statSubjects, glyph: "📚" },
-    { value: stats.lessons, label: d.home.statLessons, glyph: "✨" },
+  const items: { value: number; label: string; icon: "curricula" | "grades" | "subjects" | "lessons"; tint: IconTint }[] = [
+    { value: stats.curricula, label: d.home.statCurricula, icon: "curricula", tint: "sky" },
+    { value: stats.grades, label: d.home.statGrades, icon: "grades", tint: "coral" },
+    { value: stats.subjects, label: d.home.statSubjects, icon: "subjects", tint: "brand" },
+    { value: stats.lessons, label: d.home.statLessons, icon: "lessons", tint: "sun" },
   ];
 
   return (
@@ -142,10 +147,8 @@ function TrustStrip({ d, locale, stats }: { d: Dict; locale: Locale; stats: Stat
           <div key={item.label} className="text-center">
             <dt className="sr-only">{item.label}</dt>
             <dd>
-              <span aria-hidden className="text-2xl">
-                {item.glyph}
-              </span>
-              <span className="mt-1 block font-display text-3xl font-extrabold">{num(item.value, locale)}</span>
+              <Icon name={item.icon} tint={item.tint} className="mx-auto size-11" />
+              <span className="mt-2 block font-display text-3xl font-extrabold">{num(item.value, locale)}</span>
               <span className="block text-sm text-muted">{item.label}</span>
             </dd>
           </div>
@@ -206,26 +209,23 @@ function Curricula({ locale, d }: { locale: Locale; d: Dict }) {
 /* ------------------------------------------------------------- how it works */
 
 function HowItWorks({ d }: { d: Dict }) {
-  const steps = [
-    { title: d.how.step1Title, body: d.how.step1Body, glyph: "🎯", tint: "bg-brand-100 dark:bg-brand-900/40" },
-    { title: d.how.step2Title, body: d.how.step2Body, glyph: "📖", tint: "bg-sun-100 dark:bg-sun-900/40" },
-    { title: d.how.step3Title, body: d.how.step3Body, glyph: "🕹️", tint: "bg-mint-100 dark:bg-mint-900/40" },
-    { title: d.how.step4Title, body: d.how.step4Body, glyph: "🏆", tint: "bg-sky-100 dark:bg-sky-900/40" },
+  const steps: { title: string; body: string; scene: 1 | 2 | 3 | 4; tint: StepTint }[] = [
+    { title: d.how.step1Title, body: d.how.step1Body, scene: 1, tint: "brand" },
+    { title: d.how.step2Title, body: d.how.step2Body, scene: 2, tint: "sun" },
+    { title: d.how.step3Title, body: d.how.step3Body, scene: 3, tint: "mint" },
+    { title: d.how.step4Title, body: d.how.step4Body, scene: 4, tint: "sky" },
   ];
 
   return (
-    <section className="bg-surface-muted py-16 lg:py-20">
+    <section className="bg-surface-muted pt-16 lg:pt-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead title={d.home.howTitle} body={d.home.howBody} />
 
         <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
-            <li key={step.title} className="card relative p-6 pt-10">
-              <span
-                className={`absolute -top-6 start-6 grid size-14 place-items-center rounded-2xl text-2xl ${step.tint}`}
-                aria-hidden
-              >
-                {step.glyph}
+            <li key={step.title} className="card relative p-6 pt-12">
+              <span className="absolute -top-8 start-6">
+                <StepScene step={step.scene} tint={step.tint} />
               </span>
               <span className="font-display text-sm font-extrabold text-muted">{String(index + 1).padStart(2, "0")}</span>
               <h3 className="mt-1 text-lg">{step.title}</h3>
@@ -234,18 +234,24 @@ function HowItWorks({ d }: { d: Dict }) {
           ))}
         </ol>
       </div>
+
+      <WaveDivider className="mt-16 text-surface" />
     </section>
   );
 }
 
 /* ----------------------------------------------------------- inside a lesson */
 
-function InsideLesson({ locale, d }: { locale: Locale; d: Dict }) {
-  const kinds =
-    locale === "ar"
-      ? ["اختيار من متعدد", "إجابات متعددة", "صح وخطأ", "ملء الفراغات", "توصيل", "ترتيب", "تصنيف"]
-      : ["Multiple choice", "Multiple answers", "True or false", "Fill the blanks", "Matching", "Ordering", "Sorting"];
-  const glyphs = ["🔘", "☑️", "⚖️", "✍️", "🔗", "🔢", "🗂️"];
+function InsideLesson({ d }: { d: Dict }) {
+  const kinds: { name: "mcq" | "multi" | "truefalse" | "fill" | "match" | "order" | "sort"; label: string; tint: IconTint }[] = [
+    { name: "mcq", label: d.questionKinds.mcq, tint: "brand" },
+    { name: "multi", label: d.questionKinds.multi, tint: "mint" },
+    { name: "truefalse", label: d.questionKinds.truefalse, tint: "sky" },
+    { name: "fill", label: d.questionKinds.fill, tint: "coral" },
+    { name: "match", label: d.questionKinds.match, tint: "sun" },
+    { name: "order", label: d.questionKinds.order, tint: "berry" },
+    { name: "sort", label: d.questionKinds.sort, tint: "brand" },
+  ];
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-16 lg:py-20">
@@ -260,15 +266,13 @@ function InsideLesson({ locale, d }: { locale: Locale; d: Dict }) {
         </div>
 
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
-          {kinds.map((kind, index) => (
+          {kinds.map((kind) => (
             <li
-              key={kind}
+              key={kind.name}
               className="card flex flex-col items-center gap-2 px-3 py-5 text-center text-sm font-semibold"
             >
-              <span aria-hidden className="text-2xl">
-                {glyphs[index]}
-              </span>
-              {kind}
+              <Icon name={kind.name} tint={kind.tint} className="size-11" />
+              {kind.label}
             </li>
           ))}
         </ul>
@@ -283,7 +287,7 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
   const saudi = gradesOf("saudi");
 
   return (
-    <section className="bg-surface-warm py-16 lg:py-20">
+    <section className="bg-surface-warm pt-16 lg:pt-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead title={d.home.agesTitle} body={d.home.agesBody} />
 
@@ -297,9 +301,7 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
                   href={`/grade/${grade.id}`}
                   className="card flex w-36 flex-col items-center gap-1 px-4 py-6 transition-transform hover:-translate-y-1"
                 >
-                  <span aria-hidden className="text-3xl">
-                    {step.glyph}
-                  </span>
+                  <Avatar person={step.face} className="size-20" />
                   <span className="mt-1 font-display text-xl font-extrabold" dir="ltr">
                     {num(Number(step.age.split("-")[0]), locale)}–{num(Number(step.age.split("-")[1]), locale)}
                   </span>
@@ -310,6 +312,8 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
           })}
         </ul>
       </div>
+
+      <WaveDivider className="mt-16 text-surface" />
     </section>
   );
 }
@@ -317,13 +321,13 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
 /* --------------------------------------------------------------------- why */
 
 function WhyUs({ d }: { d: Dict }) {
-  const features = [
-    { glyph: "📖", title: d.features.textbookTitle, body: d.features.textbookBody },
-    { glyph: "🕹️", title: d.features.interactiveTitle, body: d.features.interactiveBody },
-    { glyph: "🌍", title: d.features.bilingualTitle, body: d.features.bilingualBody },
-    { glyph: "🎯", title: d.features.masteryTitle, body: d.features.masteryBody },
-    { glyph: "👨‍👩‍👧", title: d.features.parentTitle, body: d.features.parentBody },
-    { glyph: "🗓️", title: d.features.pacingTitle, body: d.features.pacingBody },
+  const features: { icon: string; tile: string; title: string; body: string }[] = [
+    { icon: "folder", tile: "bg-coral-100 dark:bg-coral-400/20", title: d.features.textbookTitle, body: d.features.textbookBody },
+    { icon: "gamepad", tile: "bg-brand-100 dark:bg-brand-400/25", title: d.features.interactiveTitle, body: d.features.interactiveBody },
+    { icon: "globe", tile: "bg-mint-100 dark:bg-mint-400/20", title: d.features.bilingualTitle, body: d.features.bilingualBody },
+    { icon: "check", tile: "bg-mint-100 dark:bg-mint-400/20", title: d.features.masteryTitle, body: d.features.masteryBody },
+    { icon: "badge", tile: "bg-sun-100 dark:bg-sun-400/20", title: d.features.parentTitle, body: d.features.parentBody },
+    { icon: "certificate", tile: "bg-sun-100 dark:bg-sun-400/20", title: d.features.pacingTitle, body: d.features.pacingBody },
   ];
 
   return (
@@ -333,9 +337,18 @@ function WhyUs({ d }: { d: Dict }) {
       <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {features.map((feature) => (
           <article key={feature.title} className="rounded-4xl border border-line bg-surface p-6">
-            <span aria-hidden className="text-3xl">
-              {feature.glyph}
-            </span>
+            <Image
+              src={`/images/icons/${feature.icon}.png`}
+              alt=""
+              width={160}
+              height={160}
+              /* The artwork is 160px wide; asking the optimiser for a width
+                 above that drops its alpha channel and the icon comes back on
+                 an opaque white card. Pinning the display size keeps every
+                 requested width inside the source. */
+              sizes="56px"
+              className={`size-14 rounded-2xl p-2 ${feature.tile}`}
+            />
             <h3 className="mt-3 text-lg">{feature.title}</h3>
             <p className="mt-2 text-sm text-muted">{feature.body}</p>
           </article>
@@ -345,21 +358,57 @@ function WhyUs({ d }: { d: Dict }) {
   );
 }
 
+/* ---------------------------------------------------------------- teachers */
+
+function Teachers({ d }: { d: Dict }) {
+  const subjects: { face?: CastMember; photo?: string; subject: string; curriculum: string }[] = [
+    { face: "ustadha", subject: d.teachers.mathsScience, curriculum: d.teachers.saudiCurriculum },
+    { face: "ustath", subject: d.teachers.arabicIslamic, curriculum: d.teachers.saudiCurriculum },
+    { photo: "/images/teacher.jpg", subject: d.teachers.ela, curriculum: d.teachers.angloCurriculum },
+  ];
+
+  return (
+    <section className="bg-surface-warm pt-16 lg:pt-20">
+      <div className="mx-auto max-w-6xl px-4">
+        <SectionHead title={d.home.teachersTitle} body={d.home.teachersBody} />
+
+        <div className="mt-10 grid items-stretch gap-5 md:grid-cols-3">
+          {subjects.map((member) => (
+            <article key={member.subject} className="card flex flex-col items-center justify-center p-7 text-center">
+              {member.photo ? (
+                <Image
+                  src={member.photo}
+                  alt=""
+                  width={640}
+                  height={953}
+                  sizes="112px"
+                  className="size-28 rounded-full object-cover object-top"
+                />
+              ) : (
+                <Avatar person={member.face!} className="size-28" />
+              )}
+              <p className="mt-4 font-display text-lg font-bold">{member.subject}</p>
+              <p className="mt-1 text-sm text-muted">{member.curriculum}</p>
+            </article>
+          ))}
+        </div>
+
+        <p className="mt-6 text-center text-sm text-muted">{d.home.teachersNote}</p>
+      </div>
+
+      <WaveDivider className="mt-16 text-surface-muted" />
+    </section>
+  );
+}
+
 /* ------------------------------------------------------------------ voices */
 
-function Voices({ locale, d }: { locale: Locale; d: Dict }) {
-  const voices =
-    locale === "ar"
-      ? [
-          { quote: "ابني بقى يفتح الدرس لوحده قبل ما أفكر أذكّره.", who: "أم لطالب في الرابع الابتدائي", glyph: "👩" },
-          { quote: "التقرير الأسبوعي وفّر عليّ سؤال «ذاكرت ولا لأ؟» كل يوم.", who: "والد طالبين", glyph: "👨" },
-          { quote: "الشرح بالعربي والإنجليزي ساعد بنتي في مدرستها الدولية.", who: "أم لطالبة في Year 5", glyph: "🧕" },
-        ]
-      : [
-          { quote: "He now opens the lesson himself before I get to remind him.", who: "Parent of a Grade 4 student", glyph: "👩" },
-          { quote: "The weekly report ended the daily 'did you study?' argument.", who: "Parent of two", glyph: "👨" },
-          { quote: "Having both languages helped my daughter at her international school.", who: "Parent of a Year 5 student", glyph: "🧕" },
-        ];
+function Voices({ d }: { d: Dict }) {
+  const voices: { quote: string; who: string; face: CastMember }[] = [
+    { quote: d.voices.quote1, who: d.voices.who1, face: "maryam" },
+    { quote: d.voices.quote2, who: d.voices.who2, face: "ustath" },
+    { quote: d.voices.quote3, who: d.voices.who3, face: "missEmma" },
+  ];
 
   return (
     <section className="bg-surface-muted py-16 lg:py-20">
@@ -372,9 +421,7 @@ function Voices({ locale, d }: { locale: Locale; d: Dict }) {
               <span className="chip absolute end-5 top-5 bg-surface-muted text-[11px] text-muted">
                 {d.home.voicesPlaceholder}
               </span>
-              <span aria-hidden className="text-3xl">
-                {voice.glyph}
-              </span>
+              <Avatar person={voice.face} className="size-14" />
               <p className="mt-3 text-lg leading-relaxed">“{voice.quote}”</p>
               <p className="mt-3 text-sm text-muted">{voice.who}</p>
             </li>
@@ -429,53 +476,14 @@ function Plans({ locale, d }: { locale: Locale; d: Dict }) {
 
 /* --------------------------------------------------------------------- faq */
 
-function Faq({ locale, d }: { locale: Locale; d: Dict }) {
-  const faqs =
-    locale === "ar"
-      ? [
-          {
-            q: "هل المحتوى مطابق لمنهج مدرسة ابني؟",
-            a: "الوحدات والدروس مبنية على النطاق والتسلسل الرسمي لكل منهج، بأسماء الصفوف والمواد والوحدات كما هي في المدرسة، فيقدر الطالب يتابع درسًا بدرس.",
-          },
-          {
-            q: "هل يحتاج ابني لمساعدتي أثناء الدرس؟",
-            a: "الدرس مصمم ليعمل عليه الطالب وحده: شرح مبسّط، ثم مثال محلول، ثم نشاط، ثم تمرين يُصحَّح فورًا مع تفسير الإجابة. وبعد محاولتين خاطئتين يظهر «أظهر الحل» حتى لا يعلق.",
-          },
-          {
-            q: "ماذا لو كان مستواه في مادة أقل من صفه؟",
-            a: "تقدر تفتح أي صف في أي مادة. المنصة لا تقيّدك بصف واحد، فيراجع صفًا سابقًا أو يتقدم لأعلى حسب مستواه.",
-          },
-          {
-            q: "هل أستطيع التجربة قبل الاشتراك؟",
-            a: "نعم. أول درس في كل مادة مجاني بالكامل بكل أنشطته، ولا يحتاج بطاقة بنكية.",
-          },
-          {
-            q: "هل أتابع تقدّمه؟",
-            a: "لوحة ولي الأمر تعرض الوقت المستغرق والدروس المنجزة ونسبة الإتقان لكل مادة، ولكل طالب في حسابك.",
-          },
-        ]
-      : [
-          {
-            q: "Does this match my child's school curriculum?",
-            a: "Units and lessons follow the official scope and sequence of each curriculum, using the same grade, subject and unit names, so a student can follow along lesson by lesson.",
-          },
-          {
-            q: "Does my child need my help during a lesson?",
-            a: "Lessons are built for a student to work alone: a simple explanation, a worked example, an activity, then practice marked instantly with an explanation. After two misses the answer unlocks so nobody gets stuck.",
-          },
-          {
-            q: "What if they are behind in one subject?",
-            a: "You can open any grade in any subject. Nothing locks a student to a single year, so they can revise a lower grade or move ahead.",
-          },
-          {
-            q: "Can I try before subscribing?",
-            a: "Yes. The first lesson of every subject is completely free, with all of its activities, and needs no card.",
-          },
-          {
-            q: "Can I follow their progress?",
-            a: "The parent dashboard shows time spent, lessons completed and mastery per subject, for every student on your account.",
-          },
-        ];
+function Faq({ d }: { d: Dict }) {
+  const faqs = [
+    { q: d.faq.q1, a: d.faq.a1 },
+    { q: d.faq.q2, a: d.faq.a2 },
+    { q: d.faq.q3, a: d.faq.a3 },
+    { q: d.faq.q4, a: d.faq.a4 },
+    { q: d.faq.q5, a: d.faq.a5 },
+  ];
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-16 lg:py-20">
