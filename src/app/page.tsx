@@ -10,13 +10,18 @@ import { StepScene, WaveDivider, type StepTint } from "@/components/art/scenes";
 import { Icon, type IconTint } from "@/components/art/icons";
 import { GradeFinder, type FinderCurriculum } from "@/components/home/grade-finder";
 
-/** Age bands map a parent's "how old is my child" to a grade in each curriculum. */
-const AGE_STEPS: { age: string; ordinal: number; face: CastMember }[] = [
-  { age: "4-6", ordinal: 0, face: "khaled" },
-  { age: "6-8", ordinal: 1, face: "sara" },
-  { age: "8-10", ordinal: 3, face: "layla" },
-  { age: "10-12", ordinal: 5, face: "omar" },
-  { age: "12-15", ordinal: 7, face: "youssef" },
+/**
+ * Age bands map a parent's "how old is my child" to a grade in each curriculum.
+ *
+ * Each band names its own photograph, so `age` is both the label and the file:
+ * a band added here needs a matching /images/ages/age-<band>.jpg and nothing else.
+ */
+const AGE_STEPS: { age: string; ordinal: number }[] = [
+  { age: "4-6", ordinal: 0 },
+  { age: "6-8", ordinal: 1 },
+  { age: "8-10", ordinal: 3 },
+  { age: "10-12", ordinal: 5 },
+  { age: "12-15", ordinal: 7 },
 ];
 
 export default async function HomePage() {
@@ -367,13 +372,20 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
               <li key={step.age}>
                 <Link
                   href={`/grade/${grade.id}`}
-                  className="card flex w-36 flex-col items-center gap-1 px-4 py-6 transition-transform hover:-translate-y-1"
+                  className="card flex w-40 flex-col items-center p-3 pb-5 transition-transform hover:-translate-y-1"
                 >
-                  <Avatar person={step.face} className="size-20" />
-                  <span className="mt-1 font-display text-xl font-extrabold" dir="ltr">
+                  <Image
+                    src={`/images/ages/age-${step.age}.jpg`}
+                    alt=""
+                    width={800}
+                    height={800}
+                    sizes="152px"
+                    className="w-full rounded-3xl object-cover"
+                  />
+                  <span className="mt-3 font-display text-xl font-extrabold" dir="ltr">
                     {num(Number(step.age.split("-")[0]), locale)}–{num(Number(step.age.split("-")[1]), locale)}
                   </span>
-                  <span className="text-xs text-muted">{t(grade.shortTitle, locale)}</span>
+                  <span className="mt-0.5 text-xs text-muted">{t(grade.shortTitle, locale)}</span>
                 </Link>
               </li>
             );
