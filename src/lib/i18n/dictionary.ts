@@ -67,6 +67,15 @@ export const strings = {
     agesTitle: { ar: "كم عمر ابنك؟", en: "How old is your child?" },
     agesBody: { ar: "اختر العمر لتصل مباشرة إلى صفه ومواده.", en: "Pick an age to jump straight to the right grade and subjects." },
     whyTitle: { ar: "لماذا يختارنا أولياء الأمور", en: "Why parents choose us" },
+    teachersTitle: { ar: "مين اللي بيشرح لابنك؟", en: "Who teaches your child?" },
+    teachersBody: {
+      ar: "كل درس يكتبه معلم متخصص في مادته ومنهجه، ويُراجع قبل نشره. الطالب يذاكر بمفرده، لكن ما يقرؤه كتبه إنسان يعرف الصف والمنهج.",
+      en: "Every lesson is written by a teacher who specialises in that subject and curriculum, and reviewed before it goes live. A student works alone, but what they read was written by someone who knows the grade and the syllabus.",
+    },
+    teachersNote: {
+      ar: "أسماء الفريق التعليمي تُعرض هنا عند اكتمال التعاقدات.",
+      en: "The teaching team is listed here once hiring is complete.",
+    },
     voicesTitle: { ar: "كيف تبدو التجربة", en: "What the experience looks like" },
     voicesBody: {
       ar: "هذه نماذج توضيحية تبيّن شكل القسم — تُستبدل بآراء حقيقية من أولياء الأمور قبل الإطلاق.",

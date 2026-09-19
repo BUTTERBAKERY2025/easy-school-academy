@@ -4,15 +4,16 @@ import { num, t, type Locale } from "@/lib/i18n/config";
 import { catalog, catalogStats, gradesOf } from "@/lib/content";
 import { plans, currency } from "@/lib/billing/plans";
 import { Chevron } from "@/components/ui";
-import { HeroArt } from "@/components/hero-art";
+import { Avatar, type CastMember } from "@/components/art/avatar";
+import { HeroScene, StepScene, WaveDivider, type StepTint } from "@/components/art/scenes";
 
 /** Age bands map a parent's "how old is my child" to a grade in each curriculum. */
-const AGE_STEPS = [
-  { age: "4-6", ordinal: 0, glyph: "🧸" },
-  { age: "6-8", ordinal: 1, glyph: "🔤" },
-  { age: "8-10", ordinal: 3, glyph: "📗" },
-  { age: "10-12", ordinal: 5, glyph: "🧭" },
-  { age: "12-15", ordinal: 7, glyph: "🧪" },
+const AGE_STEPS: { age: string; ordinal: number; face: CastMember }[] = [
+  { age: "4-6", ordinal: 0, face: "khaled" },
+  { age: "6-8", ordinal: 1, face: "sara" },
+  { age: "8-10", ordinal: 3, face: "layla" },
+  { age: "10-12", ordinal: 5, face: "omar" },
+  { age: "12-15", ordinal: 7, face: "youssef" },
 ];
 
 export default async function HomePage() {
@@ -30,6 +31,7 @@ export default async function HomePage() {
       <InsideLesson locale={locale} d={d} />
       <Ages locale={locale} d={d} />
       <WhyUs d={d} />
+      <Teachers locale={locale} d={d} />
       <Voices locale={locale} d={d} />
       <Plans locale={locale} d={d} />
       <Faq locale={locale} d={d} />
@@ -109,7 +111,7 @@ function Hero({
         </div>
 
         <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-          <HeroArt className="h-auto w-full" />
+          <HeroScene />
           <div className="card absolute -bottom-2 start-0 flex items-center gap-2.5 px-4 py-2.5 sm:start-4">
             <span aria-hidden className="text-xl">
               🔥
@@ -121,6 +123,8 @@ function Hero({
           </div>
         </div>
       </div>
+
+      <WaveDivider className="text-surface" />
     </section>
   );
 }
@@ -206,26 +210,23 @@ function Curricula({ locale, d }: { locale: Locale; d: Dict }) {
 /* ------------------------------------------------------------- how it works */
 
 function HowItWorks({ d }: { d: Dict }) {
-  const steps = [
-    { title: d.how.step1Title, body: d.how.step1Body, glyph: "🎯", tint: "bg-brand-100 dark:bg-brand-900/40" },
-    { title: d.how.step2Title, body: d.how.step2Body, glyph: "📖", tint: "bg-sun-100 dark:bg-sun-900/40" },
-    { title: d.how.step3Title, body: d.how.step3Body, glyph: "🕹️", tint: "bg-mint-100 dark:bg-mint-900/40" },
-    { title: d.how.step4Title, body: d.how.step4Body, glyph: "🏆", tint: "bg-sky-100 dark:bg-sky-900/40" },
+  const steps: { title: string; body: string; scene: 1 | 2 | 3 | 4; tint: StepTint }[] = [
+    { title: d.how.step1Title, body: d.how.step1Body, scene: 1, tint: "brand" },
+    { title: d.how.step2Title, body: d.how.step2Body, scene: 2, tint: "sun" },
+    { title: d.how.step3Title, body: d.how.step3Body, scene: 3, tint: "mint" },
+    { title: d.how.step4Title, body: d.how.step4Body, scene: 4, tint: "sky" },
   ];
 
   return (
-    <section className="bg-surface-muted py-16 lg:py-20">
+    <section className="bg-surface-muted pt-16 lg:pt-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead title={d.home.howTitle} body={d.home.howBody} />
 
         <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (
-            <li key={step.title} className="card relative p-6 pt-10">
-              <span
-                className={`absolute -top-6 start-6 grid size-14 place-items-center rounded-2xl text-2xl ${step.tint}`}
-                aria-hidden
-              >
-                {step.glyph}
+            <li key={step.title} className="card relative p-6 pt-12">
+              <span className="absolute -top-8 start-6">
+                <StepScene step={step.scene} tint={step.tint} />
               </span>
               <span className="font-display text-sm font-extrabold text-muted">{String(index + 1).padStart(2, "0")}</span>
               <h3 className="mt-1 text-lg">{step.title}</h3>
@@ -234,6 +235,8 @@ function HowItWorks({ d }: { d: Dict }) {
           ))}
         </ol>
       </div>
+
+      <WaveDivider className="mt-16 text-surface" />
     </section>
   );
 }
@@ -283,7 +286,7 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
   const saudi = gradesOf("saudi");
 
   return (
-    <section className="bg-surface-warm py-16 lg:py-20">
+    <section className="bg-surface-warm pt-16 lg:pt-20">
       <div className="mx-auto max-w-6xl px-4">
         <SectionHead title={d.home.agesTitle} body={d.home.agesBody} />
 
@@ -297,9 +300,7 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
                   href={`/grade/${grade.id}`}
                   className="card flex w-36 flex-col items-center gap-1 px-4 py-6 transition-transform hover:-translate-y-1"
                 >
-                  <span aria-hidden className="text-3xl">
-                    {step.glyph}
-                  </span>
+                  <Avatar person={step.face} className="size-20" />
                   <span className="mt-1 font-display text-xl font-extrabold" dir="ltr">
                     {num(Number(step.age.split("-")[0]), locale)}–{num(Number(step.age.split("-")[1]), locale)}
                   </span>
@@ -310,6 +311,8 @@ function Ages({ locale, d }: { locale: Locale; d: Dict }) {
           })}
         </ul>
       </div>
+
+      <WaveDivider className="mt-16 text-surface" />
     </section>
   );
 }
@@ -345,20 +348,59 @@ function WhyUs({ d }: { d: Dict }) {
   );
 }
 
+/* ---------------------------------------------------------------- teachers */
+
+function Teachers({ locale, d }: { locale: Locale; d: Dict }) {
+  const team: { face: CastMember; subject: string; curriculum: string }[] =
+    locale === "ar"
+      ? [
+          { face: "ustadha", subject: "الرياضيات والعلوم", curriculum: "المنهج السعودي" },
+          { face: "missEmma", subject: "English Language Arts", curriculum: "المنهج الأمريكي" },
+          { face: "ustath", subject: "لغتي والدراسات الإسلامية", curriculum: "المنهج السعودي" },
+        ]
+      : [
+          { face: "ustadha", subject: "Maths and Science", curriculum: "Saudi curriculum" },
+          { face: "missEmma", subject: "English Language Arts", curriculum: "American curriculum" },
+          { face: "ustath", subject: "Arabic and Islamic Studies", curriculum: "Saudi curriculum" },
+        ];
+
+  return (
+    <section className="bg-surface-warm pt-16 lg:pt-20">
+      <div className="mx-auto max-w-6xl px-4">
+        <SectionHead title={d.home.teachersTitle} body={d.home.teachersBody} />
+
+        <ul className="mt-10 grid gap-5 sm:grid-cols-3">
+          {team.map((member) => (
+            <li key={member.subject} className="card flex flex-col items-center p-7 text-center">
+              <Avatar person={member.face} className="size-28" />
+              <p className="mt-4 font-display text-lg font-bold">{member.subject}</p>
+              <p className="mt-1 text-sm text-muted">{member.curriculum}</p>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-6 text-center text-sm text-muted">{d.home.teachersNote}</p>
+      </div>
+
+      <WaveDivider className="mt-16 text-surface-muted" />
+    </section>
+  );
+}
+
 /* ------------------------------------------------------------------ voices */
 
 function Voices({ locale, d }: { locale: Locale; d: Dict }) {
   const voices =
     locale === "ar"
       ? [
-          { quote: "ابني بقى يفتح الدرس لوحده قبل ما أفكر أذكّره.", who: "أم لطالب في الرابع الابتدائي", glyph: "👩" },
-          { quote: "التقرير الأسبوعي وفّر عليّ سؤال «ذاكرت ولا لأ؟» كل يوم.", who: "والد طالبين", glyph: "👨" },
-          { quote: "الشرح بالعربي والإنجليزي ساعد بنتي في مدرستها الدولية.", who: "أم لطالبة في Year 5", glyph: "🧕" },
+          { quote: "ابني بقى يفتح الدرس لوحده قبل ما أفكر أذكّره.", who: "أم لطالب في الرابع الابتدائي", face: "maryam" as CastMember },
+          { quote: "التقرير الأسبوعي وفّر عليّ سؤال «ذاكرت ولا لأ؟» كل يوم.", who: "والد طالبين", face: "ustath" as CastMember },
+          { quote: "الشرح بالعربي والإنجليزي ساعد بنتي في مدرستها الدولية.", who: "أم لطالبة في Year 5", face: "missEmma" as CastMember },
         ]
       : [
-          { quote: "He now opens the lesson himself before I get to remind him.", who: "Parent of a Grade 4 student", glyph: "👩" },
-          { quote: "The weekly report ended the daily 'did you study?' argument.", who: "Parent of two", glyph: "👨" },
-          { quote: "Having both languages helped my daughter at her international school.", who: "Parent of a Year 5 student", glyph: "🧕" },
+          { quote: "He now opens the lesson himself before I get to remind him.", who: "Parent of a Grade 4 student", face: "maryam" as CastMember },
+          { quote: "The weekly report ended the daily 'did you study?' argument.", who: "Parent of two", face: "ustath" as CastMember },
+          { quote: "Having both languages helped my daughter at her international school.", who: "Parent of a Year 5 student", face: "missEmma" as CastMember },
         ];
 
   return (
@@ -372,9 +414,7 @@ function Voices({ locale, d }: { locale: Locale; d: Dict }) {
               <span className="chip absolute end-5 top-5 bg-surface-muted text-[11px] text-muted">
                 {d.home.voicesPlaceholder}
               </span>
-              <span aria-hidden className="text-3xl">
-                {voice.glyph}
-              </span>
+              <Avatar person={voice.face} className="size-14" />
               <p className="mt-3 text-lg leading-relaxed">“{voice.quote}”</p>
               <p className="mt-3 text-sm text-muted">{voice.who}</p>
             </li>
