@@ -1,4 +1,4 @@
-# School On — notes for future work in this repo
+# easy school — notes for future work in this repo
 
 ## Commands
 

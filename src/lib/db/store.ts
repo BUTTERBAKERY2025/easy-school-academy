@@ -42,7 +42,7 @@ async function resolveDataDir(): Promise<string> {
     await mkdir(FALLBACK_DIR, { recursive: true });
     dataDir = FALLBACK_DIR;
     console.warn(
-      `[school-on] cannot use ${PREFERRED_DIR} (${code}); storing data in ${FALLBACK_DIR} instead. ` +
+      `[easy-school] cannot use ${PREFERRED_DIR} (${code}); storing data in ${FALLBACK_DIR} instead. ` +
         "That is per-instance and temporary — point SCHOOL_ON_DATA_DIR at a durable volume, " +
         "or replace src/lib/db/store.ts with a database, before relying on it.",
     );

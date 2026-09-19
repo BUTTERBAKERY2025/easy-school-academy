@@ -1,14 +1,322 @@
 import Link from "next/link";
 import { getI18n } from "@/lib/i18n/server";
-import { num, t } from "@/lib/i18n/config";
-import { catalog, catalogStats } from "@/lib/content";
+import { num, t, type Locale } from "@/lib/i18n/config";
+import { catalog, catalogStats, gradesOf } from "@/lib/content";
 import { plans, currency } from "@/lib/billing/plans";
-import { Chevron, SectionHeading, themeClasses } from "@/components/ui";
+import { Chevron } from "@/components/ui";
+import { HeroArt } from "@/components/hero-art";
+
+/** Age bands map a parent's "how old is my child" to a grade in each curriculum. */
+const AGE_STEPS = [
+  { age: "4-6", ordinal: 0, glyph: "🧸" },
+  { age: "6-8", ordinal: 1, glyph: "🔤" },
+  { age: "8-10", ordinal: 3, glyph: "📗" },
+  { age: "10-12", ordinal: 5, glyph: "🧭" },
+  { age: "12-15", ordinal: 7, glyph: "🧪" },
+];
 
 export default async function HomePage() {
   const { locale, d } = await getI18n();
   const stats = catalogStats();
 
+  const heroWords = splitHighlight(d.home.heroTitle, d.home.heroHighlight);
+
+  return (
+    <>
+      <Hero locale={locale} d={d} heroWords={heroWords} stats={stats} />
+      <TrustStrip d={d} locale={locale} stats={stats} />
+      <Curricula locale={locale} d={d} />
+      <HowItWorks d={d} />
+      <InsideLesson locale={locale} d={d} />
+      <Ages locale={locale} d={d} />
+      <WhyUs d={d} />
+      <Voices locale={locale} d={d} />
+      <Plans locale={locale} d={d} />
+      <Faq locale={locale} d={d} />
+      <FinalCta d={d} />
+      <StickyCta d={d} />
+    </>
+  );
+}
+
+type Dict = Awaited<ReturnType<typeof getI18n>>["d"];
+type Stats = ReturnType<typeof catalogStats>;
+
+/* --------------------------------------------------------------------- hero */
+
+function Hero({
+  locale,
+  d,
+  heroWords,
+  stats,
+}: {
+  locale: Locale;
+  d: Dict;
+  heroWords: [string, string, string];
+  stats: Stats;
+}) {
+  const [before, highlight, after] = heroWords;
+
+  return (
+    <section className="relative overflow-hidden bg-surface-warm">
+      <span aria-hidden className="blob -start-24 -top-28 size-80 bg-brand-200/50" />
+      <span aria-hidden className="blob -end-20 top-40 size-72 bg-sun-200/50" />
+
+      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-12 lg:grid-cols-[1.05fr_1fr] lg:gap-12 lg:pb-20 lg:pt-16">
+        <div className="text-center lg:text-start">
+          <span className="chip bg-mint-100 px-4 py-1.5 text-mint-800 dark:bg-mint-900/50 dark:text-mint-100">
+            🎁 {d.home.badge}
+          </span>
+
+          <h1 className="mt-5 text-4xl leading-[1.15] font-extrabold sm:text-5xl lg:text-6xl">
+            {before}
+            <span className="relative whitespace-nowrap text-brand-600 dark:text-brand-300">
+              {highlight}
+              <svg
+                aria-hidden
+                viewBox="0 0 200 14"
+                preserveAspectRatio="none"
+                className="absolute inset-x-0 -bottom-1 h-3 w-full text-sun-300"
+              >
+                <path d="M2 9c48-7 128-9 196-4" stroke="currentColor" strokeWidth="6" strokeLinecap="round" fill="none" />
+              </svg>
+            </span>
+            {after}
+          </h1>
+
+          <p className="mx-auto mt-6 max-w-xl text-lg text-muted lg:mx-0">{d.home.heroBody}</p>
+
+          <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
+            <Link href="/register" className="btn btn-coral px-7 py-3.5 text-base">
+              {d.home.ctaPrimary}
+              <Chevron />
+            </Link>
+            <Link href="/curricula" className="btn btn-ghost px-7 py-3.5 text-base">
+              {d.home.ctaSecondary}
+            </Link>
+          </div>
+
+          <ul className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold text-muted lg:justify-start">
+            {[d.home.trustAges, d.home.trustSelf, d.home.trustBilingual].map((item) => (
+              <li key={item} className="flex items-center gap-1.5">
+                <span aria-hidden className="text-mint-500">
+                  ✓
+                </span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+          <HeroArt className="h-auto w-full" />
+          <div className="card absolute -bottom-2 start-0 flex items-center gap-2.5 px-4 py-2.5 sm:start-4">
+            <span aria-hidden className="text-xl">
+              🔥
+            </span>
+            <span className="text-sm leading-tight">
+              <span className="block font-extrabold">{num(stats.lessons, locale)}</span>
+              <span className="block text-xs text-muted">{d.home.statLessons}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------- trust strip */
+
+function TrustStrip({ d, locale, stats }: { d: Dict; locale: Locale; stats: Stats }) {
+  const items = [
+    { value: stats.curricula, label: d.home.statCurricula, glyph: "🌍" },
+    { value: stats.grades, label: d.home.statGrades, glyph: "🎒" },
+    { value: stats.subjects, label: d.home.statSubjects, glyph: "📚" },
+    { value: stats.lessons, label: d.home.statLessons, glyph: "✨" },
+  ];
+
+  return (
+    <section className="border-y border-line bg-surface">
+      <dl className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 sm:grid-cols-4">
+        {items.map((item) => (
+          <div key={item.label} className="text-center">
+            <dt className="sr-only">{item.label}</dt>
+            <dd>
+              <span aria-hidden className="text-2xl">
+                {item.glyph}
+              </span>
+              <span className="mt-1 block font-display text-3xl font-extrabold">{num(item.value, locale)}</span>
+              <span className="block text-sm text-muted">{item.label}</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  );
+}
+
+/* ---------------------------------------------------------------- curricula */
+
+function Curricula({ locale, d }: { locale: Locale; d: Dict }) {
+  const tints = ["bg-brand-50 dark:bg-brand-900/25", "bg-sun-50 dark:bg-sun-900/25", "bg-mint-50 dark:bg-mint-900/25"];
+
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-16 lg:py-20">
+      <SectionHead title={d.home.curriculaTitle} body={d.home.curriculaBody} />
+
+      <div className="mt-10 grid gap-6 md:grid-cols-3">
+        {catalog.map((curriculum, index) => {
+          const grades = gradesOf(curriculum.id);
+          return (
+            <Link
+              key={curriculum.id}
+              href={`/curricula/${curriculum.id}`}
+              className="card group relative overflow-hidden p-7 transition-transform hover:-translate-y-1.5"
+            >
+              <span aria-hidden className={`absolute -end-8 -top-8 size-28 rounded-full ${tints[index % tints.length]}`} />
+              <span className="relative text-5xl">{curriculum.flag}</span>
+              <h3 className="relative mt-4 text-xl">{t(curriculum.title, locale)}</h3>
+              <p className="relative mt-2 text-sm text-muted">{t(curriculum.origin, locale)}</p>
+
+              <ul className="relative mt-5 flex flex-wrap gap-1.5">
+                {grades.slice(0, 6).map((grade) => (
+                  <li key={grade.id} className="chip border border-line bg-surface text-xs">
+                    {t(grade.shortTitle, locale)}
+                  </li>
+                ))}
+                {grades.length > 6 ? (
+                  <li dir="ltr" className="chip bg-surface-muted text-xs text-muted">
+                    +{num(grades.length - 6, locale)}
+                  </li>
+                ) : null}
+              </ul>
+
+              <p className="relative mt-6 flex items-center gap-1 font-bold text-brand-600 dark:text-brand-300">
+                {d.home.curriculaOpen}
+                <Chevron className="transition-transform group-hover:translate-x-1" />
+              </p>
+            </Link>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------- how it works */
+
+function HowItWorks({ d }: { d: Dict }) {
+  const steps = [
+    { title: d.how.step1Title, body: d.how.step1Body, glyph: "🎯", tint: "bg-brand-100 dark:bg-brand-900/40" },
+    { title: d.how.step2Title, body: d.how.step2Body, glyph: "📖", tint: "bg-sun-100 dark:bg-sun-900/40" },
+    { title: d.how.step3Title, body: d.how.step3Body, glyph: "🕹️", tint: "bg-mint-100 dark:bg-mint-900/40" },
+    { title: d.how.step4Title, body: d.how.step4Body, glyph: "🏆", tint: "bg-sky-100 dark:bg-sky-900/40" },
+  ];
+
+  return (
+    <section className="bg-surface-muted py-16 lg:py-20">
+      <div className="mx-auto max-w-6xl px-4">
+        <SectionHead title={d.home.howTitle} body={d.home.howBody} />
+
+        <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((step, index) => (
+            <li key={step.title} className="card relative p-6 pt-10">
+              <span
+                className={`absolute -top-6 start-6 grid size-14 place-items-center rounded-2xl text-2xl ${step.tint}`}
+                aria-hidden
+              >
+                {step.glyph}
+              </span>
+              <span className="font-display text-sm font-extrabold text-muted">{String(index + 1).padStart(2, "0")}</span>
+              <h3 className="mt-1 text-lg">{step.title}</h3>
+              <p className="mt-2 text-sm text-muted">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+/* ----------------------------------------------------------- inside a lesson */
+
+function InsideLesson({ locale, d }: { locale: Locale; d: Dict }) {
+  const kinds =
+    locale === "ar"
+      ? ["اختيار من متعدد", "إجابات متعددة", "صح وخطأ", "ملء الفراغات", "توصيل", "ترتيب", "تصنيف"]
+      : ["Multiple choice", "Multiple answers", "True or false", "Fill the blanks", "Matching", "Ordering", "Sorting"];
+  const glyphs = ["🔘", "☑️", "⚖️", "✍️", "🔗", "🔢", "🗂️"];
+
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-16 lg:py-20">
+      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+        <div>
+          <h2 className="text-3xl sm:text-4xl">{d.home.insideTitle}</h2>
+          <p className="mt-4 text-lg text-muted">{d.home.insideBody}</p>
+          <Link href="/how-it-works" className="btn btn-primary mt-7 px-6 py-3">
+            {d.home.insideCta}
+            <Chevron />
+          </Link>
+        </div>
+
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+          {kinds.map((kind, index) => (
+            <li
+              key={kind}
+              className="card flex flex-col items-center gap-2 px-3 py-5 text-center text-sm font-semibold"
+            >
+              <span aria-hidden className="text-2xl">
+                {glyphs[index]}
+              </span>
+              {kind}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ----------------------------------------------------------------- age strip */
+
+function Ages({ locale, d }: { locale: Locale; d: Dict }) {
+  const saudi = gradesOf("saudi");
+
+  return (
+    <section className="bg-surface-warm py-16 lg:py-20">
+      <div className="mx-auto max-w-6xl px-4">
+        <SectionHead title={d.home.agesTitle} body={d.home.agesBody} />
+
+        <ul className="mt-10 flex flex-wrap justify-center gap-4">
+          {AGE_STEPS.map((step) => {
+            const grade = saudi.find((candidate) => candidate.ordinal === step.ordinal);
+            if (!grade) return null;
+            return (
+              <li key={step.age}>
+                <Link
+                  href={`/grade/${grade.id}`}
+                  className="card flex w-36 flex-col items-center gap-1 px-4 py-6 transition-transform hover:-translate-y-1"
+                >
+                  <span aria-hidden className="text-3xl">
+                    {step.glyph}
+                  </span>
+                  <span className="mt-1 font-display text-xl font-extrabold" dir="ltr">
+                    {num(Number(step.age.split("-")[0]), locale)}–{num(Number(step.age.split("-")[1]), locale)}
+                  </span>
+                  <span className="text-xs text-muted">{t(grade.shortTitle, locale)}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* --------------------------------------------------------------------- why */
+
+function WhyUs({ d }: { d: Dict }) {
   const features = [
     { glyph: "📖", title: d.features.textbookTitle, body: d.features.textbookBody },
     { glyph: "🕹️", title: d.features.interactiveTitle, body: d.features.interactiveBody },
@@ -18,217 +326,233 @@ export default async function HomePage() {
     { glyph: "🗓️", title: d.features.pacingTitle, body: d.features.pacingBody },
   ];
 
-  const steps = [
-    { title: d.how.step1Title, body: d.how.step1Body },
-    { title: d.how.step2Title, body: d.how.step2Body },
-    { title: d.how.step3Title, body: d.how.step3Body },
-    { title: d.how.step4Title, body: d.how.step4Body },
-  ];
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-16 lg:py-20">
+      <SectionHead title={d.home.whyTitle} />
 
-  const faqs =
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {features.map((feature) => (
+          <article key={feature.title} className="rounded-4xl border border-line bg-surface p-6">
+            <span aria-hidden className="text-3xl">
+              {feature.glyph}
+            </span>
+            <h3 className="mt-3 text-lg">{feature.title}</h3>
+            <p className="mt-2 text-sm text-muted">{feature.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ voices */
+
+function Voices({ locale, d }: { locale: Locale; d: Dict }) {
+  const voices =
     locale === "ar"
       ? [
-          { q: "هل المحتوى مطابق لمنهج مدرسة ابني؟", a: "الوحدات والدروس مبنية على النطاق والتسلسل الرسمي لكل منهج، فتجد أسماء الصفوف والمواد والوحدات كما هي في المدرسة، وتقدر تتابع درسًا بدرس." },
-          { q: "هل يحتاج الطفل لمساعدتي أثناء الدرس؟", a: "الدرس مصمم ليعمل عليه الطالب وحده: شرح مبسّط، ثم مثال محلول، ثم نشاط، ثم تمرين يُصحَّح فورًا مع تفسير الإجابة." },
-          { q: "ماذا لو كان ابني في صف ومستواه في مادة أقل؟", a: "تقدر تفتح أي صف في أي مادة، فالمنصة لا تقيّدك بصف واحد، ويستطيع الطالب مراجعة صف سابق أو التقدم لصف أعلى." },
-          { q: "هل أستطيع التجربة قبل الاشتراك؟", a: "نعم. أول درس في كل مادة مجاني بالكامل بكل أنشطته، ولا يحتاج بطاقة." },
+          { quote: "ابني بقى يفتح الدرس لوحده قبل ما أفكر أذكّره.", who: "أم لطالب في الرابع الابتدائي", glyph: "👩" },
+          { quote: "التقرير الأسبوعي وفّر عليّ سؤال «ذاكرت ولا لأ؟» كل يوم.", who: "والد طالبين", glyph: "👨" },
+          { quote: "الشرح بالعربي والإنجليزي ساعد بنتي في مدرستها الدولية.", who: "أم لطالبة في Year 5", glyph: "🧕" },
         ]
       : [
-          { q: "Does this match my child's school curriculum?", a: "Units and lessons follow the official scope and sequence of each curriculum, using the same grade, subject and unit names, so a student can follow along lesson by lesson." },
-          { q: "Does my child need my help during a lesson?", a: "Lessons are built for the student to work alone: a simple explanation, a worked example, an activity, then practice graded instantly with an explanation." },
-          { q: "What if my child is behind in one subject?", a: "You can open any grade in any subject. Nothing locks a student to a single year, so they can revise a lower grade or move ahead." },
-          { q: "Can I try before subscribing?", a: "Yes. The first lesson of every subject is completely free, with all of its activities, and needs no card." },
+          { quote: "He now opens the lesson himself before I get to remind him.", who: "Parent of a Grade 4 student", glyph: "👩" },
+          { quote: "The weekly report ended the daily 'did you study?' argument.", who: "Parent of two", glyph: "👨" },
+          { quote: "Having both languages helped my daughter at her international school.", who: "Parent of a Year 5 student", glyph: "🧕" },
         ];
 
   return (
-    <>
-      {/* hero */}
-      <section className="relative overflow-hidden border-b border-line">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_70%_0%,var(--color-brand-100),transparent),radial-gradient(50%_50%_at_10%_20%,var(--color-sun-100),transparent)] opacity-70 dark:opacity-20"
-        />
-        <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 lg:grid-cols-2 lg:py-24">
-          <div>
-            <span className="chip bg-sun-100 text-sun-800 dark:bg-sun-900/50 dark:text-sun-100">
-              ✨ {d.home.eyebrow}
-            </span>
-            <h1 className="mt-4 text-3xl font-extrabold leading-tight sm:text-5xl">{d.home.heroTitle}</h1>
-            <p className="mt-5 text-lg text-muted">{d.home.heroBody}</p>
+    <section className="bg-surface-muted py-16 lg:py-20">
+      <div className="mx-auto max-w-6xl px-4">
+        <SectionHead title={d.home.voicesTitle} body={d.home.voicesBody} />
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/register" className="btn btn-primary px-6 py-3 text-base">
-                {d.home.ctaPrimary}
-                <Chevron />
-              </Link>
-              <Link href="/curricula" className="btn btn-ghost px-6 py-3 text-base">
-                {d.home.ctaSecondary}
-              </Link>
-            </div>
-
-            <dl className="mt-10 grid max-w-md grid-cols-3 gap-4">
-              <div>
-                <dt className="text-xs text-muted">{d.home.statLessons}</dt>
-                <dd className="text-2xl font-extrabold">{num(stats.lessons, locale)}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted">{d.home.statSubjects}</dt>
-                <dd className="text-2xl font-extrabold">{num(stats.subjects, locale)}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted">{d.home.statGrades}</dt>
-                <dd className="text-2xl font-extrabold">{num(stats.grades, locale)}</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div className="card p-6">
-            <p className="text-sm font-semibold text-muted">{d.dashboard.todaysPlan}</p>
-            <ul className="mt-4 space-y-3">
-              {[
-                { glyph: "📐", title: locale === "ar" ? "الرياضيات — جمع الكسور المتشابهة" : "Maths — adding like fractions", meta: "22 " + d.common.minutes, done: true },
-                { glyph: "🔬", title: locale === "ar" ? "العلوم — الخلية وعضياتها" : "Science — cells and organelles", meta: "26 " + d.common.minutes, done: false },
-                { glyph: "✒️", title: locale === "ar" ? "لغتي — أنواع النصوص" : "Arabic — text types", meta: "20 " + d.common.minutes, done: false },
-              ].map((item) => (
-                <li key={item.title} className="flex items-center gap-3 rounded-2xl border border-line bg-surface-muted p-3">
-                  <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-surface text-xl" aria-hidden>
-                    {item.glyph}
-                  </span>
-                  <span className="flex-1">
-                    <span className="block font-semibold">{item.title}</span>
-                    <span className="block text-xs text-muted">{item.meta}</span>
-                  </span>
-                  <span aria-hidden className="text-lg">
-                    {item.done ? "✅" : "▶️"}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 flex items-center justify-between rounded-2xl bg-brand-600 p-4 text-white">
-              <span className="text-sm">🔥 5 {d.dashboard.streak}</span>
-              <span className="text-sm font-bold">420 XP</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* curricula */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <SectionHeading title={d.home.curriculaTitle} body={d.home.curriculaBody} />
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {catalog.map((curriculum) => {
-            const gradeCount = curriculum.stages.reduce((total, stage) => total + stage.grades.length, 0);
-            return (
-              <Link
-                key={curriculum.id}
-                href={`/curricula/${curriculum.id}`}
-                className="card group p-6 transition-transform hover:-translate-y-1"
-              >
-                <span className="text-4xl" aria-hidden>
-                  {curriculum.flag}
-                </span>
-                <h3 className="mt-3 text-xl font-bold">{t(curriculum.title, locale)}</h3>
-                <p className="mt-2 text-sm text-muted">{t(curriculum.description, locale)}</p>
-                <ul className="mt-4 space-y-1.5 text-sm">
-                  {curriculum.highlights.map((highlight, index) => (
-                    <li key={index} className="flex gap-2">
-                      <span aria-hidden className={themeClasses[curriculum.theme].chip + " chip"}>
-                        ✓
-                      </span>
-                      <span>{t(highlight, locale)}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-5 flex items-center gap-1 text-sm font-semibold text-brand-600 dark:text-brand-300">
-                  {num(gradeCount, locale)} {d.curricula.grades}
-                  <Chevron className="transition-transform group-hover:translate-x-1" />
-                </p>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* features */}
-      <section className="border-y border-line bg-surface-muted">
-        <div className="mx-auto max-w-6xl px-4 py-16">
-          <SectionHeading title={d.home.featuresTitle} />
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature) => (
-              <article key={feature.title} className="card p-6">
-                <span className="text-3xl" aria-hidden>
-                  {feature.glyph}
-                </span>
-                <h3 className="mt-3 text-lg font-bold">{feature.title}</h3>
-                <p className="mt-2 text-sm text-muted">{feature.body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* how it works */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <SectionHeading title={d.home.howTitle} />
-        <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, index) => (
-            <li key={step.title} className="card p-6">
-              <span className="grid size-10 place-items-center rounded-2xl bg-brand-600 text-lg font-bold text-white">
-                {index + 1}
+        <ul className="mt-10 grid gap-5 md:grid-cols-3">
+          {voices.map((voice) => (
+            <li key={voice.who} className="card relative p-6">
+              <span className="chip absolute end-5 top-5 bg-surface-muted text-[11px] text-muted">
+                {d.home.voicesPlaceholder}
               </span>
-              <h3 className="mt-3 text-lg font-bold">{step.title}</h3>
-              <p className="mt-2 text-sm text-muted">{step.body}</p>
+              <span aria-hidden className="text-3xl">
+                {voice.glyph}
+              </span>
+              <p className="mt-3 text-lg leading-relaxed">“{voice.quote}”</p>
+              <p className="mt-3 text-sm text-muted">{voice.who}</p>
             </li>
           ))}
-        </ol>
-      </section>
+        </ul>
+      </div>
+    </section>
+  );
+}
 
-      {/* plans */}
-      <section className="border-y border-line bg-surface-muted">
-        <div className="mx-auto max-w-6xl px-4 py-16">
-          <SectionHeading title={d.home.plansTitle} body={d.pricing.subtitle} />
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {plans.map((plan) => (
-              <article key={plan.id} className={`card p-6 ${plan.popular ? "ring-2 ring-brand-400" : ""}`}>
-                {plan.popular ? <span className="chip bg-brand-600 text-white">{d.pricing.popular}</span> : null}
-                <h3 className="mt-2 text-xl font-bold">{t(plan.title, locale)}</h3>
-                <p className="text-sm text-muted">{t(plan.tagline, locale)}</p>
-                <p className="mt-4 text-3xl font-extrabold">
-                  {plan.monthly}
-                  <span className="text-base font-medium text-muted">
-                    {" "}
-                    {t(currency, locale)} {d.pricing.perMonth}
-                  </span>
-                </p>
-                <Link href="/pricing" className="btn btn-primary mt-5 w-full">
-                  {d.pricing.choose}
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+/* ------------------------------------------------------------------- plans */
 
-      {/* faq */}
-      <section className="mx-auto max-w-3xl px-4 py-16">
-        <SectionHeading title={d.home.faqTitle} />
-        <div className="mt-8 space-y-3">
-          {faqs.map((faq) => (
-            <details key={faq.q} className="card p-5">
-              <summary className="cursor-pointer font-bold">{faq.q}</summary>
-              <p className="mt-3 text-muted">{faq.a}</p>
-            </details>
-          ))}
-        </div>
+function Plans({ locale, d }: { locale: Locale; d: Dict }) {
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-16 lg:py-20">
+      <SectionHead title={d.home.plansTitle} body={d.home.plansBody} />
 
-        <div className="card mt-12 bg-brand-600 p-8 text-center text-white">
-          <h2 className="text-2xl font-bold">{d.home.ctaPrimary}</h2>
-          <p className="mt-2 text-brand-100">{d.pricing.guarantee}</p>
-          <Link href="/register" className="btn btn-sun mt-6 px-6 py-3 text-base">
-            {d.nav.register}
+      <div className="mt-10 grid gap-5 md:grid-cols-3">
+        {plans.map((plan) => (
+          <article
+            key={plan.id}
+            className={`card flex flex-col p-7 ${plan.popular ? "ring-2 ring-brand-400" : ""}`}
+          >
+            {plan.popular ? <span className="chip w-fit bg-brand-600 text-white">{d.pricing.popular}</span> : null}
+            <h3 className="mt-2 text-xl">{t(plan.title, locale)}</h3>
+            <p className="mt-1 text-sm text-muted">{t(plan.tagline, locale)}</p>
+            <p className="mt-5 font-display text-4xl font-extrabold">
+              {num(plan.monthly, locale)}
+              <span className="font-sans text-base font-medium text-muted">
+                {" "}
+                {t(currency, locale)} {d.pricing.perMonth}
+              </span>
+            </p>
+            <Link
+              href="/pricing"
+              className={`btn mt-6 w-full ${plan.popular ? "btn-coral" : "btn-ghost"}`}
+            >
+              {d.pricing.choose}
+            </Link>
+          </article>
+        ))}
+      </div>
+
+      <p className="mt-8 text-center">
+        <Link href="/pricing" className="font-bold text-brand-600 underline dark:text-brand-300">
+          {d.home.plansCta}
+        </Link>
+      </p>
+    </section>
+  );
+}
+
+/* --------------------------------------------------------------------- faq */
+
+function Faq({ locale, d }: { locale: Locale; d: Dict }) {
+  const faqs =
+    locale === "ar"
+      ? [
+          {
+            q: "هل المحتوى مطابق لمنهج مدرسة ابني؟",
+            a: "الوحدات والدروس مبنية على النطاق والتسلسل الرسمي لكل منهج، بأسماء الصفوف والمواد والوحدات كما هي في المدرسة، فيقدر الطالب يتابع درسًا بدرس.",
+          },
+          {
+            q: "هل يحتاج ابني لمساعدتي أثناء الدرس؟",
+            a: "الدرس مصمم ليعمل عليه الطالب وحده: شرح مبسّط، ثم مثال محلول، ثم نشاط، ثم تمرين يُصحَّح فورًا مع تفسير الإجابة. وبعد محاولتين خاطئتين يظهر «أظهر الحل» حتى لا يعلق.",
+          },
+          {
+            q: "ماذا لو كان مستواه في مادة أقل من صفه؟",
+            a: "تقدر تفتح أي صف في أي مادة. المنصة لا تقيّدك بصف واحد، فيراجع صفًا سابقًا أو يتقدم لأعلى حسب مستواه.",
+          },
+          {
+            q: "هل أستطيع التجربة قبل الاشتراك؟",
+            a: "نعم. أول درس في كل مادة مجاني بالكامل بكل أنشطته، ولا يحتاج بطاقة بنكية.",
+          },
+          {
+            q: "هل أتابع تقدّمه؟",
+            a: "لوحة ولي الأمر تعرض الوقت المستغرق والدروس المنجزة ونسبة الإتقان لكل مادة، ولكل طالب في حسابك.",
+          },
+        ]
+      : [
+          {
+            q: "Does this match my child's school curriculum?",
+            a: "Units and lessons follow the official scope and sequence of each curriculum, using the same grade, subject and unit names, so a student can follow along lesson by lesson.",
+          },
+          {
+            q: "Does my child need my help during a lesson?",
+            a: "Lessons are built for a student to work alone: a simple explanation, a worked example, an activity, then practice marked instantly with an explanation. After two misses the answer unlocks so nobody gets stuck.",
+          },
+          {
+            q: "What if they are behind in one subject?",
+            a: "You can open any grade in any subject. Nothing locks a student to a single year, so they can revise a lower grade or move ahead.",
+          },
+          {
+            q: "Can I try before subscribing?",
+            a: "Yes. The first lesson of every subject is completely free, with all of its activities, and needs no card.",
+          },
+          {
+            q: "Can I follow their progress?",
+            a: "The parent dashboard shows time spent, lessons completed and mastery per subject, for every student on your account.",
+          },
+        ];
+
+  return (
+    <section className="mx-auto max-w-3xl px-4 py-16 lg:py-20">
+      <SectionHead title={d.home.faqTitle} />
+
+      <div className="mt-8 space-y-3">
+        {faqs.map((faq) => (
+          <details key={faq.q} className="card group p-5 open:bg-surface-muted">
+            <summary className="flex cursor-pointer items-center justify-between gap-3 font-bold marker:content-['']">
+              {faq.q}
+              <span aria-hidden className="shrink-0 text-xl text-brand-500 transition-transform group-open:rotate-45">
+                +
+              </span>
+            </summary>
+            <p className="mt-3 text-muted">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* --------------------------------------------------------------- final cta */
+
+function FinalCta({ d }: { d: Dict }) {
+  return (
+    <section className="px-4 pb-20 lg:pb-24">
+      <div className="relative mx-auto max-w-5xl overflow-hidden rounded-5xl bg-brand-600 px-6 py-14 text-center text-white">
+        <span aria-hidden className="blob -start-10 -top-10 size-52 bg-brand-400/50" />
+        <span aria-hidden className="blob -end-8 -bottom-12 size-56 bg-sun-400/30" />
+
+        <div className="relative">
+          <h2 className="text-3xl sm:text-4xl">{d.home.finalTitle}</h2>
+          <p className="mx-auto mt-4 max-w-xl text-brand-100">{d.home.finalBody}</p>
+          <Link href="/register" className="btn btn-sun mt-8 px-8 py-4 text-base">
+            {d.home.ctaPrimary}
+            <Chevron />
           </Link>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
+}
+
+/* -------------------------------------------------------------- sticky cta */
+
+function StickyCta({ d }: { d: Dict }) {
+  return (
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 p-3 sm:hidden">
+      <Link
+        href="/register"
+        className="btn btn-coral pointer-events-auto w-full py-3.5 text-base shadow-lg"
+      >
+        {d.home.stickyCta}
+        <Chevron />
+      </Link>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ shared */
+
+function SectionHead({ title, body }: { title: string; body?: string }) {
+  return (
+    <header className="mx-auto max-w-2xl text-center">
+      <h2 className="text-3xl sm:text-4xl">{title}</h2>
+      {body ? <p className="mt-4 text-lg text-muted">{body}</p> : null}
+    </header>
+  );
+}
+
+/**
+ * Splits the headline around its highlighted phrase so the underline decoration
+ * can wrap only that phrase, in whichever language is showing.
+ */
+function splitHighlight(title: string, highlight: string): [string, string, string] {
+  const at = title.lastIndexOf(highlight);
+  if (at === -1) return ["", title, ""];
+  return [title.slice(0, at), highlight, title.slice(at + highlight.length)];
 }

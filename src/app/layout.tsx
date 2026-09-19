@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo } from "next/font/google";
+import { Baloo_Bhaijaan_2, Cairo } from "next/font/google";
 import { getI18n } from "@/lib/i18n/server";
 import { I18nProvider } from "@/lib/i18n/client";
 import { localeMeta } from "@/lib/i18n/config";
@@ -14,19 +14,27 @@ const appSans = Cairo({
   display: "swap",
 });
 
+/** A rounded display face for headings — friendly for children, and it covers Arabic. */
+const appDisplay = Baloo_Bhaijaan_2({
+  variable: "--font-app-display",
+  subsets: ["arabic", "latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "أكاديمية سكول أون | School On Academy",
-    template: "%s · School On",
+    default: "أكاديمية إيزي سكول | easy school academy",
+    template: "%s · easy school",
   },
   description:
-    "منصة تعليمية تفاعلية تدرّس المنهج الأمريكي والبريطاني والسعودي من الروضة حتى الصف الثالث المتوسط.",
+    "أكاديمية إيزي سكول: منصة تعليمية تفاعلية تدرّس المنهج الأمريكي والبريطاني والسعودي من الروضة حتى الصف الثالث المتوسط.",
 };
 
 export const viewport: Viewport = {
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d0f1c" },
+    { media: "(prefers-color-scheme: dark)", color: "#140f2b" },
   ],
 };
 
@@ -35,7 +43,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const meta = localeMeta[locale];
 
   return (
-    <html lang={meta.htmlLang} dir={meta.dir} className={`${appSans.variable} h-full`}>
+    <html lang={meta.htmlLang} dir={meta.dir} className={`${appSans.variable} ${appDisplay.variable} h-full`}>
       <body className="font-sans min-h-full flex flex-col bg-surface text-body">
         <I18nProvider locale={locale}>
           <SiteHeader />

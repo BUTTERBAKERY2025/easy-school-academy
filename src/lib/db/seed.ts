@@ -22,7 +22,7 @@ const seedUsers: SeedUser[] = [
   {
     id: "usr_demo_student",
     name: "سلمى أحمد",
-    email: "student@school-on.test",
+    email: "student@easyschool.test",
     role: "student",
     curriculumId: "saudi",
     gradeId: "saudi-g4",
@@ -35,7 +35,7 @@ const seedUsers: SeedUser[] = [
   {
     id: "usr_demo_student2",
     name: "Omar Ahmed",
-    email: "student2@school-on.test",
+    email: "student2@easyschool.test",
     role: "student",
     curriculumId: "american",
     gradeId: "american-g4",
@@ -48,7 +48,7 @@ const seedUsers: SeedUser[] = [
   {
     id: "usr_demo_parent",
     name: "أحمد المطيري",
-    email: "parent@school-on.test",
+    email: "parent@easyschool.test",
     role: "parent",
     xp: 0,
     streakDays: 0,
@@ -57,7 +57,7 @@ const seedUsers: SeedUser[] = [
   {
     id: "usr_demo_teacher",
     name: "الأستاذة هدى",
-    email: "teacher@school-on.test",
+    email: "teacher@easyschool.test",
     role: "teacher",
     teachingGradeIds: ["saudi-g4", "american-g4"],
     xp: 0,
@@ -66,8 +66,8 @@ const seedUsers: SeedUser[] = [
   },
   {
     id: "usr_demo_admin",
-    name: "School On Admin",
-    email: "admin@school-on.test",
+    name: "easy school admin",
+    email: "admin@easyschool.test",
     role: "admin",
     xp: 0,
     streakDays: 0,

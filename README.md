@@ -1,4 +1,4 @@
-# سكول أون · School On Academy
+# إيزي سكول · easy school academy
 
 منصة تعليمية تفاعلية تدرّس **المنهج الأمريكي والبريطاني والسعودي** من الروضة حتى الصف الثالث المتوسط،
 بواجهة عربية (RTL) وإنجليزية، ودروس مبنية على نطاق المنهج وتسلسله، مع اشتراكات ومتابعة لولي الأمر والمعلم.
@@ -29,11 +29,11 @@ npm run dev          # http://localhost:3000
 
 | البريد | الدور |
 | --- | --- |
-| `student@school-on.test` | طالبة — المنهج السعودي، الصف الرابع |
-| `student2@school-on.test` | طالب — المنهج الأمريكي، Grade 4 |
-| `parent@school-on.test` | ولي أمر (اشتراك عائلي فعّال) |
-| `teacher@school-on.test` | معلمة |
-| `admin@school-on.test` | إدارة |
+| `student@easyschool.test` | طالبة — المنهج السعودي، الصف الرابع |
+| `student2@easyschool.test` | طالب — المنهج الأمريكي، Grade 4 |
+| `parent@easyschool.test` | ولي أمر (اشتراك عائلي فعّال) |
+| `teacher@easyschool.test` | معلمة |
+| `admin@easyschool.test` | إدارة |
 
 ---
 
