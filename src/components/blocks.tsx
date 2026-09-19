@@ -5,6 +5,7 @@ import type { Block } from "@/lib/content/types";
 import { t, type Locale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/client";
 import { VisualView } from "./visual";
+import { FlowerDiagram, LifeCycleDiagram } from "./art/diagrams";
 
 /** Renders the teaching (non-question) half of a lesson. */
 export function TeachingBlock({ block, locale }: { block: Block; locale: Locale }) {
@@ -83,6 +84,9 @@ export function TeachingBlock({ block, locale }: { block: Block; locale: Locale 
 
     case "checklist":
       return <Checklist block={block} locale={locale} />;
+
+    case "diagram":
+      return <Diagram block={block} locale={locale} />;
 
     case "summary":
       return (
@@ -239,6 +243,68 @@ function Checklist({ block, locale }: { block: Extract<Block, { kind: "checklist
           );
         })}
       </ul>
+    </section>
+  );
+}
+
+/**
+ * A labelled figure and its explanations, working as one.
+ *
+ * The drawing and the list of parts are two views of the same choice: touching
+ * a part of the flower selects its label, and choosing a label lights up that
+ * part. Everything else dims, so "where is the ovary" has an answer you can see
+ * rather than one you have to find. Nothing is marked — this is the page, not a
+ * question about it.
+ */
+function Diagram({ block, locale }: { block: Extract<Block, { kind: "diagram" }>; locale: Locale }) {
+  const [active, setActive] = useState<string | undefined>(undefined);
+  const { d } = useI18n();
+
+  const labels = Object.fromEntries(block.parts.map((part) => [part.id, t(part.term, locale)]));
+  const chosen = block.parts.find((part) => part.id === active);
+  const Art = block.art === "flower" ? FlowerDiagram : LifeCycleDiagram;
+
+  return (
+    <section className="space-y-3">
+      <h2 className="text-xl font-bold sm:text-2xl">{t(block.title, locale)}</h2>
+      {block.intro ? <p className="text-lg leading-relaxed text-body/90">{t(block.intro, locale)}</p> : null}
+
+      <div className="grid gap-4 rounded-3xl border border-line bg-surface-muted p-4 sm:grid-cols-[minmax(0,1fr)_minmax(0,14rem)]">
+        <div className="self-center">
+          <Art active={active} onSelect={(part) => setActive(part === active ? undefined : part)} labels={labels} />
+        </div>
+
+        <div>
+          <p className="text-xs font-semibold text-muted">{d.lesson.diagramPrompt}</p>
+          <ul className="mt-2 space-y-1.5">
+            {block.parts.map((part) => (
+              <li key={part.id}>
+                <button
+                  type="button"
+                  aria-pressed={active === part.id}
+                  onClick={() => setActive(part.id === active ? undefined : part.id)}
+                  className={`w-full rounded-2xl border px-3 py-2 text-start text-sm font-semibold transition-colors ${
+                    active === part.id
+                      ? "border-brand-400 bg-brand-500 text-white"
+                      : "border-line bg-surface hover:bg-brand-50 dark:hover:bg-brand-900/30"
+                  }`}
+                >
+                  {t(part.term, locale)}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <p
+        role="status"
+        className={`min-h-20 rounded-2xl p-4 text-lg leading-relaxed ${
+          chosen ? "bg-brand-50 dark:bg-brand-900/30" : "bg-surface-muted text-muted"
+        }`}
+      >
+        {chosen ? t(chosen.body, locale) : d.lesson.diagramPrompt}
+      </p>
     </section>
   );
 }

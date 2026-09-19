@@ -185,6 +185,7 @@ export const strings = {
     previous: { ar: "السابق", en: "Back" },
     check: { ar: "تحقق من الإجابة", en: "Check answer" },
     activity: { ar: "نشاط عملي", en: "Practical activity" },
+    diagramPrompt: { ar: "اختر جزءًا", en: "Choose a part" },
     youWillNeed: { ar: "ستحتاج إلى", en: "You will need" },
     checklistPrompt: {
       ar: "علّم ما تستطيع فعله الآن. هذه لك وحدك — لا تُحفظ ولا تُحتسب.",

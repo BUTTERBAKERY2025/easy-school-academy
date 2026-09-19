@@ -100,6 +100,12 @@ options.
   title, objectives and body render in it (with that language's `dir`, or English comes out
   right-to-left) while the navigation and buttons stay in the reader's own. A reader whose language
   differs gets a support toggle inside the player, off by default and remembered per device.
+- **Figures are drawn and answer questions.** A `diagram` block names one of the drawings in
+  `components/art/diagrams.tsx` (`flower`, `life-cycle`) and labels its parts. Each part carries its
+  name and a leader line on the drawing itself, as a printed figure does; choosing a part — on the
+  drawing or in the list — lights it up, dims the rest and explains it, which is the one thing a
+  printed figure cannot do. `lib/content/diagrams.ts` holds the part ids each art has, and the
+  validator fails a label naming a part the drawing lacks **or** a drawn part nothing labels.
 - **A lesson covers its whole page, not a corner of it.** Where a course is aligned, the lesson is
   written against everything that page teaches, and carries the shape a primary science lesson has:
   a `callout` to settle in, `vocab`, the reading, an `activity` for practical work away from the

@@ -1,5 +1,6 @@
 import type { Localized } from "@/lib/i18n/config";
 import type { Book } from "./books";
+import type { DiagramArt } from "./diagrams";
 
 /* ------------------------------------------------------------------ visuals */
 
@@ -44,6 +45,22 @@ export type Block =
       /** Shown in its own band — handling, sharp edges, washing hands. */
       safety?: Localized;
       steps: Localized[];
+    }
+  /**
+   * A labelled figure the child can interrogate.
+   *
+   * The page's diagram, except that it knows which part is which: choosing a
+   * label lights that part up in the drawing and explains it, which is the one
+   * thing a printed figure cannot do.
+   */
+  | {
+      kind: "diagram";
+      id: string;
+      title: Localized;
+      art: DiagramArt;
+      intro?: Localized;
+      /** One per part; every `id` must be a part the drawing actually has. */
+      parts: { id: string; term: Localized; body: Localized }[];
     }
   /** The closing self-check: what the child should now be able to do. */
   | { kind: "checklist"; id: string; title: Localized; items: Localized[] }

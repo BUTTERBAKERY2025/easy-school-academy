@@ -5,6 +5,7 @@
  */
 import { catalog, catalogStats } from "../src/lib/content/index.js";
 import { isQuestion } from "../src/lib/content/types.js";
+import { DIAGRAM_PARTS } from "../src/lib/content/diagrams.js";
 import type { Localized } from "../src/lib/i18n/config.js";
 
 const ARABIC = /[؀-ۿ]/;
@@ -77,6 +78,20 @@ for (const curriculum of catalog) {
 
               if (block.kind === "activity" && block.steps.length === 0) {
                 fail(`${lesson.id}/${block.id}`, "an activity with no steps");
+              }
+              if (block.kind === "diagram") {
+                const known = new Set(DIAGRAM_PARTS[block.art]);
+                for (const part of block.parts) {
+                  if (!known.has(part.id)) {
+                    fail(`${lesson.id}/${block.id}`, `"${part.id}" is not a part of the ${block.art} figure`);
+                  }
+                }
+                const labelled = new Set(block.parts.map((part) => part.id));
+                for (const part of known) {
+                  if (!labelled.has(part)) {
+                    fail(`${lesson.id}/${block.id}`, `the ${block.art} figure draws "${part}" but nothing labels it`);
+                  }
+                }
               }
               if (block.kind === "checklist" && block.items.length === 0) {
                 fail(`${lesson.id}/${block.id}`, "a checklist with nothing on it");

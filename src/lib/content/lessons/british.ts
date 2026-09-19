@@ -208,20 +208,58 @@ export const britishLessons: LessonLibrary = {
           ar: "كل الأزهار تؤدي العمل المهم نفسه. هل تستطيع أن تخمّنه؟\n\nحين يُزهر النبات، لا تعيش الزهرة غالبًا إلا أيامًا قليلة، ثم تذبل وتسقط. لكن جزءًا منها يبقى على النبات: المبيض (ovary). هذا الجزء الباقي هو الذي يصير ثمرة (fruit)، وتتكوّن البذور داخلها. ثم تنمو البذور فتصير نباتات جديدة، وتكبر هذه النباتات وتُزهر بدورها فتصنع ثمارًا وبذورًا جديدة.\n\nإذن وظيفة الزهرة هي أن يتكاثر النبات (reproduce). وكل هذه التغيّرات — من الزهرة إلى البذرة إلى نبتة جديدة — نسميها دورة حياة النبات (life cycle). وسميناها دورة لأنها تحدث مرة بعد مرة بلا نهاية.",
           en: "All flowers do the same important job. Can you think what it is?\n\nWhen a plant produces flowers, each flower usually lasts only a few days. Then it dies and falls off. But one part stays behind on the plant: the ovary. That part becomes the fruit, and the seeds form inside it. The seeds then grow into new plants, and those plants grow up and flower in their turn, making new fruits and new seeds.\n\nSo the job of a flower is to help the plant reproduce. And all those changes — flower to seed to new plant — are called the plant's life cycle. We call it a cycle because it happens over and over again.",
         },
-        visual: {
-          type: "steps",
-          items: [
-            { ar: "البذرة تنبت 🌱", en: "The seed germinates 🌱" },
-            { ar: "النبات ينمو 🌿", en: "The plant grows 🌿" },
-            { ar: "النبات يُزهر 🌸", en: "The plant flowers 🌸" },
-            { ar: "الزهرة تُكوّن ثمرة 🍑", en: "The flower produces fruit 🍑" },
-            { ar: "الثمرة تُطلق بذورًا — ثم تبدأ من جديد 🔁", en: "The fruit releases seeds — and it starts again 🔁" },
-          ],
-          caption: {
-            ar: "آخر خطوة تعود إلى الأولى؛ ولهذا نرسم دورة الحياة دائرة لا خطًّا مستقيمًا.",
-            en: "The last step leads back to the first, which is why a life cycle is drawn as a circle and not as a straight line.",
-          },
+      },
+      {
+        kind: "diagram",
+        id: "d1",
+        title: { ar: "الدورة، مرحلة بمرحلة", en: "The cycle, stage by stage" },
+        art: "life-cycle",
+        intro: {
+          ar: "هذه هي الدورة كاملة. المس أي مرحلة لتعرف ما يحدث فيها، ولاحظ أن السهم الأخير يعود إلى الأولى.",
+          en: "Here is the whole cycle. Touch any stage to find out what happens in it, and notice that the last arrow leads back to the first.",
         },
+        parts: [
+          {
+            id: "seed",
+            term: { ar: "البذرة", en: "Seed" },
+            body: {
+              ar: "البذرة تنتظر الماء والدفء. بداخلها نبتة صغيرة جدًّا وغذاء يكفيها حتى تخرج أوراقها الأولى.",
+              en: "The seed waits for water and warmth. Inside it is a tiny plant and enough food to last until its first leaves open.",
+            },
+          },
+          {
+            id: "seedling",
+            term: { ar: "البادرة", en: "Seedling" },
+            body: {
+              ar: "البذرة تنبت (germinates): ينزل الجذر أولًا بحثًا عن الماء، ثم تصعد الساق نحو الضوء.",
+              en: "The seed germinates: the root goes down first, looking for water, then the shoot pushes up towards the light.",
+            },
+          },
+          {
+            id: "plant",
+            term: { ar: "النبات الكامل", en: "Adult plant" },
+            body: {
+              ar: "النبات يكبر ويصنع غذاءه بنفسه من ضوء الشمس. لن يُزهر حتى يجمع طاقة تكفي لصنع البذور.",
+              en: "The plant grows and makes its own food from sunlight. It will not flower until it has stored enough energy to make seeds.",
+            },
+          },
+          {
+            id: "flower",
+            term: { ar: "الزهرة", en: "Flower" },
+            body: {
+              ar: "الزهرة تتفتّح بضعة أيام فقط ثم تذبل. وظيفتها في هذه الأيام القليلة أن يتكاثر النبات.",
+              en: "The flower opens for only a few days, then dies. In those few days its job is to let the plant reproduce.",
+            },
+          },
+          {
+            id: "fruit",
+            term: { ar: "الثمرة", en: "Fruit" },
+            body: {
+              ar: "المبيض هو الجزء الذي يبقى بعد سقوط الزهرة، ويتحوّل إلى ثمرة تحمي البذور بداخلها — ثم تُطلقها فتبدأ الدورة من جديد.",
+              en: "The ovary is the part that stays behind after the flower falls. It becomes the fruit, protecting the seeds inside — then releases them, and the cycle starts again.",
+            },
+          },
+        ],
       },
       {
         kind: "order",
@@ -334,43 +372,66 @@ export const britishLessons: LessonLibrary = {
           ar: "للزهرة أربعة أجزاء رئيسية، وهي مرتّبة في حلقات، كل حلقة داخل التي قبلها: السبلات في الخارج، ثم البتلات، ثم الأسدية، والكربلة في القلب.\n\nوجزآن منها لهما تركيب أدق. فالسداة (stamen) — وهي الجزء المذكّر — تتكوّن من المتك (anther) الذي يصنع حبوب اللقاح، والخيط (filament) الذي يحمله. والكربلة (carpel) — وهي الجزء المؤنّث — قمتها الميسم (stigma) اللزج الذي يلتقط اللقاح، وقاعدتها المبيض (ovary) الذي يحوي بويضات صغيرة تصير بذورًا.",
           en: "A flower has four main parts, arranged in rings, one inside the other: sepals on the outside, then petals, then the stamens, with the carpel at the centre.\n\nTwo of them have more to them. The stamen — the male part — is made of an anther, which makes the pollen, and a filament, the stalk that holds it up. The carpel — the female part — has a sticky stigma at the top to catch pollen, and an ovary at the base holding tiny eggs that become seeds.",
         },
-        visual: {
-          type: "table",
-          headers: [
-            { ar: "الجزء", en: "Part" },
-            { ar: "وظيفته (function)", en: "Its function" },
-          ],
-          rows: [
-            [
-              { ar: "sepals — السبلات", en: "sepals" },
-              { ar: "أوراق صغيرة خضراء تحمي البرعم قبل تفتّحه", en: "Little green leaves that protect the flower bud" },
-            ],
-            [
-              { ar: "petals — البتلات", en: "petals" },
-              { ar: "كثيرًا ما تكون زاهية لتجذب الحشرات إلى الزهرة", en: "Often brightly coloured to attract insects to the flower" },
-            ],
-            [
-              { ar: "anther — المتك", en: "anther" },
-              { ar: "يصنع المسحوق المسمّى حبوب اللقاح", en: "Makes a powder called pollen" },
-            ],
-            [
-              { ar: "filament — الخيط", en: "filament" },
-              { ar: "ساق الـ anther يحمله مرتفعًا", en: "The stalk of the anther, holding it up" },
-            ],
-            [
-              { ar: "stigma — الميسم", en: "stigma" },
-              { ar: "لزج ليلتقط حبوب اللقاح", en: "Sticky, to catch pollen" },
-            ],
-            [
-              { ar: "ovary — المبيض", en: "ovary" },
-              { ar: "يحوي بويضات صغيرة تصير بذورًا", en: "Contains tiny eggs that become seeds" },
-            ],
-          ],
-          caption: {
-            ar: "المتك والخيط معًا يكوّنان السداة (الجزء المذكّر)؛ والميسم والمبيض معًا يكوّنان الكربلة (الجزء المؤنّث).",
-            en: "The anther and filament together make the stamen, the male part; the stigma and ovary together make the carpel, the female part.",
-          },
+      },
+      {
+        kind: "diagram",
+        id: "d2",
+        title: { ar: "انظر داخل الزهرة", en: "Look inside a flower" },
+        art: "flower",
+        intro: {
+          ar: "هذه زهرة مقطوعة من المنتصف — وهي الطريقة الوحيدة لرؤية المبيض. المس أي جزء لتعرف وظيفته، أو اختره من القائمة.",
+          en: "This is a flower cut down the middle, which is the only way to see the ovary. Touch any part to find out what it does, or pick it from the list.",
         },
+        parts: [
+          {
+            id: "sepals",
+            term: { ar: "السبلات", en: "Sepals" },
+            body: {
+              ar: "أوراق صغيرة خضراء تحمي برعم الزهرة قبل أن يتفتّح. بعد التفتّح تبقى تحت البتلات، وكثيرًا ما لا ننتبه إليها.",
+              en: "Little green leaves that protect the flower bud before it opens. Afterwards they stay underneath the petals, and are easy to miss.",
+            },
+          },
+          {
+            id: "petals",
+            term: { ar: "البتلات", en: "Petals" },
+            body: {
+              ar: "كثيرًا ما تكون زاهية اللون لتجذب الحشرات إلى الزهرة. وأزهار الرياح — كالعشب — بتلاتها صغيرة خضراء أو معدومة، لأنها لا تحتاج أن تجذب أحدًا.",
+              en: "Often brightly coloured, to attract insects to the flower. Wind-pollinated flowers such as grasses have small green petals or none at all, because they have nobody to attract.",
+            },
+          },
+          {
+            id: "filament",
+            term: { ar: "الخيط", en: "Filament" },
+            body: {
+              ar: "الساق الرفيعة التي ترفع المتك إلى أعلى، حتى تلمسه الحشرة أو تحمل الرياح لقاحه.",
+              en: "The slender stalk that holds the anther up high, so an insect brushes against it or the wind can carry its pollen away.",
+            },
+          },
+          {
+            id: "anther",
+            term: { ar: "المتك", en: "Anther" },
+            body: {
+              ar: "هنا يُصنع مسحوق حبوب اللقاح (pollen). المتك والخيط معًا يُسمّيان السداة (stamen)، وهي الجزء المذكّر في الزهرة.",
+              en: "This is where the powder called pollen is made. The anther and the filament together are called the stamen, the male part of the flower.",
+            },
+          },
+          {
+            id: "stigma",
+            term: { ar: "الميسم", en: "Stigma" },
+            body: {
+              ar: "قمة الكربلة، وسطحها لزج عمدًا: أي حبة لقاح تلمسه تلتصق به ولا تسقط. وهي أول ما يستقبل اللقاح.",
+              en: "The top of the carpel, and sticky on purpose: any grain of pollen that touches it holds fast instead of falling off. It is the first thing pollen arrives at.",
+            },
+          },
+          {
+            id: "ovary",
+            term: { ar: "المبيض", en: "Ovary" },
+            body: {
+              ar: "الجزء المنتفخ في القاع، وفيه بويضات صغيرة تصير بذورًا. الميسم والمبيض معًا يُسمّيان الكربلة (carpel)، وهي الجزء المؤنّث. وهذا هو الجزء الذي يبقى بعد ذبول الزهرة ويتحوّل إلى ثمرة.",
+              en: "The swollen part at the base, holding tiny eggs that become seeds. The stigma and the ovary together are called the carpel, the female part. This is the part that stays behind when the flower dies, and becomes the fruit.",
+            },
+          },
+        ],
       },
       {
         kind: "multi",
