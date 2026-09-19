@@ -293,6 +293,37 @@ h1, h2, h3 {
   transform: scaleX(-1);
 }
 
+/* A certificate is printed to be kept, so the page around it steps aside: the
+   header, footer and controls are dropped, the sheet loses its own margins and
+   the ink stays the colours it was designed in rather than the browser's
+   economy greys. */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  header[class*="sticky"],
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  main {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -50,6 +50,7 @@ export default async function HomePage() {
       <ParentBand d={d} />
       <Teachers d={d} />
       <Voices d={d} />
+      <Certificates d={d} />
       <Plans locale={locale} d={d} />
       <Faq d={d} />
       <FinalCta d={d} />
@@ -533,6 +534,46 @@ function Voices({ d }: { d: Dict }) {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------ certificates */
+
+/** Shown because the certificate is real: /certificates issues it from scores. */
+function Certificates({ d }: { d: Dict }) {
+  return (
+    <section className="mx-auto max-w-6xl px-4 py-16 lg:py-20">
+      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+        <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+          <Image
+            src="/images/brand/certificate-blank.jpg"
+            alt=""
+            width={1168}
+            height={784}
+            sizes="(min-width: 1024px) 45vw, 90vw"
+            className="w-full rounded-4xl object-cover shadow-[var(--shadow-card)]"
+          />
+          <Image
+            src="/images/brand/award-badge.jpg"
+            alt=""
+            width={784}
+            height={1168}
+            sizes="120px"
+            className="absolute -bottom-6 start-2 w-24 sm:start-6 sm:w-28"
+          />
+        </div>
+
+        <div>
+          <h2 className="text-3xl sm:text-4xl">{d.home.certTitle}</h2>
+          <p className="mt-4 text-lg text-muted">{d.home.certBody}</p>
+          <p className="mt-3 text-sm text-muted">{d.home.certNote}</p>
+          <Link href="/certificates" className="btn btn-primary mt-7 px-6 py-3">
+            {d.certificates.navTitle}
+            <Chevron />
+          </Link>
+        </div>
       </div>
     </section>
   );

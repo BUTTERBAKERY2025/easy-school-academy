@@ -63,6 +63,14 @@ export default async function LearnPage() {
         <Stat glyph="⏱️" label={d.dashboard.timeSpent} value={`${num(summary.minutesSpent, locale)} ${d.common.minutes}`} />
       </div>
 
+      <Link
+        href="/certificates"
+        className="card mt-6 flex items-center justify-between gap-4 p-5 transition-colors hover:bg-surface-muted"
+      >
+        <span className="font-bold">{d.certificates.navTitle}</span>
+        <Chevron />
+      </Link>
+
       {!viewer.hasAccess ? (
         <div className="card mt-6 flex flex-wrap items-center justify-between gap-4 border-sun-300 bg-sun-50 p-5 dark:border-sun-700 dark:bg-sun-900/30">
           <p className="font-semibold">{d.lesson.lockedBody}</p>

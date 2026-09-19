@@ -1,0 +1,9 @@
+<svg viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="160" rx="28" fill="#6C4CF5"/>
+  <circle cx="80" cy="80" r="44" fill="#FFF8F1"/>
+  <path d="M58 68c10-2 18 .4 24 6v28c-6.4-5-15-7-25-5V68Z" fill="#6C4CF5"/>
+  <path d="M102 68c-10-2-18 .4-24 6v28c6.4-5 15-7 25-5V68Z" fill="#6C4CF5"/>
+  <circle cx="80" cy="54" r="7" fill="#FFC53D"/>
+  <text x="148" y="74" fill="#FFFFFF" font-family="Cairo, Baloo Bhaijaan 2, Arial, sans-serif" font-size="42" font-weight="800">easy school</text>
+  <text x="148" y="118" fill="#FFC53D" font-family="Cairo, Baloo Bhaijaan 2, Arial, sans-serif" font-size="26" font-weight="700">أكاديمية إيزي سكول</text>
+</svg>

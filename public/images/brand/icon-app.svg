@@ -1,0 +1,25 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7B5CFF"/>
+      <stop offset="1" stop-color="#5A35F0"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- soft blob -->
+  <circle cx="400" cy="96" r="90" fill="#FFC53D" opacity=".22"/>
+  <circle cx="80" cy="430" r="80" fill="#2ED3A0" opacity=".18"/>
+  <!-- book -->
+  <path d="M96 188c68-14 128 2 160 42v196c-42-34-106-48-168-36V188Z" fill="#FFF8F1"/>
+  <path d="M416 188c-68-14-128 2-160 42v196c42-34 106-48 168-36V188Z" fill="#FFF8F1"/>
+  <path d="M252 234v176" stroke="#6C4CF5" stroke-width="10" opacity=".22" stroke-linecap="round"/>
+  <!-- page lines -->
+  <path d="M132 248h86M132 286h72M132 324h80" stroke="#6C4CF5" stroke-width="10" stroke-linecap="round" opacity=".28"/>
+  <path d="M294 248h86M294 286h72M294 324h64" stroke="#6C4CF5" stroke-width="10" stroke-linecap="round" opacity=".28"/>
+  <!-- spark -->
+  <circle cx="256" cy="128" r="28" fill="#FFC53D"/>
+  <g stroke="#FFC53D" stroke-width="12" stroke-linecap="round">
+    <path d="M256 78v18M256 160v18M206 128h18M288 128h18"/>
+    <path d="M221 93l12 12M279 151l12 12M279 93l-12 12M221 151l-12 12"/>
+  </g>
+</svg>
