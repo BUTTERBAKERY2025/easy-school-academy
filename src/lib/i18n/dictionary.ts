@@ -293,6 +293,68 @@ export const strings = {
     errorShortPassword: { ar: "كلمة المرور يجب أن تكون 8 أحرف على الأقل.", en: "Password must be at least 8 characters." },
     errorRequired: { ar: "من فضلك أكمل كل الحقول.", en: "Please complete every field." },
   },
+  /** The seven activity types, named for the "inside a lesson" grid. */
+  questionKinds: {
+    mcq: { ar: "اختيار من متعدد", en: "Multiple choice" },
+    multi: { ar: "إجابات متعددة", en: "Multiple answers" },
+    truefalse: { ar: "صح وخطأ", en: "True or false" },
+    fill: { ar: "ملء الفراغات", en: "Fill the blanks" },
+    match: { ar: "توصيل", en: "Matching" },
+    order: { ar: "ترتيب", en: "Ordering" },
+    sort: { ar: "تصنيف", en: "Sorting" },
+  },
+  teachers: {
+    mathsScience: { ar: "الرياضيات والعلوم", en: "Maths and Science" },
+    arabicIslamic: { ar: "لغتي والدراسات الإسلامية", en: "Arabic and Islamic Studies" },
+    ela: { ar: "اللغة الإنجليزية وآدابها", en: "English Language Arts" },
+    saudiCurriculum: { ar: "المنهج السعودي", en: "Saudi curriculum" },
+    angloCurriculum: { ar: "المنهج الأمريكي والبريطاني", en: "American and British curricula" },
+  },
+  /** Illustrative placeholders until real parent feedback replaces them. */
+  voices: {
+    quote1: {
+      ar: "ابني بقى يفتح الدرس لوحده قبل ما أفكر أذكّره.",
+      en: "He now opens the lesson himself before I get to remind him.",
+    },
+    who1: { ar: "أم لطالب في الرابع الابتدائي", en: "Parent of a Grade 4 student" },
+    quote2: {
+      ar: "التقرير الأسبوعي وفّر عليّ سؤال «ذاكرت ولا لأ؟» كل يوم.",
+      en: "The weekly report ended the daily 'did you study?' argument.",
+    },
+    who2: { ar: "والد طالبين", en: "Parent of two" },
+    quote3: {
+      ar: "الشرح بالعربي والإنجليزي ساعد بنتي في مدرستها الدولية.",
+      en: "Having both languages helped my daughter at her international school.",
+    },
+    who3: { ar: "أم لطالبة في Year 5", en: "Parent of a Year 5 student" },
+  },
+  faq: {
+    q1: { ar: "هل المحتوى مطابق لمنهج مدرسة ابني؟", en: "Does this match my child's school curriculum?" },
+    a1: {
+      ar: "الوحدات والدروس مبنية على النطاق والتسلسل الرسمي لكل منهج، بأسماء الصفوف والمواد والوحدات كما هي في المدرسة، فيقدر الطالب يتابع درسًا بدرس.",
+      en: "Units and lessons follow the official scope and sequence of each curriculum, using the same grade, subject and unit names, so a student can follow along lesson by lesson.",
+    },
+    q2: { ar: "هل يحتاج ابني لمساعدتي أثناء الدرس؟", en: "Does my child need my help during a lesson?" },
+    a2: {
+      ar: "الدرس مصمم ليعمل عليه الطالب وحده: شرح مبسّط، ثم مثال محلول، ثم نشاط، ثم تمرين يُصحَّح فورًا مع تفسير الإجابة. وبعد محاولتين خاطئتين يظهر «أظهر الحل» حتى لا يعلق.",
+      en: "Lessons are built for a student to work alone: a simple explanation, a worked example, an activity, then practice marked instantly with an explanation. After two misses the answer unlocks so nobody gets stuck.",
+    },
+    q3: { ar: "ماذا لو كان مستواه في مادة أقل من صفه؟", en: "What if they are behind in one subject?" },
+    a3: {
+      ar: "تقدر تفتح أي صف في أي مادة. المنصة لا تقيّدك بصف واحد، فيراجع صفًا سابقًا أو يتقدم لأعلى حسب مستواه.",
+      en: "You can open any grade in any subject. Nothing locks a student to a single year, so they can revise a lower grade or move ahead.",
+    },
+    q4: { ar: "هل أستطيع التجربة قبل الاشتراك؟", en: "Can I try before subscribing?" },
+    a4: {
+      ar: "نعم. أول درس في كل مادة مجاني بالكامل بكل أنشطته، ولا يحتاج بطاقة بنكية.",
+      en: "Yes. The first lesson of every subject is completely free, with all of its activities, and needs no card.",
+    },
+    q5: { ar: "هل أتابع تقدّمه؟", en: "Can I follow their progress?" },
+    a5: {
+      ar: "لوحة ولي الأمر تعرض الوقت المستغرق والدروس المنجزة ونسبة الإتقان لكل مادة، ولكل طالب في حسابك.",
+      en: "The parent dashboard shows time spent, lessons completed and mastery per subject, for every student on your account.",
+    },
+  },
   pricing: {
     title: { ar: "خطط الاشتراك", en: "Subscription plans" },
     subtitle: {
