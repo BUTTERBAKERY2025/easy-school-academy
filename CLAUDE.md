@@ -32,7 +32,12 @@ so authoring never requires touching the catalogue builder.
 2. Add an entry under that id in `src/lib/content/lessons/american.ts`,
    `british.ts` or `saudi.ts`. Anything left out (title, summary, objectives,
    duration) falls back to the generated value, so only write what differs.
-3. Build the body from the block types in `src/lib/content/types.ts`:
+3. Write the lesson as `screens` — each with a `kicker`, a `title`, a `lead` and an
+   `aim`, holding several blocks — or as `blocks` alone, in which case each block
+   becomes a screen of its own. Seven screens read better than twenty steps: a
+   question, a reading and a figure arrive as one move. Keep the sentences short;
+   a ten-year-old keeps "Some are big. Some are tiny." and loses a paragraph with
+   three clauses. Build the body from the block types in `src/lib/content/types.ts`:
    teaching blocks (`concept`, `example`, `callout`, `vocab`, `flashcards`,
    `activity`, `checklist`, `summary`) and the seven question types (`mcq`, `multi`, `truefalse`, `fill`,
    `match`, `order`, `sort`). Every question needs an `explanation` — the player
@@ -104,6 +109,11 @@ options.
   title, objectives and body render in it (with that language's `dir`, or English comes out
   right-to-left) while the navigation and buttons stay in the reader's own. A reader whose language
   differs gets a support toggle inside the player, off by default and remembered per device.
+- **A lesson is screens, not steps.** `Lesson.screens` is the unit the player advances through, and a
+  lesson written as blocks alone gets one screen per block — which is exactly how it behaved before.
+  A screen is left once every question on it is answered or revealed. Scoring is unchanged and still
+  per question across the whole lesson, so progress rows and the unit review did not have to change.
+  The progress bar shows a segment per screen up to eight, and a single bar beyond that.
 - **A lesson can walk through a page of the book.** A `pagewalk` block names a printed page, a one-line
   big idea, and regions given as `[x, y, w, h]` percentages. Over the family's own rendered page each
   region gets a numbered marker sitting on it; choosing one outlines that part and says what it is

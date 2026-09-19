@@ -166,6 +166,28 @@ export function isQuestion(block: Block): block is QuestionBlock {
 
 /* ---------------------------------------------------------------- structure */
 
+/**
+ * One screen of a lesson.
+ *
+ * A lesson reads better in a few whole screens than in twenty single steps: the
+ * child sees a question, a reading and a figure as one move rather than three,
+ * and each screen can say what it is for before they start it.
+ *
+ * A lesson written as blocks alone still works — each block becomes a screen of
+ * its own, which is exactly what it was before.
+ */
+export type Screen = {
+  id: string;
+  /** The small label above the title: "Think first", "Observe and sort". */
+  kicker: Localized;
+  title: Localized;
+  /** One sentence setting the screen up. */
+  lead?: Localized;
+  /** What the child leaves this screen able to do. Shown, not hidden. */
+  aim?: Localized;
+  blocks: Block[];
+};
+
 export type Lesson = {
   id: string;
   unitId: string;
@@ -183,6 +205,8 @@ export type Lesson = {
   authored: boolean;
   /** The page this lesson is taught on in the course book, where one is aligned. */
   bookPage?: number;
+  /** Set when the lesson is written as screens; `blocks` is then their contents. */
+  screens?: Screen[];
   blocks: Block[];
 };
 

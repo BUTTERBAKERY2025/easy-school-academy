@@ -64,7 +64,11 @@ function buildLesson(args: {
     free: authored?.free ?? args.isFirstOfSubject,
     authored: Boolean(authored),
     bookPage: args.bookPage,
-    blocks: authored?.blocks ?? [],
+    screens: authored?.screens,
+    // Screens are the way a lesson is written; blocks are what everything else
+    // reads — the validator, the unit review, the question count. Flattening
+    // here means neither has to know about the other.
+    blocks: authored?.screens?.flatMap((screen) => screen.blocks) ?? authored?.blocks ?? [],
   };
 }
 

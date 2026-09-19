@@ -1,5 +1,5 @@
 import type { Localized } from "@/lib/i18n/config";
-import type { Block } from "../types";
+import type { Block, Screen } from "../types";
 import { americanLessons } from "./american";
 import { britishLessons } from "./british";
 import { saudiLessons } from "./saudi";
@@ -14,7 +14,9 @@ export type AuthoredLesson = {
   objectives?: Localized[];
   durationMinutes?: number;
   free?: boolean;
-  blocks: Block[];
+  /** Write either the blocks in order, or the screens that hold them. */
+  blocks?: Block[];
+  screens?: Screen[];
 };
 
 export type LessonLibrary = Record<string, AuthoredLesson>;

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { isQuestion, type Lesson } from "@/lib/content/types";
+import { isQuestion, type Lesson, type Screen } from "@/lib/content/types";
 import { localeMeta, num, percent, t, type Locale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/client";
 import { saveLessonProgressAction } from "@/lib/learning/actions";
@@ -70,10 +70,23 @@ export function LessonPlayer({
   subjectHref: string;
 }) {
   const { d } = useI18n();
-  const steps = lesson.blocks;
   const supportOn = useSyncExternalStore(subscribeSupport, readSupport, () => false);
   const reading: Locale = supportOn && supportLocale ? supportLocale : locale;
-  const questionCount = useMemo(() => steps.filter(isQuestion).length, [steps]);
+
+  // Every lesson is a list of screens. One written as blocks alone gets a screen
+  // per block, which is exactly how it behaved before screens existed.
+  const steps: Screen[] = useMemo(
+    () =>
+      lesson.screens ??
+      lesson.blocks.map((block) => ({
+        id: block.id,
+        kicker: { ar: "", en: "" },
+        title: { ar: "", en: "" },
+        blocks: [block],
+      })),
+    [lesson],
+  );
+  const questionCount = useMemo(() => lesson.blocks.filter(isQuestion).length, [lesson]);
 
   const [index, setIndex] = useState(() => Math.min(startIndex, Math.max(steps.length - 1, 0)));
   const [verdicts, setVerdicts] = useState<Record<string, Verdict>>({});
@@ -128,9 +141,13 @@ export function LessonPlayer({
   }, [index, finished, persist]);
 
   const current = steps[index];
-  const currentVerdict = current ? (verdicts[current.id] ?? null) : null;
+  // A screen is left once every question on it has been answered or revealed.
   const blocked = Boolean(
-    current && isQuestion(current) && currentVerdict !== "correct" && currentVerdict !== "revealed",
+    current?.blocks.some((block) => {
+      if (!isQuestion(block)) return false;
+      const verdict = verdicts[block.id] ?? null;
+      return verdict !== "correct" && verdict !== "revealed";
+    }),
   );
 
   const answer = (blockId: string, correct: boolean) => {
@@ -227,6 +244,8 @@ export function LessonPlayer({
     );
   }
 
+  const named = Boolean(lesson.screens);
+
   return (
     <div className="space-y-5">
       <div>
@@ -245,7 +264,23 @@ export function LessonPlayer({
             </span>
           ) : null}
         </div>
-        <ProgressBar value={((index + 1) / steps.length) * 100} />
+
+        {/* A segment per screen while they can be told apart at a glance; a
+            single bar once there are too many for that to mean anything. */}
+        {steps.length <= 8 ? (
+          <ol className="flex gap-1.5" aria-hidden>
+            {steps.map((step, at) => (
+              <li
+                key={step.id}
+                className={`h-2 flex-1 rounded-full transition-colors ${
+                  at < index ? "bg-mint-500" : at === index ? "bg-brand-500" : "bg-surface-muted"
+                }`}
+              />
+            ))}
+          </ol>
+        ) : (
+          <ProgressBar value={((index + 1) / steps.length) * 100} />
+        )}
       </div>
 
       {supportLocale ? (
@@ -262,22 +297,47 @@ export function LessonPlayer({
         </div>
       ) : null}
 
-      {/* The lesson is read in its own language, so it is laid out in that
-          language's direction too — English set right-to-left is unreadable. */}
-      <article className="card p-5 sm:p-8" lang={reading} dir={localeMeta[reading].dir}>
-        {current && isQuestion(current) ? (
-          <Question
-            block={current}
-            locale={reading}
-            verdict={currentVerdict}
-            onAnswer={(correct) => answer(current.id, correct)}
-            onRetry={() => retry(current.id)}
-            onReveal={() => reveal(current.id)}
-            canReveal={(results[current.id]?.attempts ?? 0) >= 2}
-          />
-        ) : current ? (
-          <TeachingBlock block={current} locale={reading} bookId={lesson.subjectId} />
+      <article
+        className={`card p-5 sm:p-8 ${named ? "bg-surface-warm" : ""}`}
+        lang={reading}
+        dir={localeMeta[reading].dir}
+      >
+        {named && current ? (
+          <header className="mb-6">
+            <p className="text-sm font-extrabold text-brand-600 dark:text-brand-300">
+              {t(current.kicker, reading)}
+            </p>
+            <h2 className="mt-1 text-2xl font-extrabold sm:text-3xl">{t(current.title, reading)}</h2>
+            {current.lead ? (
+              <p className="mt-3 max-w-prose text-lg text-muted">{t(current.lead, reading)}</p>
+            ) : null}
+            {current.aim ? (
+              <p className="mt-4 flex gap-2 rounded-2xl bg-surface p-3 text-sm">
+                <span aria-hidden>🎯</span>
+                <span>{t(current.aim, reading)}</span>
+              </p>
+            ) : null}
+          </header>
         ) : null}
+
+        <div className="space-y-8">
+          {current?.blocks.map((block) =>
+            isQuestion(block) ? (
+              <Question
+                key={block.id}
+                block={block}
+                locale={reading}
+                verdict={verdicts[block.id] ?? null}
+                onAnswer={(correct) => answer(block.id, correct)}
+                onRetry={() => retry(block.id)}
+                onReveal={() => reveal(block.id)}
+                canReveal={(results[block.id]?.attempts ?? 0) >= 2}
+              />
+            ) : (
+              <TeachingBlock key={block.id} block={block} locale={reading} bookId={lesson.subjectId} />
+            ),
+          )}
+        </div>
       </article>
 
       <div className="flex items-center justify-between gap-3">
