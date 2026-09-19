@@ -539,6 +539,42 @@ export const strings = {
     },
     shelfFor: { ar: "كتب", en: "Books for" },
   },
+  unit: {
+    label: { ar: "الوحدة", en: "Unit" },
+    openUnit: { ar: "افتح الوحدة", en: "Open the unit" },
+    aboutTitle: { ar: "عن هذه الوحدة", en: "About this unit" },
+    objectives: { ar: "بنهاية الوحدة ستكون قادرًا على", en: "By the end of this unit you will be able to" },
+    lessonsTitle: { ar: "دروس الوحدة", en: "Lessons in this unit" },
+    glossary: { ar: "مفردات الوحدة", en: "Words in this unit" },
+    glossaryBody: {
+      ar: "كلمة تقابلها مرة واحدة تُنسى؛ هذه هي كلمات الوحدة مجموعة في مكان واحد.",
+      en: "A word met once is a word lost. These are the unit's words, gathered in one place.",
+    },
+    dueHere: { ar: "دروس حان وقت مراجعتها", en: "Due for review in this unit" },
+    nextUnit: { ar: "الوحدة التالية", en: "Next unit" },
+    previousUnit: { ar: "الوحدة السابقة", en: "Previous unit" },
+    reviewTitle: { ar: "مراجعة نهاية الوحدة", en: "End-of-unit review" },
+    reviewBody: {
+      ar: "أسئلة من كل درس في الوحدة، بلا شرح — لأن استرجاع الإجابة من ذاكرتك هو ما يثبّتها، لا إعادة القراءة.",
+      en: "Questions from every lesson in the unit and nothing else, because pulling an answer out of memory is what fixes it — re-reading only feels like it does.",
+    },
+    reviewQuestions: { ar: "أسئلة", en: "questions" },
+    reviewStart: { ar: "ابدأ المراجعة", en: "Start the review" },
+    reviewDone: { ar: "انتهت المراجعة", en: "Review finished" },
+    reviewRefreshed: { ar: "دروس تم تثبيتها:", en: "Lessons refreshed:" },
+    reviewNothingHeld: {
+      ar: "لم يُثبَّت أي درس هذه المرة — وهذا طبيعي. أعد المحاولة بعد مراجعة الدرس.",
+      en: "Nothing was refreshed this time, and that is normal. Go over the lesson and try again.",
+    },
+    reviewStillDue: {
+      ar: "ما لم تُجبه بشكل كافٍ يبقى مستحقًا للمراجعة، وسيظهر لك في خطة اليوم.",
+      en: "Whatever you did not hold stays due, and will come back in today's plan.",
+    },
+    reviewEmpty: {
+      ar: "لا توجد أسئلة في هذه الوحدة بعد — دروسها ما زالت قيد الإعداد.",
+      en: "There are no questions in this unit yet; its lessons are still in preparation.",
+    },
+  },
   common: {
     loading: { ar: "جارٍ التحميل…", en: "Loading…" },
     comingSoon: { ar: "قيد الإعداد", en: "In preparation" },

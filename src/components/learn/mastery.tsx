@@ -199,7 +199,12 @@ function UnitRow({ unit, locale, d }: { unit: UnitState; locale: Locale; d: Dict
   return (
     <li>
       <div className="flex items-baseline justify-between gap-2">
-        <span className="truncate text-sm font-semibold">{t(unit.unit.title, locale)}</span>
+        <Link
+          href={`/books/${unit.unit.subjectId}/${unit.unit.id}`}
+          className="truncate text-sm font-semibold hover:underline"
+        >
+          {t(unit.unit.title, locale)}
+        </Link>
         <span className="shrink-0 text-xs tabular-nums text-muted" dir="ltr">
           {percent(unit.mastery, locale)}
         </span>

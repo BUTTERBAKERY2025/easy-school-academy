@@ -11,7 +11,9 @@
  *   npm run check:model
  */
 import { lessonState, retrievability, stabilityDays, studyPlan } from "../src/lib/learning/model.js";
-import { getGrade, getLesson } from "../src/lib/content/index.js";
+import { getGrade, getLesson, getUnit } from "../src/lib/content/index.js";
+import { reviewQuestions, reviewSeed, unitGlossary, unitObjectives } from "../src/lib/learning/unit-review.js";
+import { isQuestion } from "../src/lib/content/types.js";
 import type { LessonProgress } from "../src/lib/db/types.js";
 
 const DAY = 86_400_000;
@@ -95,6 +97,44 @@ check(
 console.log("\nwithout a subscription");
 const locked = studyPlan(grade.subjects, new Map(), now, { hasAccess: false });
 check("nothing locked is offered", locked.length > 0 && locked.every((item) => item.lesson.free));
+
+console.log("\nthe unit's opening and closing");
+const fractions = getUnit("saudi-g4-math-fractions");
+if (!fractions) throw new Error("saudi-g4-math-fractions is missing from the catalogue");
+
+const seed = reviewSeed(fractions.id, now);
+const draw = reviewQuestions(fractions, seed);
+const perLesson = new Map<string, number>();
+for (const question of draw) perLesson.set(question.lessonId, (perLesson.get(question.lessonId) ?? 0) + 1);
+
+check("a unit with an authored lesson has a review", draw.length > 0, String(draw.length));
+check("the same day draws the same questions",
+  JSON.stringify(reviewQuestions(fractions, seed).map((q) => q.block.id)) ===
+    JSON.stringify(draw.map((q) => q.block.id)));
+check("another day draws again without failing", reviewQuestions(fractions, reviewSeed(fractions.id, new Date("2026-11-01"))).length > 0);
+check("no more than two questions from one lesson", [...perLesson.values()].every((n) => n <= 2));
+check("no more than ten questions in all", draw.length <= 10, String(draw.length));
+check("every drawn block really is a question", draw.every((q) => isQuestion(q.block)));
+check("the draw walks the unit rather than working down it",
+  perLesson.size < 2 || draw.every((q, at) => at === 0 || q.lessonId !== draw[at - 1].lessonId));
+
+const emptyUnit = getUnit("saudi-g4-math-geometry") ?? getUnit("saudi-g4-science-life");
+check("a unit with nothing written has no review",
+  !emptyUnit || reviewQuestions(emptyUnit, seed).length === 0);
+
+const objectives = unitObjectives(fractions);
+check("the unit states what it is for", objectives.length > 0, String(objectives.length));
+check("no objective is listed twice", new Set(objectives.map((o) => o.ar)).size === objectives.length);
+check("objectives are capped", unitObjectives(fractions, 2).length <= 2);
+// Fractions teaches through worked examples and defines no vocabulary; reading
+// does. Both cases have to come out right.
+const reading = getUnit("saudi-g4-arabic-qiraa");
+if (!reading) throw new Error("saudi-g4-arabic-qiraa is missing from the catalogue");
+const words = unitGlossary(reading);
+check("the glossary gathers the words a unit defines", words.length > 0, String(words.length));
+check("no word is listed twice", new Set(words.map((entry) => entry.term.ar)).size === words.length);
+check("the glossary is capped", unitGlossary(reading, 2).length <= 2);
+check("a unit that defines no words has no glossary", unitGlossary(fractions).length === 0);
 
 console.log(failures ? `\n${failures} failure(s).\n` : "\nno problems found.\n");
 process.exit(failures ? 1 : 0);

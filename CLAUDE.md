@@ -94,6 +94,14 @@ options.
   route handler — the switcher is a plain `<a>` for that reason.
 - **Lesson gating:** the first lesson of every subject is free; everything else needs an active
   subscription, which a student can inherit from their parent account.
+- **A unit opens and closes like a chapter.** `/books/[bookId]/[unitId]` derives its objectives, its
+  glossary and its end-of-unit review from the lessons themselves (`lib/learning/unit-review.ts`), so
+  a unit gains all three the moment its lessons are written. The review draws at most two questions
+  per lesson, ten in all, interleaved, with a seed fixed per day. `saveUnitReviewAction` writes back
+  **only the lessons that scored 70 or better**: a saved row moves `updatedAt`, which is what tells
+  the learner model the memory was refreshed, and the stores keep the better of two scores — so
+  writing a failed lesson would mark it revised and leave the failure no trace. A lesson not held
+  stays due.
 - **Every subject is also a book.** `lib/content/books.ts` gives each subject a cover, the framework
   it follows and the year it is for; the book's id *is* the subject's id and its chapters *are* the
   subject's units, so nothing is duplicated. `/books` is the student's shelf, `/books/[bookId]` the

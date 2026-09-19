@@ -9,7 +9,7 @@ import { progressOf } from "@/lib/db/repo";
 import { subjectState, type UnitState } from "@/lib/learning/model";
 import { BookCover } from "@/components/art/book-cover";
 import { LevelChip, MasteryBar } from "@/components/learn/mastery";
-import { Ratio, themeClasses } from "@/components/ui";
+import { Chevron, Ratio, themeClasses } from "@/components/ui";
 
 export async function generateMetadata({ params }: { params: Promise<{ bookId: string }> }): Promise<Metadata> {
   const { bookId } = await params;
@@ -180,7 +180,15 @@ async function ContentsUnit({
           </svg>
         </summary>
 
-        <ol className="divide-y divide-line">
+        <Link
+          href={`/books/${unit.unit.subjectId}/${unit.unit.id}`}
+          className="flex items-center justify-between gap-2 border-t border-line px-5 py-3 text-sm font-semibold text-brand-600 transition-colors hover:bg-surface-muted dark:text-brand-300"
+        >
+          {d.unit.openUnit}
+          <Chevron />
+        </Link>
+
+        <ol className="divide-y divide-line border-t border-line">
           {unit.states.map((entry) => {
             const locked = !entry.lesson.free && !hasAccess;
             return (
