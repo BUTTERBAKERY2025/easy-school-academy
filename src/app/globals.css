@@ -230,6 +230,34 @@ h1, h2, h3 {
     background-color: var(--surface-muted);
   }
 
+  /* A band of subject names that drifts past the section edge. The track holds
+     the list twice, so the halfway point is identical to the start and the loop
+     never shows a seam. Reduced motion parks it via the global rule below. */
+  .marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee-drift 48s linear infinite;
+  }
+
+  .marquee:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-drift {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* The band reads right-to-left in Arabic, so it drifts the other way. */
+  [dir="rtl"] .marquee {
+    animation-name: marquee-drift-rtl;
+  }
+
+  @keyframes marquee-drift-rtl {
+    from { transform: translateX(0); }
+    to { transform: translateX(50%); }
+  }
+
   .chip {
     display: inline-flex;
     align-items: center;

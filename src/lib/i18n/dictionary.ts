@@ -293,6 +293,22 @@ export const strings = {
     errorShortPassword: { ar: "كلمة المرور يجب أن تكون 8 أحرف على الأقل.", en: "Password must be at least 8 characters." },
     errorRequired: { ar: "من فضلك أكمل كل الحقول.", en: "Please complete every field." },
   },
+  /** The two-step age-then-curriculum picker that opens the homepage. */
+  finder: {
+    kicker: { ar: "سؤالان سريعان", en: "Two quick questions" },
+    ageTitle: { ar: "كم عمر ابنك؟", en: "How old is your child?" },
+    ageHint: {
+      ar: "نوصّلك لصفه ومواده مباشرة — بلا تسجيل.",
+      en: "We take you straight to their grade and subjects — no sign-up.",
+    },
+    curriculumTitle: { ar: "أي منهج تتبعه مدرسته؟", en: "Which curriculum does their school follow?" },
+    resultTitle: { ar: "صف ابنك جاهز", en: "Your child's grade is ready" },
+    open: { ar: "افتح المواد", en: "Open the subjects" },
+    back: { ar: "رجوع", en: "Back" },
+    change: { ar: "تغيير", en: "Change" },
+    years: { ar: "سنة", en: "yrs" },
+    freeNote: { ar: "أول درس في كل مادة مجاني، بلا بطاقة بنكية.", en: "The first lesson of every subject is free, with no card." },
+  },
   /** The seven activity types, named for the "inside a lesson" grid. */
   questionKinds: {
     mcq: { ar: "اختيار من متعدد", en: "Multiple choice" },

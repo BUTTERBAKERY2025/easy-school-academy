@@ -8,6 +8,7 @@ import { Chevron } from "@/components/ui";
 import { Avatar, type CastMember } from "@/components/art/avatar";
 import { HeroScene, StepScene, WaveDivider, type StepTint } from "@/components/art/scenes";
 import { Icon, type IconTint } from "@/components/art/icons";
+import { GradeFinder, type FinderCurriculum } from "@/components/home/grade-finder";
 
 /** Age bands map a parent's "how old is my child" to a grade in each curriculum. */
 const AGE_STEPS: { age: string; ordinal: number; face: CastMember }[] = [
@@ -24,10 +25,23 @@ export default async function HomePage() {
 
   const heroWords = splitHighlight(d.home.heroTitle, d.home.heroHighlight);
 
+  /* Localised here so the picker can stay a plain client component. */
+  const finderCurricula: FinderCurriculum[] = catalog.map((curriculum) => ({
+    id: curriculum.id,
+    flag: curriculum.flag,
+    title: t(curriculum.title, locale),
+    grades: gradesOf(curriculum.id).map((grade) => ({
+      ordinal: grade.ordinal,
+      id: grade.id,
+      short: t(grade.shortTitle, locale),
+    })),
+  }));
+
   return (
     <>
-      <Hero locale={locale} d={d} heroWords={heroWords} stats={stats} />
+      <Hero locale={locale} d={d} heroWords={heroWords} stats={stats} finderCurricula={finderCurricula} />
       <TrustStrip d={d} locale={locale} stats={stats} />
+      <SubjectBand locale={locale} />
       <Curricula locale={locale} d={d} />
       <HowItWorks d={d} />
       <InsideLesson d={d} />
@@ -53,11 +67,13 @@ function Hero({
   d,
   heroWords,
   stats,
+  finderCurricula,
 }: {
   locale: Locale;
   d: Dict;
   heroWords: [string, string, string];
   stats: Stats;
+  finderCurricula: FinderCurriculum[];
 }) {
   const [before, highlight, after] = heroWords;
 
@@ -66,14 +82,14 @@ function Hero({
       <span aria-hidden className="blob -start-24 -top-28 size-80 bg-brand-200/50" />
       <span aria-hidden className="blob -end-20 top-40 size-72 bg-sun-200/50" />
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-14 pt-12 lg:grid-cols-[1.05fr_1fr] lg:gap-12 lg:pb-20 lg:pt-16">
-        <div className="text-center lg:text-start">
+      <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-8 lg:pb-20 lg:pt-10">
+        <div className="mx-auto max-w-3xl text-center">
           <span className="chip bg-mint-100 px-4 py-1.5 text-mint-800 dark:bg-mint-900/50 dark:text-mint-100">
             <Icon name="gift" tint="mint" tile={false} className="size-4" />
             {d.home.badge}
           </span>
 
-          <h1 className="mt-5 text-4xl leading-[1.15] font-extrabold sm:text-5xl lg:text-6xl">
+          <h1 className="mt-4 text-4xl leading-[1.12] font-extrabold sm:text-5xl">
             {before}
             <span className="relative whitespace-nowrap text-brand-600 dark:text-brand-300">
               {highlight}
@@ -89,19 +105,9 @@ function Hero({
             {after}
           </h1>
 
-          <p className="mx-auto mt-6 max-w-xl text-lg text-muted lg:mx-0">{d.home.heroBody}</p>
+          <p className="mx-auto mt-4 max-w-xl text-base text-muted sm:text-lg">{d.home.heroBody}</p>
 
-          <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
-            <Link href="/register" className="btn btn-coral px-7 py-3.5 text-base">
-              {d.home.ctaPrimary}
-              <Chevron />
-            </Link>
-            <Link href="/curricula" className="btn btn-ghost px-7 py-3.5 text-base">
-              {d.home.ctaSecondary}
-            </Link>
-          </div>
-
-          <ul className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold text-muted lg:justify-start">
+          <ul className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold text-muted">
             {[d.home.trustAges, d.home.trustSelf, d.home.trustBilingual].map((item) => (
               <li key={item} className="flex items-center gap-1.5">
                 <span aria-hidden className="text-mint-500">
@@ -113,14 +119,21 @@ function Hero({
           </ul>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-          <HeroScene />
-          <div className="card absolute -bottom-2 start-0 flex items-center gap-2.5 px-4 py-2.5 sm:start-4">
-            <Icon name="streak" tint="coral" tile={false} className="size-7 shrink-0" />
-            <span className="text-sm leading-tight">
-              <span className="block font-extrabold">{num(stats.lessons, locale)}</span>
-              <span className="block text-xs text-muted">{d.home.statLessons}</span>
-            </span>
+        {/* The picker carries the hero's call to action; the scene keeps it company. */}
+        <div className="mt-8 grid items-center gap-8 lg:grid-cols-[1fr_1.05fr] lg:gap-12">
+          <div className="relative order-2 mx-auto w-full max-w-md lg:order-1 lg:max-w-none">
+            <HeroScene />
+            <div className="card absolute -bottom-2 start-0 flex items-center gap-2.5 px-4 py-2.5 sm:start-4">
+              <Icon name="streak" tint="coral" tile={false} className="size-7 shrink-0" />
+              <span className="text-sm leading-tight">
+                <span className="block font-extrabold">{num(stats.lessons, locale)}</span>
+                <span className="block text-xs text-muted">{d.home.statLessons}</span>
+              </span>
+            </div>
+          </div>
+
+          <div className="order-1 lg:order-2">
+            <GradeFinder curricula={finderCurricula} copy={d.finder} locale={locale} />
           </div>
         </div>
       </div>
@@ -154,6 +167,42 @@ function TrustStrip({ d, locale, stats }: { d: Dict; locale: Locale; stats: Stat
           </div>
         ))}
       </dl>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------- subject band */
+
+/**
+ * The subjects drifting past as a band. The catalogue carries fourteen distinct
+ * subject names across the three curricula, which is more than a grid wants to
+ * show and exactly what a moving strip is for.
+ */
+function SubjectBand({ locale }: { locale: Locale }) {
+  const titles = new Map<string, string>();
+  for (const curriculum of catalog) {
+    for (const stage of curriculum.stages) {
+      for (const grade of stage.grades) {
+        for (const subject of grade.subjects) titles.set(subject.id.split("-").pop() ?? subject.id, t(subject.title, locale));
+      }
+    }
+  }
+  const names = [...new Set(titles.values())];
+
+  return (
+    <section aria-hidden className="overflow-hidden border-b border-line bg-brand-600 py-3.5">
+      <div className="marquee">
+        {[0, 1].map((copy) => (
+          <ul key={copy} className="flex shrink-0 items-center">
+            {names.map((name) => (
+              <li key={name} className="flex items-center gap-8 px-4 font-display font-bold whitespace-nowrap text-brand-100">
+                {name}
+                <span className="size-1.5 rounded-full bg-sun-300" />
+              </li>
+            ))}
+          </ul>
+        ))}
+      </div>
     </section>
   );
 }
