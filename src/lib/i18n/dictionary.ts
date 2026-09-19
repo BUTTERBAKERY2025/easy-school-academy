@@ -518,6 +518,27 @@ export const strings = {
     minutes: { ar: "دقيقة", en: "min" },
     notEarned: { ar: "لم تُنجز هذه الوحدة بعد.", en: "This unit has not been completed yet." },
   },
+  books: {
+    navTitle: { ar: "كتبي المدرسية", en: "My school books" },
+    subtitle: {
+      ar: "كل كتاب من كتب صفك، بغلافه وفهرسه ووحداته — كما في حقيبتك تمامًا.",
+      en: "Every book for your year, with its cover, its contents and its units — just like the bag you carry.",
+    },
+    openBook: { ar: "افتح الكتاب", en: "Open the book" },
+    contents: { ar: "فهرس الكتاب", en: "Table of contents" },
+    backToShelf: { ar: "كل كتبي", en: "All my books" },
+    units: { ar: "وحدة", en: "units" },
+    lessons: { ar: "درسًا", en: "lessons" },
+    startUnit: { ar: "ابدأ الوحدة", en: "Start the unit" },
+    continueUnit: { ar: "أكمل الوحدة", en: "Continue the unit" },
+    unitDone: { ar: "أنهيت هذه الوحدة", en: "You finished this unit" },
+    noBooks: { ar: "اختر صفك ومنهجك أولًا وستظهر كتبك هنا.", en: "Choose your year and curriculum and your books will appear here." },
+    aboutCovers: {
+      ar: "الأغلفة والمحتوى من إعداد الأكاديمية وفق إطار المنهج المكتوب على كل كتاب؛ لا نعيد نشر كتب أي ناشر.",
+      en: "Covers and content are the academy's own, written to the framework named on each book; no publisher's book is reproduced.",
+    },
+    shelfFor: { ar: "كتب", en: "Books for" },
+  },
   common: {
     loading: { ar: "جارٍ التحميل…", en: "Loading…" },
     comingSoon: { ar: "قيد الإعداد", en: "In preparation" },

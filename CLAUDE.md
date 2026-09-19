@@ -94,6 +94,14 @@ options.
   route handler — the switcher is a plain `<a>` for that reason.
 - **Lesson gating:** the first lesson of every subject is free; everything else needs an active
   subscription, which a student can inherit from their parent account.
+- **Every subject is also a book.** `lib/content/books.ts` gives each subject a cover, the framework
+  it follows and the year it is for; the book's id *is* the subject's id and its chapters *are* the
+  subject's units, so nothing is duplicated. `/books` is the student's shelf, `/books/[bookId]` the
+  book with its table of contents, and `/subject/[id]` permanently redirects there. Covers are drawn
+  from the subject's colour and icon in `components/art/book-cover.tsx`, sized in container units so
+  one component works as a thumbnail and full size. **No publisher's cover, page or exercise is
+  reproduced anywhere in this repository** — a book names the authority whose framework it follows
+  (the Ministry, the Cambridge stage, the standards), never an edition.
 - **The learner model is derived, never stored.** `lib/learning/model.ts` turns progress rows into a
   mastery level per lesson and today's plan. Two rules drive it: recall decays as `2^(-t/S)`, where
   stability `S` comes from the score, so a lesson aced two months ago is no longer counted as

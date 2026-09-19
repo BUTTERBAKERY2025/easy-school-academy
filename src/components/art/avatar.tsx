@@ -37,6 +37,22 @@ export const cast = {
 
 export type CastMember = keyof typeof cast;
 
+/** The children in the cast; the rest are drawn as adults. */
+const PUPILS = ["layla", "omar", "sara", "youssef", "maryam", "khaled"] as const;
+
+/**
+ * A stable face for an account.
+ *
+ * Derived from the account id rather than stored, so every child has a face from
+ * their first visit and no column has to exist for it. When choosing one becomes
+ * a feature, the chosen value takes over and this stays as the default.
+ */
+export function avatarFor(seed: string): CastMember {
+  let hash = 0;
+  for (const character of seed) hash = (hash * 31 + (character.codePointAt(0) ?? 0)) >>> 0;
+  return PUPILS[hash % PUPILS.length];
+}
+
 /**
  * The drawing itself, as a group on a 120x120 grid. Scenes place it with a
  * transform; a nested `<svg>` would take the parent's dimensions instead of its

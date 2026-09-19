@@ -1,4 +1,5 @@
 import type { Localized } from "@/lib/i18n/config";
+import type { Book } from "./books";
 
 /* ------------------------------------------------------------------ visuals */
 
@@ -121,11 +122,15 @@ export type Subject = {
   id: string;
   gradeId: string;
   curriculumId: string;
+  /** The topic-bank key this subject was built from, e.g. `math`, `ela`, `arabic`. */
+  key: string;
   title: Localized;
   description: Localized;
   glyph: string;
   theme: SubjectTheme;
   units: Unit[];
+  /** The same subject presented as the course book a child carries. */
+  book: Book;
 };
 
 export type Grade = {
@@ -160,3 +165,4 @@ export type Curriculum = {
 };
 
 export type { Localized };
+export type { Book } from "./books";

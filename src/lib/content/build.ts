@@ -3,6 +3,7 @@ import { bi, topicsForGrade, type Band } from "./banks/shared";
 import { curriculumDefs, type CurriculumDef, type GradeDef, type SubjectDef } from "./curricula";
 import { authoredLessons, type AuthoredLesson } from "./lessons";
 import type { Curriculum, Grade, Lesson, Stage, Subject, Unit } from "./types";
+import { buildBook } from "./books";
 
 const slug = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
@@ -70,6 +71,8 @@ function buildSubject(
   grade: GradeDef,
   bandPosition: number,
   bandSize: number,
+  gradeTitle: Localized,
+  gradeShortTitle: Localized,
 ): Subject | null {
   const gradeId = `${curriculum.id}-g${grade.ordinal}`;
   const subjectId = `${gradeId}-${slug(def.key)}`;
@@ -116,16 +119,21 @@ function buildSubject(
 
   if (units.length === 0) return null;
 
-  return {
+  const subject = {
     id: subjectId,
     gradeId,
     curriculumId: curriculum.id,
+    key: def.key,
     title: subjectTitle,
     description: bi(def.description),
     glyph: def.glyph,
     theme: def.theme,
     units,
   };
+
+  // The book is built from the finished subject, so a cover can never describe
+  // a different set of chapters from the one below it.
+  return { ...subject, book: buildBook(subject, def.key, grade.ordinal, gradeTitle, gradeShortTitle) };
 }
 
 function buildCurriculum(def: CurriculumDef): Curriculum {
@@ -148,9 +156,11 @@ function buildCurriculum(def: CurriculumDef): Curriculum {
       const members = bandMembers.get(grade.band) ?? [grade.ordinal];
       const bandPosition = members.indexOf(grade.ordinal);
 
+      const gradeTitle = bi(grade.title);
+      const gradeShortTitle = bi(grade.shortTitle);
       const subjects = def.subjects
         .filter((subject) => grade.ordinal >= (subject.fromOrdinal ?? 0))
-        .map((subject) => buildSubject(subject, def, grade, bandPosition, members.length))
+        .map((subject) => buildSubject(subject, def, grade, bandPosition, members.length, gradeTitle, gradeShortTitle))
         .filter((subject): subject is Subject => subject !== null);
 
       return {
@@ -158,8 +168,8 @@ function buildCurriculum(def: CurriculumDef): Curriculum {
         curriculumId: def.id,
         stageId: `${def.id}-${stage.id}`,
         ordinal: grade.ordinal,
-        title: bi(grade.title),
-        shortTitle: bi(grade.shortTitle),
+        title: gradeTitle,
+        shortTitle: gradeShortTitle,
         ages: grade.ages,
         subjects,
       };

@@ -47,13 +47,15 @@ export type IconName =
   | "arabic"
   | "english";
 
-export type IconTint = "brand" | "sun" | "mint" | "sky" | "coral" | "berry";
+export type IconTint = "brand" | "sun" | "mint" | "sky" | "coral" | "berry" | "inherit";
 
 /**
  * Light mode takes the 500 shade; dark mode lifts to 300, which keeps the glyph
  * legible against the deep violet surface without a second icon set.
  */
 const TINTS: Record<IconTint, string> = {
+  /** Take the colour of whatever the icon sits in — a book cover, a dark panel. */
+  inherit: "",
   brand: "text-brand-500 dark:text-brand-300",
   sun: "text-sun-600 dark:text-sun-300",
   mint: "text-mint-600 dark:text-mint-300",
@@ -400,11 +402,14 @@ const TINT_FOR_THEME: Record<SubjectTheme, IconTint> = {
 export function SubjectIcon({
   glyph,
   theme,
+  tint,
   className = "size-12",
 }: {
   glyph: string;
   /** The subject's own theme, so the glyph matches the tile it sits on. */
   theme?: SubjectTheme;
+  /** Overrides the theme — `inherit` lets a coloured surface set the glyph. */
+  tint?: IconTint;
   className?: string;
 }) {
   // Emoji are written with a trailing variation selector as often as not, and
@@ -417,5 +422,12 @@ export function SubjectIcon({
       </span>
     );
   }
-  return <Icon name={name} tint={theme ? TINT_FOR_THEME[theme] : "brand"} className={className} tile={false} />;
+  return (
+    <Icon
+      name={name}
+      tint={tint ?? (theme ? TINT_FOR_THEME[theme] : "brand")}
+      className={className}
+      tile={false}
+    />
+  );
 }

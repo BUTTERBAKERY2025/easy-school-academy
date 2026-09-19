@@ -11,7 +11,11 @@ export async function SiteHeader() {
   const user = await getCurrentUser();
 
   const links = [
-    { href: "/curricula", label: d.nav.curricula },
+    // A student's own shelf replaces the public catalogue in their navigation:
+    // once enrolled, "my books" is the thing they came for.
+    ...(user?.role === "student"
+      ? [{ href: "/books", label: d.books.navTitle }]
+      : [{ href: "/curricula", label: d.nav.curricula }]),
     { href: "/how-it-works", label: d.nav.howItWorks },
     { href: "/pricing", label: d.nav.pricing },
   ];

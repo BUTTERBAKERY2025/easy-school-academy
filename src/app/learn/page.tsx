@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getI18n } from "@/lib/i18n/server";
 import { num, t, type Locale } from "@/lib/i18n/config";
-import { getCurriculum, getGrade, getLesson } from "@/lib/content";
+import { getGrade, getLesson } from "@/lib/content";
 import { getViewer } from "@/lib/auth/current";
 import { progressOf, recentActivity } from "@/lib/db/repo";
 import { activityDays, minutesOn, studyPlan, subjectState } from "@/lib/learning/model";
@@ -12,6 +12,8 @@ import { Chevron, Stat } from "@/components/ui";
 import { EnrolmentPicker } from "@/components/enrolment";
 import { TodaysPlan } from "@/components/learn/plan";
 import { StrengthPanel, SubjectPath } from "@/components/learn/mastery";
+import { IdentityCard } from "@/components/learn/identity";
+import { BookShelf } from "@/components/learn/bookshelf";
 import { GoalRing } from "@/components/learn/goal-ring";
 import { WeekStrip } from "@/components/learn/week";
 import { BadgeWall } from "@/components/learn/badges";
@@ -36,7 +38,6 @@ export default async function LearnPage() {
 
   const { locale, d } = await getI18n();
   const grade = viewer.user.gradeId ? getGrade(viewer.user.gradeId) : undefined;
-  const curriculum = viewer.user.curriculumId ? getCurriculum(viewer.user.curriculumId) : undefined;
 
   if (!grade) {
     return (
@@ -74,23 +75,7 @@ export default async function LearnPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
-      <header className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-extrabold">
-            {d.dashboard.greeting} {viewer.user.name} 👋
-          </h1>
-          <p className="mt-2 text-muted">
-            {curriculum ? `${curriculum.flag} ${t(curriculum.title, locale)} · ` : ""}
-            {t(grade.title, locale)}
-          </p>
-        </div>
-        <details className="card p-4">
-          <summary className="cursor-pointer text-sm font-semibold">{d.dashboard.changeGrade}</summary>
-          <div className="mt-4 w-72 max-w-full">
-            <EnrolmentPicker />
-          </div>
-        </details>
-      </header>
+      <IdentityCard user={viewer.user} />
 
       {!viewer.hasAccess ? (
         <div className="card mt-6 flex flex-wrap items-center justify-between gap-4 border-sun-300 bg-sun-50 p-5 dark:border-sun-700 dark:bg-sun-900/30">
@@ -103,6 +88,10 @@ export default async function LearnPage() {
 
       <div className="mt-8">
         <TodaysPlan items={plan} />
+      </div>
+
+      <div className="mt-10">
+        <BookShelf subjects={subjects} compact />
       </div>
 
       <div className="mt-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
