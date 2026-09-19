@@ -22,20 +22,21 @@ export function t(value: Localized, locale: Locale): string {
   return value[locale] ?? value.ar;
 }
 
-const ARABIC_INDIC = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-
 /**
- * Formats a number the way the lesson text writes it: Arabic-Indic digits in Arabic,
- * Western digits in English. Done by hand rather than through `toLocaleString`, whose
- * numbering system depends on the ICU data a given Node build happens to ship.
+ * Formats a number for display, in Western digits in both languages.
+ *
+ * Arabic-Indic digits were the earlier default, but this academy teaches the
+ * American and British curricula beside the Saudi one, and those are taught and
+ * examined in Western digits — a grade, a price and a lesson count all read the
+ * same to a parent whichever language the interface is in. Written out rather
+ * than left to `toLocaleString`, whose numbering system depends on the ICU data
+ * a given Node build happens to ship.
  */
-export function num(value: number, locale: Locale): string {
-  const grouped = new Intl.NumberFormat("en-US").format(value);
-  if (locale !== "ar") return grouped;
-  return grouped.replace(/\d/g, (digit) => ARABIC_INDIC[Number(digit)] ?? digit).replace(/,/g, "٬");
+export function num(value: number, _locale: Locale): string {
+  return new Intl.NumberFormat("en-US").format(value);
 }
 
-/** Arabic uses its own percent sign, and it sits after the number in both locales. */
+/** The sign sits after the number in both languages. */
 export function percent(value: number, locale: Locale): string {
-  return `${num(value, locale)}${locale === "ar" ? "٪" : "%"}`;
+  return `${num(value, locale)}%`;
 }

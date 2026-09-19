@@ -49,13 +49,13 @@ export const plans: Plan[] = [
   {
     id: "family",
     title: { ar: "العائلية", en: "Family" },
-    tagline: { ar: "حتى ٤ طلاب في حساب واحد", en: "Up to 4 students on one account" },
+    tagline: { ar: "حتى 4 طلاب في حساب واحد", en: "Up to 4 students on one account" },
     monthly: 249,
     yearly: 2490,
     seats: 4,
     features: [
       { ar: "كل مزايا الخطة المتميزة", en: "Everything in Premium" },
-      { ar: "حتى ٤ حسابات طلاب", en: "Up to 4 student accounts" },
+      { ar: "حتى 4 حسابات طلاب", en: "Up to 4 student accounts" },
       { ar: "لوحة متابعة موحّدة لولي الأمر", en: "One parent dashboard for all children" },
       { ar: "تقرير مقارن بين الأبناء", en: "A comparative report across children" },
     ],

@@ -133,7 +133,7 @@ export const englishEflBank = bank("english-efl", [
     summary:
       "The words a learner needs to talk about school, family and daily life.|المفردات التي يحتاجها المتعلم للحديث عن المدرسة والأسرة والحياة اليومية.",
     topics: {
-      early: ["Greetings and my name|التحية والتعريف بالاسم", "Colours and numbers 1-10|الألوان والأعداد ١-١٠"],
+      early: ["Greetings and my name|التحية والتعريف بالاسم", "Colours and numbers 1-10|الألوان والأعداد 1-10"],
       lower: [
         "The alphabet and letter sounds|الحروف الإنجليزية وأصواتها",
         "My family|أسرتي",

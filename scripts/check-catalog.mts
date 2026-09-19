@@ -22,7 +22,16 @@ function checkId(id: string, where: string) {
 function checkText(value: Localized, where: string) {
   if (!value.ar?.trim()) fail(where, "missing Arabic");
   if (!value.en?.trim()) fail(where, "missing English");
-  // The Arabic side must be written in Arabic script; the English side must not be.
+
+  // Some terms belong to the system that named them and are not translated:
+  // a child in a British school sits in "Year 5", not in a rendering of it, and
+  // the same holds for "Grade 4", the Key Stages and "English Language Arts".
+  // Those are written with both sides identical, which is what marks them as a
+  // decision rather than a gap — an untranslated string reached by accident has
+  // an Arabic side that differs from its English one.
+  if (value.ar === value.en) return;
+
+  // Otherwise the Arabic side must be in Arabic script, and the English must not.
   if (value.ar && !ARABIC.test(value.ar) && LATIN.test(value.ar)) fail(where, `Arabic side is Latin: "${value.ar}"`);
   if (value.en && ARABIC.test(value.en)) fail(where, `English side is Arabic: "${value.en}"`);
 }

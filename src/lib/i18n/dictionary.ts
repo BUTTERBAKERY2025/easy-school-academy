@@ -40,7 +40,7 @@ export const strings = {
     },
     ctaPrimary: { ar: "ابدأ درسًا مجانيًا", en: "Start a free lesson" },
     ctaSecondary: { ar: "استعرض المناهج", en: "Browse the curricula" },
-    trustAges: { ar: "من ٤ إلى ١٥ سنة", en: "Ages 4 to 15" },
+    trustAges: { ar: "من 4 إلى 15 سنة", en: "Ages 4 to 15" },
     trustSelf: { ar: "يذاكر بمفرده", en: "Works independently" },
     trustBilingual: { ar: "عربي وإنجليزي", en: "Arabic and English" },
     statLessons: { ar: "درس تفاعلي", en: "Interactive lessons" },
@@ -322,7 +322,7 @@ export const strings = {
   teachers: {
     mathsScience: { ar: "الرياضيات والعلوم", en: "Maths and Science" },
     arabicIslamic: { ar: "لغتي والدراسات الإسلامية", en: "Arabic and Islamic Studies" },
-    ela: { ar: "اللغة الإنجليزية وآدابها", en: "English Language Arts" },
+    ela: { ar: "English Language Arts", en: "English Language Arts" },
     saudiCurriculum: { ar: "المنهج السعودي", en: "Saudi curriculum" },
     angloCurriculum: { ar: "المنهج الأمريكي والبريطاني", en: "American and British curricula" },
   },

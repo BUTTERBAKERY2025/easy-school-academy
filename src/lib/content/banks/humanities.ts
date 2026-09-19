@@ -103,7 +103,7 @@ export const humanitiesUkBank = bank("humanities-uk", [
         "Stone Age to Iron Age Britain|بريطانيا من العصر الحجري إلى الحديدي",
         "The Roman conquest of Britain|الغزو الروماني لبريطانيا",
         "Anglo-Saxons and Vikings|الأنجلوسكسون والفايكنج",
-        "The Norman Conquest of 1066|الغزو النورماندي ١٠٦٦",
+        "The Norman Conquest of 1066|الغزو النورماندي 1066",
         "Medieval life and the Black Death|الحياة في العصور الوسطى والطاعون",
         "Tudors and the Elizabethan age|آل تيودور والعصر الإليزابيثي",
       ],
@@ -314,7 +314,7 @@ export const socialSaBank = bank("social-sa", [
       ],
       upper: [
         "النظام الأساسي للحكم|The Basic Law of Governance",
-        "رؤية المملكة ٢٠٣٠|Saudi Vision 2030",
+        "رؤية المملكة 2030|Saudi Vision 2030",
         "الاقتصاد السعودي وتنويع مصادر الدخل|Economic diversification",
         "الدولتان السعوديتان الأولى والثانية|The first and second Saudi states",
         "مكانة المملكة عربيًا وعالميًا|The Kingdom's regional and global role",
