@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubjectIcon } from "@/components/art/icons";
 import { notFound } from "next/navigation";
 import { getI18n } from "@/lib/i18n/server";
 import { num, percent, t } from "@/lib/i18n/config";
@@ -49,8 +50,8 @@ export default async function SubjectPage({ params }: { params: Promise<{ subjec
       </nav>
 
       <header className="mt-4 flex items-start gap-4">
-        <span className={`grid size-16 shrink-0 place-items-center rounded-3xl text-3xl ${theme.soft}`} aria-hidden>
-          {subject.glyph}
+        <span className={`grid size-16 shrink-0 place-items-center rounded-3xl ${theme.soft}`} aria-hidden>
+          <SubjectIcon glyph={subject.glyph} theme={subject.theme} className="size-9" />
         </span>
         <div className="flex-1">
           <h1 className="text-3xl font-extrabold">{t(subject.title, locale)}</h1>

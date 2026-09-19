@@ -1,3 +1,5 @@
+import type { SubjectTheme } from "@/lib/content/types";
+
 /**
  * The site's icon set, drawn inline.
  *
@@ -32,7 +34,18 @@ export type IconName =
   | "sort"
   /* accents */
   | "gift"
-  | "streak";
+  | "streak"
+  /* school subjects — one per glyph the catalogue uses */
+  | "maths"
+  | "science"
+  | "language"
+  | "social"
+  | "computing"
+  | "art"
+  | "history"
+  | "islamic"
+  | "arabic"
+  | "english";
 
 export type IconTint = "brand" | "sun" | "mint" | "sky" | "coral" | "berry";
 
@@ -248,6 +261,96 @@ const GLYPHS: Record<IconName, React.ReactNode> = {
     </>
   ),
 
+  /* Mathematics: a set square over a protractor arc. */
+  maths: (
+    <>
+      <path d="M13 34h22L13 14Z" />
+      <path d="M13 27h6M20 34v-5" />
+    </>
+  ),
+
+  /* Science: a conical flask. */
+  science: (
+    <>
+      <path d="M20 12v9.5L13.4 33a3.2 3.2 0 0 0 2.8 4.8h15.6a3.2 3.2 0 0 0 2.8-4.8L28 21.5V12" />
+      <path d="M17.5 12h13" />
+      <circle cx="22" cy="31" r="1.7" fill="currentColor" stroke="none" />
+      <circle cx="27" cy="34" r="1.3" fill="currentColor" stroke="none" />
+    </>
+  ),
+
+  /* Language arts: an open book with a ribbon. */
+  language: (
+    <>
+      <path d="M11 15.5c4.4-.9 8.7-.1 12 2.4v15c-3.3-2.5-7.6-3.3-12-2.4v-15Z" />
+      <path d="M37 15.5c-4.4-.9-8.7-.1-12 2.4v15c3.3-2.5 7.6-3.3 12-2.4v-15Z" />
+      <path d="M30 15v9l3-2 3 2" />
+    </>
+  ),
+
+  /* Social studies: a folded map. */
+  social: (
+    <>
+      <path d="M11 17.5 20 14v17l-9 3.5v-17Z" />
+      <path d="M20 14l8 3.5v17L20 31" />
+      <path d="M28 17.5 37 14v17l-9 3.5" />
+    </>
+  ),
+
+  /* Computing: a laptop. */
+  computing: (
+    <>
+      <rect x="13" y="14" width="22" height="15" rx="3" />
+      <path d="M10 33.5h28" />
+      <path d="M21 21.5l-2.5 2.5 2.5 2.5M27 21.5l2.5 2.5-2.5 2.5" />
+    </>
+  ),
+
+  /* Art: a palette. */
+  art: (
+    <>
+      <path d="M24 12c7.7 0 14 5.4 14 12 0 3.6-3 5.5-6 5.5h-2.6c-1.9 0-3.4 1.5-3.4 3.4 0 .8.3 1.5.3 2.3 0 1.6-1.3 2.8-2.9 2.8-7.4 0-13.4-6.3-13.4-14S16.3 12 24 12Z" />
+      <circle cx="18" cy="21" r="1.8" fill="currentColor" stroke="none" />
+      <circle cx="24" cy="18.5" r="1.8" fill="currentColor" stroke="none" />
+      <circle cx="30" cy="21" r="1.8" fill="currentColor" stroke="none" />
+    </>
+  ),
+
+  /* History: a classical column. */
+  history: (
+    <>
+      <path d="M11 16h26M13 36h22" />
+      <path d="M17 16v20M24 16v20M31 16v20" />
+    </>
+  ),
+
+  /* Islamic studies: a dome between two minarets. */
+  islamic: (
+    <>
+      <path d="M17 36V25c0-4.4 3.1-8 7-8s7 3.6 7 8v11" />
+      <path d="M24 17v-3" />
+      <path d="M12 36V22M36 36V22" />
+      <path d="M12 22c0-1.7.9-3 .9-3s.9 1.3.9 3M35.1 22c0-1.7.9-3 .9-3s.9 1.3.9 3" />
+      <path d="M10 36h28" />
+    </>
+  ),
+
+  /* Arabic: a reed pen over the line it writes. */
+  arabic: (
+    <>
+      <path d="M32 12.5 35.5 16 20 31.5l-5.5 2 2-5.5L32 12.5Z" />
+      <path d="M12 37c4-2.5 8-2.5 12 0s8 2.5 12 0" />
+    </>
+  ),
+
+  /* English as a subject: the letters it teaches. */
+  english: (
+    <>
+      <path d="M13 31 19 17l6 14M15.2 26.5h7.6" />
+      <path d="M35 24.5a4.5 4.5 0 1 0 0 6.5V21" />
+    </>
+  ),
+
   /* A flame: the running streak. */
   streak: (
     <>
@@ -256,3 +359,63 @@ const GLYPHS: Record<IconName, React.ReactNode> = {
     </>
   ),
 };
+
+/**
+ * The drawn icon for a subject.
+ *
+ * The catalogue names each subject with an emoji, which is the one glyph in the
+ * data that also has to be a picture on screen. Rather than rewrite the topic
+ * banks, the emoji is looked up here — so the data keeps its compact form and
+ * the page still draws in the site's own hand.
+ *
+ * A subject whose emoji is not listed falls back to showing it, so adding one to
+ * the catalogue can never leave a blank square.
+ */
+const SUBJECT_ICONS: Record<string, IconName> = {
+  "\u{1F4D0}": "maths",
+  "\u{1F52C}": "science",
+  "\u{1F4DA}": "language",
+  "\u{1F5FA}": "social",
+  "\u{1F4BB}": "computing",
+  "\u{1F3A8}": "art",
+  "\u{1F3F0}": "history",
+  "\u{1F54C}": "islamic",
+  "\u{2712}": "arabic",
+  "\u{1F524}": "english",
+};
+
+/**
+ * `ink` is the one subject theme with no icon tint of its own — it is the
+ * neutral used for subjects that take the page's own colour — so it borrows the
+ * brand hue rather than adding a sixth tint nobody else uses.
+ */
+const TINT_FOR_THEME: Record<SubjectTheme, IconTint> = {
+  brand: "brand",
+  sun: "sun",
+  mint: "mint",
+  berry: "berry",
+  ink: "brand",
+};
+
+export function SubjectIcon({
+  glyph,
+  theme,
+  className = "size-12",
+}: {
+  glyph: string;
+  /** The subject's own theme, so the glyph matches the tile it sits on. */
+  theme?: SubjectTheme;
+  className?: string;
+}) {
+  // Emoji are written with a trailing variation selector as often as not, and
+  // the two spellings must find the same icon.
+  const name = SUBJECT_ICONS[glyph.replace(/\uFE0F/g, "")];
+  if (!name) {
+    return (
+      <span aria-hidden className={className}>
+        {glyph}
+      </span>
+    );
+  }
+  return <Icon name={name} tint={theme ? TINT_FOR_THEME[theme] : "brand"} className={className} tile={false} />;
+}

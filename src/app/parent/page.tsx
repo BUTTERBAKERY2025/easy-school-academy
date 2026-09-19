@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubjectIcon } from "@/components/art/icons";
 import type { Metadata } from "next";
 import { getI18n } from "@/lib/i18n/server";
 import { num, percent, t } from "@/lib/i18n/config";
@@ -85,7 +86,7 @@ export default async function ParentPage() {
                   {(summary?.subjects ?? []).map((entry) => (
                     <li key={entry.subject.id} className="flex items-center gap-3 rounded-2xl border border-line p-3">
                       <span className={`grid size-9 shrink-0 place-items-center rounded-xl ${themeClasses[entry.subject.theme].soft}`} aria-hidden>
-                        {entry.subject.glyph}
+                        <SubjectIcon glyph={entry.subject.glyph} theme={entry.subject.theme} className="size-5" />
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block text-sm font-semibold">{t(entry.subject.title, locale)}</span>

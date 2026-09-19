@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubjectIcon } from "@/components/art/icons";
 import type { Metadata } from "next";
 import { getI18n } from "@/lib/i18n/server";
 import { num, t, type Locale } from "@/lib/i18n/config";
@@ -119,8 +120,8 @@ export default async function LearnPage() {
             {summary.subjects.map((entry) => (
               <li key={entry.subject.id}>
                 <Link href={`/subject/${entry.subject.id}`} className="card flex items-center gap-4 p-4 transition-colors hover:bg-surface-muted">
-                  <span className={`grid size-11 shrink-0 place-items-center rounded-2xl text-xl ${themeClasses[entry.subject.theme].soft}`} aria-hidden>
-                    {entry.subject.glyph}
+                  <span className={`grid size-11 shrink-0 place-items-center rounded-2xl ${themeClasses[entry.subject.theme].soft}`} aria-hidden>
+                    <SubjectIcon glyph={entry.subject.glyph} theme={entry.subject.theme} className="size-6" />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block font-bold">{t(entry.subject.title, locale)}</span>

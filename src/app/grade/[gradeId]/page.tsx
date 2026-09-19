@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubjectIcon } from "@/components/art/icons";
 import { notFound } from "next/navigation";
 import { getI18n } from "@/lib/i18n/server";
 import { num, t } from "@/lib/i18n/config";
@@ -51,8 +52,8 @@ export default async function GradePage({ params }: { params: Promise<{ gradeId:
           return (
             <li key={subject.id}>
               <Link href={`/subject/${subject.id}`} className="card group flex h-full flex-col p-5 transition-transform hover:-translate-y-1">
-                <span className={`grid size-12 place-items-center rounded-2xl text-2xl ${theme.soft}`} aria-hidden>
-                  {subject.glyph}
+                <span className={`grid size-12 place-items-center rounded-2xl ${theme.soft}`} aria-hidden>
+                  <SubjectIcon glyph={subject.glyph} theme={subject.theme} className="size-7" />
                 </span>
                 <h2 className="mt-3 text-lg font-bold">{t(subject.title, locale)}</h2>
                 <p className="mt-1 line-clamp-2 text-sm text-muted">{t(subject.description, locale)}</p>

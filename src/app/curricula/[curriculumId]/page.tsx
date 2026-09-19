@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SubjectIcon } from "@/components/art/icons";
 import { notFound } from "next/navigation";
 import { getI18n } from "@/lib/i18n/server";
 import { num, t } from "@/lib/i18n/config";
@@ -50,8 +51,8 @@ export default async function CurriculumPage({ params }: { params: Promise<{ cur
                     </p>
                     <ul className="mt-3 flex flex-wrap gap-1">
                       {grade.subjects.slice(0, 6).map((subject) => (
-                        <li key={subject.id} className="text-xl" title={t(subject.title, locale)} aria-hidden>
-                          {subject.glyph}
+                        <li key={subject.id} title={t(subject.title, locale)}>
+                          <SubjectIcon glyph={subject.glyph} theme={subject.theme} className="size-6" />
                         </li>
                       ))}
                     </ul>
