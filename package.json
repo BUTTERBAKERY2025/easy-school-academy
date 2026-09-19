@@ -12,7 +12,8 @@
     "check": "npm run typecheck && npm run lint && npm run check:content",
     "db:migrate": "tsx --conditions=react-server scripts/db-migrate.mts",
     "db:check": "tsx --conditions=react-server scripts/db-check.mts",
-    "db:seed": "tsx --conditions=react-server scripts/db-seed.mts"
+    "db:seed": "tsx --conditions=react-server scripts/db-seed.mts",
+    "db:setup": "tsx --conditions=react-server scripts/db-setup.mts"
   },
   "dependencies": {
     "jose": "^6.2.12",

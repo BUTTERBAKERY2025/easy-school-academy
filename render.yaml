@@ -1,5 +1,21 @@
-# Render Blueprint — deploying this repository creates the service below with no
-# manual configuration. See the deployment section of README.md.
+# Render Blueprint — deploying this repository creates the database and the
+# service below, wired to each other, with nothing to paste by hand.
+# See the storage section of README.md.
+
+databases:
+  - name: easy-school-db
+    databaseName: easy_school
+    user: easy_school
+    # Same region as the service: that is what lets them talk over Render's
+    # private network instead of the public internet.
+    region: frankfurt
+    # Check what Render's free database allows before relying on it — free
+    # databases have carried an expiry date, after which they are removed.
+    # Moving to a paid plan, or to another Postgres anywhere, is a change to
+    # this line and nothing else: the application only ever reads DATABASE_URL.
+    plan: free
+    ipAllowList: []          # no public access; the service reaches it privately
+
 services:
   - type: web
     name: school-on
@@ -7,31 +23,25 @@ services:
     plan: free
     region: frankfurt
     buildCommand: npm ci && npm run build
-    startCommand: npm run start
+    # The schema is applied and an empty database seeded before the server
+    # accepts traffic. Both halves are idempotent — the schema only creates what
+    # is missing, and the demo accounts go in only when there are no accounts at
+    # all — so this is safe on every boot and can never overwrite real users.
+    # Doing it here rather than in the build is deliberate: the connection
+    # string is certainly present at run time.
+    startCommand: npm run db:setup && npm run start
     healthCheckPath: /
     autoDeploy: true
     envVars:
-      # Signs the session cookie. Render generates a random value on first deploy,
-      # so nothing has to be pasted by hand.
+      # Signs the session cookie. Render generates a random value on first
+      # deploy, so nothing has to be pasted by hand.
       - key: AUTH_SECRET
         generateValue: true
-      # The Postgres connection string. Left for you to paste in Render's
-      # dashboard (sync: false keeps it out of this file, which is committed):
-      # Supabase → Project settings → Database → Connection string.
-      # Without it the service falls back to the JSON file, which the free plan
-      # wipes on every restart.
+      # Filled in from the database above — the password never appears in this
+      # file, and never has to be copied through a dashboard.
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: easy-school-db
+          property: connectionString
       - key: NODE_VERSION
         value: "22"
-      # The free plan has no persistent disk, so the JSON database lives in the
-      # service's own filesystem and resets whenever the instance restarts. Demo
-      # accounts are re-seeded automatically. To keep data across restarts, move
-      # the service to a paid plan and uncomment the disk below together with this
-      # variable.
-      # - key: SCHOOL_ON_DATA_DIR
-      #   value: /var/data
-    # disk:
-    #   name: school-on-data
-    #   mountPath: /var/data
-    #   sizeGB: 1
