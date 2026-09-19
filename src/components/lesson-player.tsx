@@ -276,7 +276,7 @@ export function LessonPlayer({
             canReveal={(results[current.id]?.attempts ?? 0) >= 2}
           />
         ) : current ? (
-          <TeachingBlock block={current} locale={reading} />
+          <TeachingBlock block={current} locale={reading} bookId={lesson.subjectId} />
         ) : null}
       </article>
 

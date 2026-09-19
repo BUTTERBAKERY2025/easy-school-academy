@@ -6,9 +6,19 @@ import { t, type Locale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/client";
 import { VisualView } from "./visual";
 import { FlowerDiagram, LifeCycleDiagram } from "./art/diagrams";
+import { PageWalk } from "./book/page-walk";
 
 /** Renders the teaching (non-question) half of a lesson. */
-export function TeachingBlock({ block, locale }: { block: Block; locale: Locale }) {
+export function TeachingBlock({
+  block,
+  locale,
+  bookId,
+}: {
+  block: Block;
+  locale: Locale;
+  /** Which book the family's own copy belongs to, for a page walkthrough. */
+  bookId?: string;
+}) {
   switch (block.kind) {
     case "concept":
       return (
@@ -87,6 +97,9 @@ export function TeachingBlock({ block, locale }: { block: Block; locale: Locale 
 
     case "diagram":
       return <Diagram block={block} locale={locale} />;
+
+    case "pagewalk":
+      return bookId ? <PageWalk block={block} locale={locale} bookId={bookId} /> : null;
 
     case "summary":
       return (

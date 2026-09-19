@@ -62,6 +62,31 @@ export type Block =
       /** One per part; every `id` must be a part the drawing actually has. */
       parts: { id: string; term: Localized; body: Localized }[];
     }
+  /**
+   * Walking through a page of the course book before teaching from it.
+   *
+   * A teacher opening a textbook points at the page before reading it: this is
+   * the aims box, this is the task, keep these words. Each region is a rectangle
+   * in percentages of the page, so the markers sit on the right places at any
+   * size, and on any copy of that edition.
+   */
+  | {
+      kind: "pagewalk";
+      id: string;
+      title: Localized;
+      intro: Localized;
+      /** The printed page number this walks through. */
+      page: number;
+      /** The one sentence the page is for. */
+      bigIdea: Localized;
+      regions: {
+        id: string;
+        /** `[x, y, width, height]`, each a percentage of the page. */
+        rect: [number, number, number, number];
+        title: Localized;
+        body: Localized;
+      }[];
+    }
   /** The closing self-check: what the child should now be able to do. */
   | { kind: "checklist"; id: string; title: Localized; items: Localized[] }
   | { kind: "flashcards"; id: string; title: Localized; cards: { id: string; front: Localized; back: Localized }[] }

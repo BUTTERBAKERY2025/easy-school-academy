@@ -40,13 +40,65 @@ export const britishLessons: LessonLibrary = {
     ],
     blocks: [
       {
+        kind: "pagewalk",
+        id: "w0",
+        title: { ar: "افتح كتابك على صفحة 2", en: "Open your book at page 2" },
+        intro: {
+          ar: "قبل أن نقرأ كلمة، انظر إلى الصفحة نفسها. المعلّم لا يبدأ بالقراءة بل بالإشارة: هذا صندوق الأهداف، وهذه المهمة، وهذه الكلمات التي ستحتاجها. اضغط كل رقم لتعرف ما هو ولماذا وُضع هناك.",
+          en: "Before we read a word, look at the page itself. A teacher does not start by reading — they start by pointing: this is the aims box, this is the task, these are the words you will need. Tap each number to find out what it is and why it is there.",
+        },
+        page: 2,
+        bigIdea: {
+          ar: "ليس كل نبات له أزهار. النباتات الزهرية تصنع بذورًا؛ وغير الزهرية — كالسرخس — تصنع أبواغًا.",
+          en: "Not every plant has flowers. Flowering plants make seeds. Non-flowering plants, such as ferns, make spores.",
+        },
+        regions: [
+          {
+            id: "title",
+            rect: [3, 5, 90, 28],
+            title: { ar: "عنوان الوحدة والدرس", en: "The unit and lesson title" },
+            body: {
+              ar: "الوحدة الأولى اسمها «دورة حياة النباتات الزهرية»، والدرس 1.1 يبدأ من هنا: بعض النباتات لها أزهار وبعضها ليس له. لاحظ أن عنوان الوحدة يذكر «دورة الحياة» — وهي الفكرة التي ستربط كل دروس الوحدة.",
+              en: "Unit 1 is called Life cycles of flowering plants, and Lesson 1.1 begins here: some plants have flowers and some do not. Notice that the unit's title says life cycles — that is the idea tying every lesson in the unit together.",
+            },
+          },
+          {
+            id: "aims",
+            rect: [8, 34, 83, 22],
+            title: { ar: "«We are going to…» — ستة أهداف", en: "“We are going to…” — six aims" },
+            body: {
+              ar: "ستة أهداف، والكتاب يضعها قبل أي شرح حتى تعرف إلى أين تسير: أن تفرّق بين النبات الزهري وغيره، وتعرف مراحل دورة الحياة، وتصنّف الأزهار، وتسمّي أجزاء الزهرة ووظيفة كل جزء، وتلاحظ زهرة وترسمها، وتصف نمطًا في ملاحظاتك. ارجع إليها في آخر الدرس واسأل نفسك: أيها أستطيع الآن؟",
+              en: "Six aims, and the book puts them before any explanation so you know where you are heading: tell flowering plants from non-flowering ones, know the life-cycle stages, sort and group flowers, name each flower part and its function, observe and draw a flower, and describe a pattern in what you see. Come back to them at the end and ask which ones you can now do.",
+            },
+          },
+          {
+            id: "start",
+            rect: [8, 57, 83, 13],
+            title: { ar: "«Getting started» — ابدأ بما تعرفه", en: "“Getting started” — begin with what you know" },
+            body: {
+              ar: "لا تحفظ أولًا. ارسم نبتة، ولوّنها، واكتب أسماء أجزائها، ثم قل لشخص بجوارك لماذا يحتاج النبات كل جزء. وأخيرًا اسأل: هل نبتتك لها زهرة؟ وهل كل النباتات لها أزهار؟ هذه هي طريقة الكتاب كلها: ابدأ بما في رأسك، ثم لاحظ، ثم سمِّ، ثم فسّر.",
+              en: "Do not memorise first. Draw a plant, colour it, label its parts, then tell somebody beside you why the plant needs each one. Last, ask: does your plant have a flower? Do all plants have flowers? This is the book's whole method — start from what you already think, then observe, then name, then explain.",
+            },
+          },
+          {
+            id: "words",
+            rect: [9, 71, 38, 18],
+            title: { ar: "صندوق الكلمات المفتاحية", en: "The key words box" },
+            body: {
+              ar: "احتفظ بهذا الصندوق. ستقابل هذه الكلمات في الوحدة كلها: anther, carpel, filament, function, fruit, life cycle, ovary, petals, pollen, reproduce, scent, sepals, spores, stamen, stigma. لن تحفظها الآن — ستتعلّمها وأنت تستعملها.",
+              en: "Keep this box. You will meet these words through the whole unit: anther, carpel, filament, function, fruit, life cycle, ovary, petals, pollen, reproduce, scent, sepals, spores, stamen, stigma. You are not learning them now — you will learn them by using them.",
+            },
+          },
+        ],
+      },
+      {
         kind: "callout",
         id: "g1",
         tone: "tip",
-        title: { ar: "قبل أن نبدأ", en: "Getting started" },
+        title: { ar: "كيف يعلّم هذا الكتاب", en: "How this book teaches" },
         body: {
-          ar: "ارسم نبتة وأنت جالس. لوّنها، واكتب اسم كل جزء تعرفه فيها. ثم فكّر: لماذا يحتاج النبات كل جزء رسمته؟ وهل في نبتتك زهرة؟ وهل تظن أن كل النباتات لها أزهار؟ احتفظ بجوابك — سنعود إليه.",
-          en: "Before you read on, draw a plant. Colour it in, and label every part you already know. Then think: why does the plant need each part you drew? Does your plant have a flower? And do you think every plant has one? Keep your answer — we will come back to it.",
+          ar: "Cambridge Primary Science لا يبدأ بقائمة تُحفظ. الصفحة الأولى تفتح السؤال، ثم يستعمل الطالب ما يعرفه، ثم يلاحظ، ثم يسمّي الأجزاء، ثم يشرح وظيفة كل جزء. هذه طريقة الوحدة كلها — ونحن نتبعها هنا بالترتيب نفسه.",
+          en: "Cambridge Primary Science does not begin with a list to memorise. The first page sets the enquiry; then you use what you already know, then you observe, then you name the parts, then you explain what each part is for. That is the method of the whole unit — and it is the order we follow here.",
         },
       },
       {

@@ -100,6 +100,14 @@ options.
   title, objectives and body render in it (with that language's `dir`, or English comes out
   right-to-left) while the navigation and buttons stay in the reader's own. A reader whose language
   differs gets a support toggle inside the player, off by default and remembered per device.
+- **A lesson can walk through a page of the book.** A `pagewalk` block names a printed page, a one-line
+  big idea, and regions given as `[x, y, w, h]` percentages. Over the family's own rendered page each
+  region gets a numbered marker sitting on it; choosing one outlines that part and says what it is
+  for — the aims box, the task, the key words — which is how a teacher opens a textbook: by pointing,
+  before reading. Percentages rather than pixels, so the markers land at any size and on any copy of
+  that edition. Without a book file the regions are still readable as a numbered list beside the
+  paper book. A scan's sheet numbers never match the printed ones, so the child nudges ‹ › until the
+  right page shows and the difference is remembered for every later lesson.
 - **The book on screen is the family's own copy.** `components/book/reader.tsx` renders a PDF the
   family chooses from their device with pdf.js; it is stored in IndexedDB on that device
   (`lib/book-file.ts`), never uploaded, and no part of any book is in this repository. Printed page
