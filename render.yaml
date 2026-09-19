@@ -15,6 +15,13 @@ services:
       # so nothing has to be pasted by hand.
       - key: AUTH_SECRET
         generateValue: true
+      # The Postgres connection string. Left for you to paste in Render's
+      # dashboard (sync: false keeps it out of this file, which is committed):
+      # Supabase → Project settings → Database → Connection string.
+      # Without it the service falls back to the JSON file, which the free plan
+      # wipes on every restart.
+      - key: DATABASE_URL
+        sync: false
       - key: NODE_VERSION
         value: "22"
       # The free plan has no persistent disk, so the JSON database lives in the

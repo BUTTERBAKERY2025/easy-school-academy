@@ -72,13 +72,34 @@ options.
   works out which side is Arabic from its script, so either order is fine.
 - **Numbers need formatting, not interpolation.** Use `num()` / `percent()` from `lib/i18n/config`, and
   wrap mixed strings like `3 / 10` in the `Ratio` component — they reorder inside RTL text otherwise.
+  Digits are Western in both languages: the American and British curricula are taught in them. A
+  student may still *type* Arabic-Indic digits, and the answer normaliser accepts them.
+- **Some terms are deliberately untranslated.** "Year 5", "Grade 4", the Key Stages and "English
+  Language Arts" are written with both sides of the `Localized` pair identical, which is what marks
+  them as a decision; the catalogue validator treats an identical pair as intentional and any other
+  Latin-in-Arabic as a mistake.
 - **The catalogue is generated, not stored.** `lib/content/build.ts` derives every unit and lesson from
   the topic banks at module load. Lesson ids are stable (`saudi-g4-math-fractions-1`), and an entry in
   `lib/content/lessons/*` with that id replaces the generated body.
-- **Persistence is behind a repository.** Everything goes through `lib/db/repo.ts`; only
-  `lib/db/store.ts` knows the data is a JSON file. Swap that one file to move to a real database.
+- **Persistence is behind a repository.** Everything goes through `lib/db/repo.ts`, which picks a
+  store at start-up: Postgres when `DATABASE_URL` is set, otherwise the JSON file. Both implement
+  `lib/db/contract.ts`, so neither can gain a method the other lacks, and `npm run db:check` runs the
+  two through the same scenario and fails if any answer differs. The schema is `db/schema.sql`;
+  `npm run db:seed` fills an empty database and `npm run db:migrate` carries a JSON file across.
+- **Scripts that touch the store need `--conditions=react-server`**, which the `db:*` scripts already
+  pass — `server-only` throws under plain Node without it.
 - **The language switch is a route handler, not a server action** (`app/api/locale/route.ts`): a server
   action that sets a cookie and redirects loses the `Set-Cookie`, and `next/link` cannot navigate to a
   route handler — the switcher is a plain `<a>` for that reason.
 - **Lesson gating:** the first lesson of every subject is free; everything else needs an active
   subscription, which a student can inherit from their parent account.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

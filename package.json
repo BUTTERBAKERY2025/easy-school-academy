@@ -9,11 +9,15 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "check:content": "tsx scripts/check-catalog.mts",
-    "check": "npm run typecheck && npm run lint && npm run check:content"
+    "check": "npm run typecheck && npm run lint && npm run check:content",
+    "db:migrate": "tsx --conditions=react-server scripts/db-migrate.mts",
+    "db:check": "tsx --conditions=react-server scripts/db-check.mts",
+    "db:seed": "tsx --conditions=react-server scripts/db-seed.mts"
   },
   "dependencies": {
     "jose": "^6.2.12",
     "next": "16.3.5",
+    "postgres": "^3.4.9",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "server-only": "^0.0.1",
