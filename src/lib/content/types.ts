@@ -37,7 +37,15 @@ export type Visual =
 
 /* ------------------------------------------------------------------- blocks */
 
-export type Choice = { id: string; label: Localized };
+/**
+ * A choice, and what a teacher would say if the child picked it.
+ *
+ * `feedback` is shown only when this wrong choice is the one chosen. One
+ * explanation for every wrong answer treats all mistakes as the same mistake,
+ * and they never are: "a pine is a flowering plant" and "a fern is a flowering
+ * plant" are two different misunderstandings and need two different answers.
+ */
+export type Choice = { id: string; label: Localized; feedback?: Localized };
 
 /** A `{{1}}`-style placeholder inside the text marks a blank to fill. */
 export type Blank = { id: string; answers: string[] };
@@ -126,7 +134,15 @@ export type Block =
       correctIds: string[];
       explanation: Localized;
     }
-  | { kind: "truefalse"; id: string; statement: Localized; answer: boolean; explanation: Localized }
+  | {
+      kind: "truefalse";
+      id: string;
+      statement: Localized;
+      answer: boolean;
+      explanation: Localized;
+      /** Said only to a child who answered the wrong way round. */
+      whenWrong?: Localized;
+    }
   | { kind: "fill"; id: string; prompt: Localized; text: Localized; blanks: Blank[]; explanation: Localized }
   | {
       kind: "match";

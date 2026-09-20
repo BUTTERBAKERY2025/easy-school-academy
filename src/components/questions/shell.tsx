@@ -10,6 +10,7 @@ export function QuestionShell({
   prompt,
   hint,
   explanation,
+  note,
   verdict,
   canCheck,
   onCheck,
@@ -21,6 +22,8 @@ export function QuestionShell({
   prompt: string;
   hint?: string;
   explanation: string;
+  /** Aimed at the wrong answer actually given, and shown only for that answer. */
+  note?: string;
   verdict: Verdict;
   canCheck: boolean;
   onCheck: () => void;
@@ -59,6 +62,9 @@ export function QuestionShell({
                 ? `💡 ${d.lesson.showAnswer}`
                 : `🤔 ${d.lesson.incorrect}`}
           </p>
+          {note && verdict === "incorrect" ? (
+            <p className="mt-2 rounded-2xl bg-surface p-3 text-sm font-semibold">{note}</p>
+          ) : null}
           <p className="mt-2 text-sm">
             <span className="font-semibold">{d.lesson.explanation}: </span>
             {explanation}

@@ -41,7 +41,10 @@ so authoring never requires touching the catalogue builder.
    teaching blocks (`concept`, `example`, `callout`, `vocab`, `flashcards`,
    `activity`, `checklist`, `summary`) and the seven question types (`mcq`, `multi`, `truefalse`, `fill`,
    `match`, `order`, `sort`). Every question needs an `explanation` — the player
-   shows it whether the answer was right or wrong.
+   shows it whether the answer was right or wrong. A wrong `mcq`/`multi` choice can
+   also carry its own `feedback`, and a `truefalse` a `whenWrong`, shown only to the
+   child who gave that answer: one explanation for every wrong answer treats all
+   mistakes as the same mistake, and they never are.
 4. Visuals are mostly data, not images: `figure`, `array`, `fraction`, `numberline`,
    `bars`, `table`, `steps`, drawn by `src/components/visual.tsx`. Where a real
    photograph or painted illustration is what teaches, `{ type: "image" }` points
@@ -109,6 +112,11 @@ options.
   title, objectives and body render in it (with that language's `dir`, or English comes out
   right-to-left) while the navigation and buttons stay in the reader's own. A reader whose language
   differs gets a support toggle inside the player, off by default and remembered per device.
+- **A wrong answer is answered, not just marked.** `Choice.feedback` and `truefalse.whenWrong` are
+  shown above the general explanation and only to the child who chose that option, because "a pine
+  is a flowering plant" and "a fern is a flowering plant" are different misunderstandings needing
+  different replies. Both optional; a question without them behaves as before. For `multi` the notes
+  of every wrong box ticked are joined.
 - **A lesson can read itself aloud.** The largest difference between a page and a teacher is that a
   teacher speaks. `components/narration.tsx` reads the current screen with the device's own voice —
   nothing leaves the device, no key, works offline — block by block, so the part being read is

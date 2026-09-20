@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { QuestionBlock } from "@/lib/content/types";
+import type { Localized, QuestionBlock } from "@/lib/content/types";
 import { t, type Locale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/client";
 import { seededShuffle } from "@/lib/shuffle";
@@ -18,6 +18,11 @@ export type QuestionProps = {
   onReveal: () => void;
   canReveal: boolean;
 };
+
+/** The line written for a particular wrong choice, if its author wrote one. */
+function noteFor(choice: { feedback?: Localized } | undefined, locale: Locale): string | undefined {
+  return choice?.feedback ? t(choice.feedback, locale) : undefined;
+}
 
 export function Question(props: QuestionProps) {
   switch (props.block.kind) {
@@ -49,6 +54,7 @@ function ChoiceQuestion({ block, locale, verdict, onAnswer, onRetry, onReveal, c
       prompt={t(block.prompt, locale)}
       hint={block.hint ? t(block.hint, locale) : undefined}
       explanation={t(block.explanation, locale)}
+      note={noteFor(block.choices.find((choice) => choice.id === selected), locale)}
       verdict={verdict}
       canCheck={selected !== null}
       onCheck={() => onAnswer(selected === block.correctId)}
@@ -117,6 +123,11 @@ function MultiQuestion({ block, locale, verdict, onAnswer, onRetry, onReveal, ca
     <QuestionShell
       prompt={t(block.prompt, locale)}
       explanation={t(block.explanation, locale)}
+      note={block.choices
+        .filter((choice) => selected.includes(choice.id) && !block.correctIds.includes(choice.id))
+        .map((choice) => noteFor(choice, locale))
+        .filter(Boolean)
+        .join(" ")}
       verdict={verdict}
       canCheck={selected.length > 0}
       onCheck={() =>
@@ -183,6 +194,7 @@ function TrueFalseQuestion({ block, locale, verdict, onAnswer, onRetry, onReveal
     <QuestionShell
       prompt={t(block.statement, locale)}
       explanation={t(block.explanation, locale)}
+      note={block.whenWrong ? t(block.whenWrong, locale) : undefined}
       verdict={verdict}
       canCheck={selected !== null}
       onCheck={() => onAnswer(selected === block.answer)}

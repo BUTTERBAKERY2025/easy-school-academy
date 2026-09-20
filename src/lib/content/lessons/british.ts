@@ -116,7 +116,14 @@ export const britishLessons: LessonLibrary = {
           id: "q0",
           prompt: { ar: "هل كل النباتات لها أزهار؟", en: "Do all plants have flowers?" },
           choices: [
-            { id: "a", label: { ar: "نعم — كل نبات يُزهر ثم يصنع بذورًا.", en: "Yes — every plant flowers, then makes seeds." } },
+            {
+              id: "a",
+              label: { ar: "نعم — كل نبات يُزهر ثم يصنع بذورًا.", en: "Yes — every plant flowers, then makes seeds." },
+              feedback: {
+                ar: "فكّر في السرخس. هل رأيته يومًا مُزهرًا؟ لا يُزهر أبدًا — ومع ذلك تخرج منه سرخسات جديدة.",
+                en: "Think of a fern. Have you ever seen one in flower? It never flowers — and new ferns still appear.",
+              },
+            },
             { id: "b", label: { ar: "لا — بعض النباتات لا تُزهر أبدًا.", en: "No — some plants never flower at all." } },
           ],
           correctId: "b",
@@ -312,8 +319,22 @@ export const britishLessons: LessonLibrary = {
           choices: [
             { id: "a", label: { ar: "anther — المتك", en: "anther" } },
             { id: "b", label: { ar: "filament — الخيط", en: "filament" } },
-            { id: "c", label: { ar: "stigma — الميسم", en: "stigma" } },
-            { id: "d", label: { ar: "ovary — المبيض", en: "ovary" } },
+            {
+              id: "c",
+              label: { ar: "stigma — الميسم", en: "stigma" },
+              feedback: {
+                ar: "الميسم في الجزء المؤنّث لا المذكّر. هو قمة الكربلة (carpel).",
+                en: "The stigma is on the female side, not the male one. It is the top of the carpel.",
+              },
+            },
+            {
+              id: "d",
+              label: { ar: "ovary — المبيض", en: "ovary" },
+              feedback: {
+                ar: "المبيض هو قاعدة الكربلة (carpel) — الجزء المؤنّث. فيه تنمو البذور.",
+                en: "The ovary is the base of the carpel — the female part. It is where the seeds grow.",
+              },
+            },
           ],
           correctIds: ["a", "b"],
           explanation: {
@@ -487,9 +508,23 @@ export const britishLessons: LessonLibrary = {
           id: "q2",
           prompt: { ar: "لماذا نرسم دورة الحياة على هيئة دائرة؟", en: "Why do we draw a life cycle as a circle?" },
           choices: [
-            { id: "a", label: { ar: "لأن الدائرة أجمل في الرسم", en: "Because a circle looks nicer on the page" } },
+            {
+              id: "a",
+              label: { ar: "لأن الدائرة أجمل في الرسم", en: "Because a circle looks nicer on the page" },
+              feedback: {
+                ar: "الشكل ليس سببًا. اسأل: ما الذي يحدث بعد آخر مرحلة؟",
+                en: "A shape is not a reason. Ask yourself what happens after the last stage.",
+              },
+            },
             { id: "b", label: { ar: "لأن آخر مرحلة تؤدي إلى أول مرحلة فتتكرر بلا نهاية", en: "Because the last stage leads back to the first, so it repeats without end" } },
-            { id: "c", label: { ar: "لأن النبات ينمو في شكل دائري", en: "Because the plant grows in a circular shape" } },
+            {
+              id: "c",
+              label: { ar: "لأن النبات ينمو في شكل دائري", en: "Because the plant grows in a circular shape" },
+              feedback: {
+                ar: "النبات ينمو إلى أعلى لا في دائرة. الذي يعود إلى بدايته هو المراحل، لا شكل النبات.",
+                en: "The plant grows upwards, not in a circle. It is the stages that come round again, not the plant's shape.",
+              },
+            },
           ],
           correctId: "b",
           hint: { ar: "ما معنى كلمة «دورة»؟", en: "What does the word “cycle” mean?" },
@@ -514,6 +549,10 @@ export const britishLessons: LessonLibrary = {
             en: "Every flower must contain both the male and the female parts.",
           },
           answer: false,
+          whenWrong: {
+            ar: "معظم الأزهار فيها الاثنان معًا — لكن «معظم» ليست «كل». فكّر في نبات تحمل بعض أزهاره اللقاح فقط.",
+            en: "Most flowers do have both — but \u201cmost\u201d is not \u201cevery\u201d. Think of a plant where some flowers only carry pollen.",
+          },
           explanation: {
             ar: "خطأ. معظم النباتات الزهرية لها أزهار تحمل الجزأين معًا، لكن بعض النباتات لها أزهار تحمل الجزء المذكّر وحده أو المؤنّث وحده.",
             en: "False. Most flowering plants have flowers with both parts, but some plants have flowers with only male parts, or only female parts.",
@@ -544,12 +583,26 @@ export const britishLessons: LessonLibrary = {
             en: "Some flowers are dark reddish brown with a scent like rotting meat. Why do you think that is?",
           },
           choices: [
-            { id: "a", label: { ar: "لأنها نباتات مريضة", en: "Because those plants are diseased" } },
+            {
+              id: "a",
+              label: { ar: "لأنها نباتات مريضة", en: "Because those plants are diseased" },
+              feedback: {
+                ar: "هذه النباتات سليمة تمامًا. اسأل: لمن هذه الرائحة؟",
+                en: "These plants are perfectly healthy. Ask instead: who is that smell for?",
+              },
+            },
             {
               id: "b",
               label: { ar: "لأن ملقّحاتها هي الذباب، والذباب ينجذب إلى ذلك اللون وتلك الرائحة", en: "Because their pollinators are flies, and flies are drawn to that colour and that smell" },
             },
-            { id: "c", label: { ar: "لأنها لا تحتاج إلى التلقيح إطلاقًا", en: "Because they do not need pollinating at all" } },
+            {
+              id: "c",
+              label: { ar: "لأنها لا تحتاج إلى التلقيح إطلاقًا", en: "Because they do not need pollinating at all" },
+              feedback: {
+                ar: "كل نبات زهري يحتاج التلقيح، وإلا فلا بذور. اسأل: أي حيوان تعجبه هذه الرائحة؟",
+                en: "Every flowering plant needs pollinating, or there are no seeds. Ask which animal likes that smell.",
+              },
+            },
           ],
           correctId: "b",
           hint: { ar: "الزهرة لا تختار لونها لتعجبك أنت.", en: "A flower does not choose its colour to please you." },
