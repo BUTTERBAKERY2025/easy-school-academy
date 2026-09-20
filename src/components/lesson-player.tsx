@@ -7,6 +7,8 @@ import { localeMeta, num, percent, t, type Locale } from "@/lib/i18n/config";
 import { useI18n } from "@/lib/i18n/client";
 import { saveLessonProgressAction } from "@/lib/learning/actions";
 import { TeachingBlock } from "./blocks";
+import { NarrationButton, useNarration, type Spoken } from "./narration";
+import { readableText } from "@/lib/content/readable";
 import { Question } from "./questions";
 import type { Verdict } from "./questions/shell";
 import { ProgressBar, Chevron, Ratio } from "./ui";
@@ -141,6 +143,20 @@ export function LessonPlayer({
   }, [index, finished, persist]);
 
   const current = steps[index];
+
+  // What this screen would sound like, in the order a teacher would say it.
+  const spoken: Spoken[] = useMemo(() => {
+    if (!current) return [];
+    const header = [t(current.kicker, reading), t(current.title, reading), current.lead ? t(current.lead, reading) : ""]
+      .filter(Boolean)
+      .join(". ");
+    return [
+      ...(header ? [{ id: `${current.id}:head`, text: header }] : []),
+      ...current.blocks.map((block) => ({ id: block.id, text: readableText(block, reading) })),
+    ];
+  }, [current, reading]);
+
+  const narration = useNarration(spoken, reading);
   // A screen is left once every question on it has been answered or revealed.
   const blocked = Boolean(
     current?.blocks.some((block) => {
@@ -176,6 +192,7 @@ export function LessonPlayer({
   };
 
   const goNext = () => {
+    narration.stop();
     if (index >= steps.length - 1) {
       setFinished(true);
       persist(steps.length - 1, true);
@@ -297,13 +314,23 @@ export function LessonPlayer({
         </div>
       ) : null}
 
+      <NarrationButton
+        narration={narration}
+        locale={locale}
+        labels={{ read: d.lesson.readAloud, stop: d.lesson.stopReading, hint: d.lesson.readAloudHint }}
+      />
+
       <article
         className={`card p-5 sm:p-8 ${named ? "bg-surface-warm" : ""}`}
         lang={reading}
         dir={localeMeta[reading].dir}
       >
         {named && current ? (
-          <header className="mb-6">
+          <header
+            className={`mb-6 rounded-2xl transition-colors ${
+              narration.activeId === `${current.id}:head` ? "bg-brand-100 p-3 dark:bg-brand-900/40" : ""
+            }`}
+          >
             <p className="text-sm font-extrabold text-brand-600 dark:text-brand-300">
               {t(current.kicker, reading)}
             </p>
@@ -321,22 +348,28 @@ export function LessonPlayer({
         ) : null}
 
         <div className="space-y-8">
-          {current?.blocks.map((block) =>
-            isQuestion(block) ? (
-              <Question
-                key={block.id}
-                block={block}
-                locale={reading}
-                verdict={verdicts[block.id] ?? null}
-                onAnswer={(correct) => answer(block.id, correct)}
-                onRetry={() => retry(block.id)}
-                onReveal={() => reveal(block.id)}
-                canReveal={(results[block.id]?.attempts ?? 0) >= 2}
-              />
-            ) : (
-              <TeachingBlock key={block.id} block={block} locale={reading} bookId={lesson.subjectId} />
-            ),
-          )}
+          {current?.blocks.map((block) => (
+            <div
+              key={block.id}
+              className={`rounded-2xl transition-colors ${
+                narration.activeId === block.id ? "bg-brand-100 p-3 dark:bg-brand-900/40" : ""
+              }`}
+            >
+              {isQuestion(block) ? (
+                <Question
+                  block={block}
+                  locale={reading}
+                  verdict={verdicts[block.id] ?? null}
+                  onAnswer={(correct) => answer(block.id, correct)}
+                  onRetry={() => retry(block.id)}
+                  onReveal={() => reveal(block.id)}
+                  canReveal={(results[block.id]?.attempts ?? 0) >= 2}
+                />
+              ) : (
+                <TeachingBlock block={block} locale={reading} bookId={lesson.subjectId} />
+              )}
+            </div>
+          ))}
         </div>
       </article>
 
@@ -344,7 +377,10 @@ export function LessonPlayer({
         <button
           type="button"
           className="btn btn-ghost"
-          onClick={() => setIndex((value) => Math.max(0, value - 1))}
+          onClick={() => {
+            narration.stop();
+            setIndex((value) => Math.max(0, value - 1));
+          }}
           disabled={index === 0}
         >
           <Chevron className="rotate-180" />

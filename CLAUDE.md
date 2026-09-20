@@ -109,6 +109,14 @@ options.
   title, objectives and body render in it (with that language's `dir`, or English comes out
   right-to-left) while the navigation and buttons stay in the reader's own. A reader whose language
   differs gets a support toggle inside the player, off by default and remembered per device.
+- **A lesson can read itself aloud.** The largest difference between a page and a teacher is that a
+  teacher speaks. `components/narration.tsx` reads the current screen with the device's own voice —
+  nothing leaves the device, no key, works offline — block by block, so the part being read is
+  highlighted and stopping is immediate. `lib/content/readable.ts` says what each block sounds like:
+  a table is read as its cells, a question as the question and its options, never the answer. It
+  speaks the **course's** language, not the interface's, and the button hides itself where the device
+  has no voice for it. Moving screen, or leaving, silences it; a run id stops a cancelled queue
+  carrying on, because some browsers fire `onend` for an utterance they have just thrown away.
 - **A lesson is screens, not steps.** `Lesson.screens` is the unit the player advances through, and a
   lesson written as blocks alone gets one screen per block — which is exactly how it behaved before.
   A screen is left once every question on it is answered or revealed. Scoring is unchanged and still
